@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+
 @Entity
 @Table(name = "courses")
 public class Course {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -89,4 +91,5 @@ public class Course {
         result = 31 * result + (externalId != null ? externalId.hashCode() : 0);
         return result;
     }
+
 }
