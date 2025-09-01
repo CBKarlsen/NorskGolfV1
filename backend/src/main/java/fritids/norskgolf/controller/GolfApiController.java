@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -46,18 +48,15 @@ public class GolfApiController {
     }
 
     // --- Get User's Played Courses ---
+    // In GolfApiController.java
     @GetMapping("/users/{userId}/played-courses")
-    public ResponseEntity<?> getPlayedCourses(@PathVariable Long userId) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            List<CourseDto> playedCourses = user.getPlayedCourses().stream()
-                    .map(course -> new CourseDto(course.getId(), course.getName(), course.getLatitude(), course.getLongitude(), course.getExternalId()))
-                    .collect(Collectors.toList());
-            return ResponseEntity.ok(playedCourses);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("User not found"));
-        }
+    public ResponseEntity<List<CourseDto>> getPlayedCourses(@PathVariable Long userId) {
+        User user = userRepository.findByIdWithPlayedCourses(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        List<CourseDto> playedCourses = user.getPlayedCourses().stream()
+                .map(course -> new CourseDto(course.getId(), course.getName(), course.getLatitude(), course.getLongitude(), course.getExternalId()))
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(playedCourses);
     }
 
     // --- Mark Course as Played ---

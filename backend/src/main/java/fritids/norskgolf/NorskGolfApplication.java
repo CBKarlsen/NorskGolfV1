@@ -8,6 +8,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import fritids.norskgolf.repository.UserRepository;
 import fritids.norskgolf.entities.User;
+import fritids.norskgolf.repository.CourseRepository;
+import fritids.norskgolf.entities.Course;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -30,6 +32,21 @@ public class NorskGolfApplication {
             }
         };
     }
+
+    @Bean
+    public CommandLineRunner setPlayedCourse(UserRepository userRepository, CourseRepository courseRepository) {
+        return args -> {
+            User user = userRepository.findByUsername("testuser").orElse(null);
+            Course bergen = courseRepository.findByName("Bergen golfklubb");
+            if (user != null && bergen != null) {
+                if (!user.getPlayedCourses().contains(bergen)) {
+                    user.getPlayedCourses().add(bergen);
+                    userRepository.save(user);
+                }
+            }
+        };
+    }
+
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
@@ -39,6 +56,33 @@ public class NorskGolfApplication {
                         .allowedOrigins("http://localhost:3000")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*");
+            }
+        };
+    }
+    //Mock data for testing purposes
+    @Bean
+    public CommandLineRunner loadTestCourses(CourseRepository courseRepository) {
+        return args -> {
+            if (courseRepository.findByName("Bergen golfklubb") == null) {
+                Course bergen = new Course();
+                bergen.setName("Bergen golfklubb");
+                bergen.setLatitude(60.3971);
+                bergen.setLongitude(5.3245);
+                courseRepository.save(bergen);
+            }
+            if (courseRepository.findByName("Fana golfklubb") == null) {
+                Course fana = new Course();
+                fana.setName("Fana golfklubb");
+                fana.setLatitude(60.2822);
+                fana.setLongitude(5.3221);
+                courseRepository.save(fana);
+            }
+            if (courseRepository.findByName("Bjørnafjorden golfklubb") == null) {
+                Course bjorn = new Course();
+                bjorn.setName("Bjørnafjorden golfklubb");
+                bjorn.setLatitude(60.1886);
+                bjorn.setLongitude(5.4827);
+                courseRepository.save(bjorn);
             }
         };
     }

@@ -1,8 +1,6 @@
-import logo from './logo.svg';
-import './App.css';
-
 import React, { useState } from "react";
 import Login from "./Login";
+import MapView from "./MapView";
 import "./App.css";
 
 function App() {
@@ -15,7 +13,7 @@ function App() {
     return (
         <div className="App">
             <h1>Welcome, {user.username}!</h1>
-            {/* Your main app content goes here */}
+            <MapView user={user} />
         </div>
     );
 }
