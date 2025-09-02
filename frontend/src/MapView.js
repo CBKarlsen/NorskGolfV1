@@ -31,7 +31,7 @@ function MapView({ user }) {
     const playedIds = new Set(played.map(c => c.id));
 
     return (
-        <MapContainer center={[60.472, 8.4689]} zoom={6} style={{ height: "80vh", width: "100%" }}>
+        <MapContainer center={[60.2, 5.5]} zoom={8} style={{ height: "80vh", width: "100%" }}>
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
