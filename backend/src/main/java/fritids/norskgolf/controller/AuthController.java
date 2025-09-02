@@ -24,7 +24,7 @@ public class AuthController {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            // WARNING: This is insecure! Do not use in production.
+            // TODO Change this such that it is secure
             if (user.getPassword().equals(loginRequest.getPassword())) {
                 return ResponseEntity.ok(new AuthenticationResponse(user.getId(), user.getUsername()));
             }

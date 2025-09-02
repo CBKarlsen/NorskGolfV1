@@ -48,7 +48,7 @@ public class GolfApiController {
     }
 
     // --- Get User's Played Courses ---
-    // In GolfApiController.java
+
     @GetMapping("/users/{userId}/played-courses")
     public ResponseEntity<List<CourseDto>> getPlayedCourses(@PathVariable Long userId) {
         User user = userRepository.findByIdWithPlayedCourses(userId)
@@ -62,7 +62,7 @@ public class GolfApiController {
     // --- Mark Course as Played ---
     @PostMapping("/users/{userId}/played-courses")
     public ResponseEntity<?> markCourseAsPlayed(@PathVariable Long userId, @RequestBody PlayedCourseRequest playedCourseRequest) {
-        Optional<User> userOptional = userRepository.findById(userId);
+        Optional<User> userOptional = userRepository.findByIdWithPlayedCourses(userId);
         if (!userOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("User not found"));
         }
@@ -78,7 +78,11 @@ public class GolfApiController {
         user.addPlayedCourse(course);
         userRepository.save(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        List<CourseDto> playedCourses = user.getPlayedCourses().stream()
+                .map(c -> new CourseDto(c.getId(), c.getName(), c.getLatitude(), c.getLongitude(), c.getExternalId()))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(playedCourses);
     }
 
     // --- DTOs ---
