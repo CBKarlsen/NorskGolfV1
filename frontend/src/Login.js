@@ -8,7 +8,7 @@ function Login({ onLogin }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-        const response = await fetch("http://localhost:8080/api/auth/login", {
+        const response = await fetch("http://localhost:8080/oauth2/authorization/google", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ username, password }),
@@ -39,6 +39,11 @@ function Login({ onLogin }) {
             />
             <button type="submit">Login</button>
             {error && <div style={{color: "red"}}>{error}</div>}
+            <button
+                onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}
+            >
+                Login with Google
+            </button>
         </form>
     );
 }

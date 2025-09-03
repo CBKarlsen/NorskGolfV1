@@ -4,15 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="Test user now shows a map with certain courses">
+    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="removed secret">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/NorskGolfApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/NorskGolfApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/CourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Login.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/MapView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/MapView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/logo.svg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,10 +32,16 @@
         <option value="Interface" />
         <option value="Class" />
         <option value="JavaScript File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -43,10 +56,10 @@
     &quot;accountId&quot;: &quot;9c20e46f-022e-4f24-a877-d978c13c0158&quot;
   }
 }</component>
-  <component name="KubernetesApiPersistence"><![CDATA[{}]]></component>
-  <component name="KubernetesApiProvider"><![CDATA[{
-  "isMigrated": true
-}]]></component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -64,6 +77,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RequestMappingsPanelOrder0": "0",
     "RequestMappingsPanelOrder1": "1",
@@ -73,7 +87,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.NorskGolfApplication.executor": "Run",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "OAuth-loggin",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/casper/Fritidsprosjekt/NorskGolf",
     "node.js.detected.package.eslint": "true",
@@ -81,6 +95,8 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "npm.start.executor": "Run",
+    "settings.editor.selected.configurable": "configurable.group.tools",
     "ts.external.directory.path": "/Applications/IntelliJ IDEA.app/Contents/plugins/javascript-plugin/jsLanguageServicesImpl/external",
     "vue.rearranger.settings.migration": "true"
   },
@@ -93,10 +109,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto" />
       <recent name="$PROJECT_DIR$/backend" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="npm.start">
     <configuration default="true" type="JetRunConfigurationType">
       <module name="NorskGolf" />
       <method v="2">
@@ -104,12 +121,26 @@
       </method>
     </configuration>
     <configuration name="NorskGolfApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="Norskgolf" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="fritids.norskgolf.NorskGolfApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="start" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/frontend/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="start" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.start" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -133,7 +164,9 @@
       <workItem from="1756735428290" duration="2929000" />
       <workItem from="1756741224696" duration="1014000" />
       <workItem from="1756755510603" duration="3571000" />
-      <workItem from="1756800756480" duration="7828000" />
+      <workItem from="1756800756480" duration="21708000" />
+      <workItem from="1756835625013" duration="3563000" />
+      <workItem from="1756891251099" duration="9681000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -191,11 +224,70 @@
       <option name="project" value="LOCAL" />
       <updated>1756758976409</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Added area such that it is possible to log in and click on courses that are played">
+      <option name="closed" value="true" />
+      <created>1756811050667</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1756811050667</updated>
+    </task>
+    <task id="LOCAL-00009" summary="google authentication is added, however i need to connect the golf courses to Gmail accounts">
+      <option name="closed" value="true" />
+      <created>1756822343213</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1756822343213</updated>
+    </task>
+    <task id="LOCAL-00010" summary="minor changes">
+      <option name="closed" value="true" />
+      <created>1756823684165</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1756823684165</updated>
+    </task>
+    <task id="LOCAL-00011" summary="minor changes">
+      <option name="closed" value="true" />
+      <created>1756823873068</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1756823873068</updated>
+    </task>
+    <task id="LOCAL-00012" summary="removed secret">
+      <option name="closed" value="true" />
+      <created>1756823958541</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1756823958541</updated>
+    </task>
+    <task id="LOCAL-00013" summary="removed secret">
+      <option name="closed" value="true" />
+      <created>1756824107995</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1756824107995</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="initial commit" />
@@ -204,6 +296,10 @@
     <MESSAGE value="Moved into backend folder, ready for react frontend folder" />
     <MESSAGE value="Added front end and a working log in page with test users" />
     <MESSAGE value="Test user now shows a map with certain courses" />
-    <option name="LAST_COMMIT_MESSAGE" value="Test user now shows a map with certain courses" />
+    <MESSAGE value="Added area such that it is possible to log in and click on courses that are played" />
+    <MESSAGE value="google authentication is added, however i need to connect the golf courses to Gmail accounts" />
+    <MESSAGE value="minor changes" />
+    <MESSAGE value="removed secret" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed secret" />
   </component>
 </project>
