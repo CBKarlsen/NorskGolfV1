@@ -15,8 +15,14 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String password;
+
+    @Column(nullable = true)
+    private String provider;
+
+    @Column(nullable = true, unique = true)
+    private String providerId;
 
     @ManyToMany
     @JoinTable(
@@ -26,6 +32,18 @@ public class User {
     )
     private Set<Course> playedCourses = new HashSet<>();
 
+    public String getProvider() {
+        return provider;
+    }
+    public void setProvider(String provider) {
+        this.provider = provider;
+    }
+    public String getProviderId() {
+        return providerId;
+    }
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
 
     public void addPlayedCourse(Course course) {
         this.playedCourses.add(course);

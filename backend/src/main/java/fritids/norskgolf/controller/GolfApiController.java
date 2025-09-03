@@ -14,6 +14,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 
 @RestController
 @RequestMapping("/api")
@@ -60,16 +61,33 @@ public class GolfApiController {
     }
 
     // --- Mark Course as Played ---
-    @PostMapping("/users/{userId}/played-courses")
-    public ResponseEntity<?> markCourseAsPlayed(@PathVariable Long userId, @RequestBody PlayedCourseRequest playedCourseRequest) {
-        Optional<User> userOptional = userRepository.findByIdWithPlayedCourses(userId);
-        if (!userOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("User not found"));
+    @PostMapping("/users/{userId}/mark-played")
+    public ResponseEntity<?> markCourseAsPlayed(
+            @PathVariable Long userId,
+            @RequestBody PlayedCourseRequest playedCourseRequest,
+            OAuth2AuthenticationToken token
+    ) {
+        // Get current authenticated user's providerId
+        String providerId = token.getPrincipal().getAttribute("sub");
+        System.out.println("Requested userId: " + userId);
+        System.out.println("Authenticated providerId: " + providerId);
+
+        Optional<User> authUserOpt = userRepository.findByProviderId(providerId);
+        if (authUserOpt.isPresent()) {
+            System.out.println("Authenticated user DB id: " + authUserOpt.get().getId());
+        } else {
+            System.out.println("Authenticated user not found in DB");
         }
 
+        if (authUserOpt.isEmpty() || !authUserOpt.get().getId().equals(userId)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse("Forbidden"));
+        }
+
+        Optional<User> userOptional = userRepository.findByIdWithPlayedCourses(userId);
         Optional<Course> courseOptional = courseRepository.findByExternalId(playedCourseRequest.getCourseExternalId());
-        if (!courseOptional.isPresent()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("Course not found"));
+
+        if (userOptional.isEmpty() || courseOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse("User or course not found"));
         }
 
         User user = userOptional.get();
@@ -78,7 +96,9 @@ public class GolfApiController {
         user.addPlayedCourse(course);
         userRepository.save(user);
 
-        List<CourseDto> playedCourses = user.getPlayedCourses().stream()
+        // Fetch user with playedCourses initialized
+        User updatedUser = userRepository.findByIdWithPlayedCourses(userId).orElse(user);
+        List<CourseDto> playedCourses = updatedUser.getPlayedCourses().stream()
                 .map(c -> new CourseDto(c.getId(), c.getName(), c.getLatitude(), c.getLongitude(), c.getExternalId()))
                 .collect(Collectors.toList());
 
