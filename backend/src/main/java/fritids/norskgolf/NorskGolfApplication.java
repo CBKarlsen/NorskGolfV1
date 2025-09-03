@@ -2,21 +2,17 @@ package fritids.norskgolf;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.context.annotation.Bean;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import fritids.norskgolf.repository.UserRepository;
 import fritids.norskgolf.entities.User;
 import fritids.norskgolf.repository.CourseRepository;
 import fritids.norskgolf.entities.Course;
+import fritids.norskgolf.entities.PlayedCourse;
+import fritids.norskgolf.repository.PlayedCourseRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import java.util.List;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
+import java.util.List;
 
 @SpringBootApplication
 @EnableWebSecurity
@@ -24,7 +20,6 @@ public class NorskGolfApplication {
     public static void main(String[] args) {
         SpringApplication.run(NorskGolfApplication.class, args);
     }
-
 
     @Bean
     public CommandLineRunner loadTestUser(UserRepository userRepository) {
@@ -39,23 +34,26 @@ public class NorskGolfApplication {
     }
 
     @Bean
-    public CommandLineRunner setPlayedCourse(UserRepository userRepository, CourseRepository courseRepository) {
+    public CommandLineRunner setPlayedCourse(UserRepository userRepository,
+                                             CourseRepository courseRepository,
+                                             PlayedCourseRepository playedCourseRepository) {
         return args -> {
-            User user = userRepository.findByIdWithPlayedCourses(
-                    userRepository.findByUsername("testuser").map(User::getId).orElse(null)
-            ).orElse(null);
-            List<Course> bergenList = courseRepository.findByName("Bergen golfklubb");
-            if (user != null && bergenList != null && !bergenList.isEmpty()) {
-                Course bergen = bergenList.get(0);
-                if (!user.getPlayedCourses().contains(bergen)) {
-                    user.getPlayedCourses().add(bergen);
-                    userRepository.save(user);
-                }
+            Long testUserId = userRepository.findByUsername("testuser").map(User::getId).orElse(null);
+            if (testUserId == null) return;
+
+            var user = userRepository.findById(testUserId).orElse(null);
+            if (user == null) return;
+
+            var bergenList = courseRepository.findByName("Bergen golfklubb");
+            if (bergenList == null || bergenList.isEmpty()) return;
+
+            var bergen = bergenList.get(0);
+            boolean exists = playedCourseRepository.existsByUserIdAndCourseId(user.getId(), bergen.getId());
+            if (!exists) {
+                playedCourseRepository.save(new fritids.norskgolf.entities.PlayedCourse(user, bergen));
             }
         };
     }
-
-
 
     //Mock data for testing purposes
     @Bean
@@ -87,5 +85,4 @@ public class NorskGolfApplication {
             }
         };
     }
-
 }

@@ -15,73 +15,47 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = true)
+    @Column
     private String password;
 
-    @Column(nullable = true)
+    @Column
     private String provider;
 
-    @Column(nullable = true, unique = true)
+    @Column(unique = true)
     private String providerId;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_played_courses",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
-    private Set<Course> playedCourses = new HashSet<>();
+    // Join table with extra attributes (bestScore, lastPlayed)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PlayedCourse> playedCourses = new HashSet<>();
 
-    public String getProvider() {
-        return provider;
-    }
-    public void setProvider(String provider) {
-        this.provider = provider;
-    }
-    public String getProviderId() {
-        return providerId;
-    }
-    public void setProviderId(String providerId) {
-        this.providerId = providerId;
-    }
-
+    // --- Relationship helpers ---
     public void addPlayedCourse(Course course) {
-        this.playedCourses.add(course);
+        PlayedCourse pc = new PlayedCourse(this, course);
+        this.playedCourses.add(pc);
+        course.getPlayedBy().add(pc); // keep both sides in sync
     }
 
     public void removePlayedCourse(Course course) {
-        this.playedCourses.remove(course);
+        this.playedCourses.removeIf(pc -> pc.getCourse().equals(course));
+        course.getPlayedBy().removeIf(pc -> pc.getUser().equals(this));
     }
 
-    public Set<Course> getPlayedCourses() {
-        return playedCourses;
-    }
+    // --- Getters & Setters ---
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setPlayedCourses(Set<Course> playedCourses) {
-        this.playedCourses = playedCourses;
-    }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
 
-    public Long getId() {
-        return id;
-    }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getProvider() { return provider; }
+    public void setProvider(String provider) { this.provider = provider; }
 
-    public String getUsername() {
-        return username;
-    }
+    public String getProviderId() { return providerId; }
+    public void setProviderId(String providerId) { this.providerId = providerId; }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+    public Set<PlayedCourse> getPlayedCourses() { return playedCourses; }
+    public void setPlayedCourses(Set<PlayedCourse> playedCourses) { this.playedCourses = playedCourses; }
 }

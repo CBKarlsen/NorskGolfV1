@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "courses")
 public class Course {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,70 +15,46 @@ public class Course {
     @Column(nullable = false)
     private String name;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
-    }
-
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getExternalId() {
-        return externalId;
-    }
-
-    public void setExternalId(String externalId) {
-        this.externalId = externalId;
-    }
-
     private Double latitude;
     private Double longitude;
-    private String externalId; // Unique identifier from a map API (recommended)
 
-    @ManyToMany(mappedBy = "playedCourses")
-    private Set<User> players = new HashSet<>(); // You can keep this for potential future use or remove if you are certain you won't need to navigate from Course to Users
+    @Column(unique = true)
+    private String externalId; // Unique identifier from a map API
 
-    // Constructors, getters, setters, equals, and hashCode (important for collections)
+    // Link to PlayedCourse join entity
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PlayedCourse> playedBy = new HashSet<>();
 
-    public Set<User> getPlayers() {
-        return players;
-    }
+    // --- Getters & Setters ---
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setPlayers(Set<User> players) {
-        this.players = players;
-    }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
+    public Double getLatitude() { return latitude; }
+    public void setLatitude(Double latitude) { this.latitude = latitude; }
 
+    public Double getLongitude() { return longitude; }
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
+
+    public String getExternalId() { return externalId; }
+    public void setExternalId(String externalId) { this.externalId = externalId; }
+
+    public Set<PlayedCourse> getPlayedBy() { return playedBy; }
+    public void setPlayedBy(Set<PlayedCourse> playedBy) { this.playedBy = playedBy; }
+
+    // --- Equals & HashCode (based on externalId if present, else fallback) ---
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Course)) return false;
         Course course = (Course) o;
-        return externalId != null ? externalId.equals(course.externalId) : (name.equals(course.name) && (latitude != null ? latitude.equals(course.latitude) : course.latitude == null) && (longitude != null ? longitude.equals(course.longitude) : course.longitude == null));
+        return externalId != null
+                ? externalId.equals(course.externalId)
+                : name.equals(course.name)
+                && (latitude != null ? latitude.equals(course.latitude) : course.latitude == null)
+                && (longitude != null ? longitude.equals(course.longitude) : course.longitude == null);
     }
 
     @Override
@@ -91,5 +65,4 @@ public class Course {
         result = 31 * result + (externalId != null ? externalId.hashCode() : 0);
         return result;
     }
-
 }
