@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Marker, Popup, Circle } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+import { apiUrl } from "./api";
 
 import L from "leaflet";
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
@@ -29,25 +30,20 @@ function MapView({ user }) {
 
     const playedIds = new Set(played.map(c => c.id));
 
+
     const handleMarkPlayed = async (course) => {
         try {
-            await fetch(`http://localhost:8080/api/users/${user.userId}/mark-played`, {
+            await fetch(apiUrl(`/api/users/${user.userId}/mark-played`), {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "include",
                 body: JSON.stringify({ courseExternalId: course.externalId }),
             });
 
-            // Optimistic update: add course to played immediately
             setPlayed(prev => {
-                if (prev.some(c => c.id === course.id)) return prev; // already in played
+                if (prev.some(c => c.id === course.id)) return prev;
                 return [...prev, course];
             });
-
-            // Optionally, refresh from backend to stay in sync:
-            // fetch(`/api/users/${user.userId}/played-courses`)
-            //     .then(res => res.json())
-            //     .then(data => setPlayed(Array.isArray(data) ? data : []));
         } catch (err) {
             console.error("Failed to mark course as played:", err);
         }

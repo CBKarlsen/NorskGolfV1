@@ -8,14 +8,27 @@ function Login({ onLogin }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError("");
-        const response = await fetch("http://localhost:8080/oauth2/authorization/google", {
+        const response = await fetch("http://localhost:8080/login", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ username, password }),
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            credentials: "include",
+            body: new URLSearchParams({ username, password }).toString(),
         });
+
         if (response.ok) {
-            const data = await response.json();
-            onLogin(data); // Pass user info up
+            // If server redirects, follow it in the browser
+            if (response.redirected) {
+                window.location.href = response.url;
+                return;
+            }
+            // otherwise try to parse user info
+            try {
+                const data = await response.json();
+                onLogin(data);
+            } catch {
+                // fallback: reload to pick up session-authenticated state
+                window.location.reload();
+            }
         } else {
             setError("Invalid username or password");
         }
@@ -40,6 +53,7 @@ function Login({ onLogin }) {
             <button type="submit">Login</button>
             {error && <div style={{color: "red"}}>{error}</div>}
             <button
+                type="button"
                 onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}
             >
                 Login with Google
