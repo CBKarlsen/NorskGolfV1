@@ -10,6 +10,9 @@ import java.util.Optional;
 public interface PlayedCourseRepository extends JpaRepository<PlayedCourse, Long> {
 
     boolean existsByUserIdAndCourseId(Long userId, Long courseId);
+    List<PlayedCourse> findByUserId(Long userId);
+
+    long countByUserId(Long userId);
 
     Optional<PlayedCourse> findByUserIdAndCourseId(Long userId, Long courseId);
 

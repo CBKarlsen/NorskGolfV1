@@ -18,6 +18,8 @@ public class Course {
     private Double latitude;
     private Double longitude;
 
+    private String county;
+
     @Column(unique = true)
     private String externalId; // Unique identifier from a map API
 
@@ -38,11 +40,16 @@ public class Course {
     public Double getLongitude() { return longitude; }
     public void setLongitude(Double longitude) { this.longitude = longitude; }
 
+    public String getCounty() { return county; }
+    public void setCounty(String county) { this.county = county; }
+
     public String getExternalId() { return externalId; }
     public void setExternalId(String externalId) { this.externalId = externalId; }
 
     public Set<PlayedCourse> getPlayedBy() { return playedBy; }
     public void setPlayedBy(Set<PlayedCourse> playedBy) { this.playedBy = playedBy; }
+
+
 
     // --- Equals & HashCode (based on externalId if present, else fallback) ---
     @Override

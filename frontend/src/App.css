@@ -1,4 +1,35 @@
 .App {
   text-align: center;
 }
+.bottom-bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 12px;
+    background: rgba(255,255,255,0.98);
+    box-shadow: 0 -1px 6px rgba(0,0,0,0.12);
+    z-index: 1000;
+}
 
+
+.toggle-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+}
+
+.toggle-btn[aria-pressed="true"] {
+    font-weight: 600;
+    background: #eef;
+    border-color: #99c;
+}
+.app-with-bottom-bar {
+    min-height: 100vh;
+    padding-bottom: 72px; /* same height as the bar to avoid overlap */
+}

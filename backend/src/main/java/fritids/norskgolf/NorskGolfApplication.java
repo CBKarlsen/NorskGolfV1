@@ -55,7 +55,7 @@ public class NorskGolfApplication {
         };
     }
 
-    //Mock data for testing purposes
+    /*//Mock data for testing purposes
     @Bean
     public CommandLineRunner loadTestCourses(CourseRepository courseRepository) {
         return args -> {
@@ -84,5 +84,5 @@ public class NorskGolfApplication {
                 courseRepository.save(bjorn);
             }
         };
-    }
+    }*/
 }
