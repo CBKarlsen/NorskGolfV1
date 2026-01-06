@@ -1,9 +1,12 @@
 package fritids.norskgolf.controller;
 
+import fritids.norskgolf.dto.RoundRequest;
 import fritids.norskgolf.entities.Course;
+import fritids.norskgolf.entities.Round;
 import fritids.norskgolf.entities.User;
 import fritids.norskgolf.entities.PlayedCourse;
 import fritids.norskgolf.repository.CourseRepository;
+import fritids.norskgolf.repository.RoundRepository;
 import fritids.norskgolf.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -94,34 +97,82 @@ public class GolfApiController {
         return ResponseEntity.ok(played);
     }
 
+    @Autowired
+    private RoundRepository roundRepository;
+
+    @PostMapping("/rounds")
+    public ResponseEntity<?> loground(@RequestBody RoundRequest request, Principal principal){
+        if (principal == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        User user = resolveUser(principal);
+        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        Course course = courseRepository.findByExternalId(request.courseExternalId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
+
+        // 3. Save the Round
+        Round round = new Round();
+        round.setUser(user);
+        round.setCourse(course);
+        round.setScore(request.score);
+        // Parse date string (e.g., "2023-05-20") to LocalDate
+        round.setDate(java.time.LocalDate.parse(request.date));
+
+        roundRepository.save(round);
+
+        // 4. SYNC: Ensure this course is marked as "Played" in your map
+        boolean isAlreadyPlayed = playedCourseRepository.existsByUserIdAndCourseId(user.getId(), course.getId());
+        if (!isAlreadyPlayed) {
+            playedCourseRepository.save(new fritids.norskgolf.entities.PlayedCourse(user, course));
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/rounds")
+    public ResponseEntity<List<RoundDto>> getUserRounds(Principal principal) {
+        if (principal == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        User user = resolveUser(principal);
+        if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        List<Round> rounds = roundRepository.findByUserIdOrderByDateDesc(user.getId());
+
+        // Convert to DTO
+        List<RoundDto> dtos = rounds.stream()
+                .map(r -> new RoundDto(
+                        r.getId(),
+                        r.getCourse().getName(),
+                        r.getDate().toString(),
+                        r.getScore()
+                ))
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(dtos);
+    }
+
+
     @GetMapping("/overview")
     public ResponseEntity<DashboardStats> getOverviewStats(Principal principal) {
         if (principal == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        // 2. Resolve the User (Handles both Test User & Google User)
         User user = resolveUser(principal);
         if (user == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        // 1. Fetch all data
+        // --- 1. EXISTING LOGIC: Fetch Stats & Regions ---
         List<Course> allCourses = courseRepository.findAll();
         Set<Long> playedCourseIds = playedCourseRepository.findByUserId(user.getId())
                 .stream()
                 .map(pc -> pc.getCourse().getId())
                 .collect(Collectors.toSet());
 
-        // 2. Aggregate by County
         Map<String, DashboardStats.RegionStat> regionalData = new HashMap<>();
-
-        // Group courses by county (handle nulls with "Unknown")
-        // NOTE: Make sure your Course entity has the getCounty() method!
         Map<String, List<Course>> coursesByCounty = allCourses.stream()
                 .collect(Collectors.groupingBy(c -> c.getCounty() != null ? c.getCounty() : "Unknown"));
 
-        // Calculate stats for each county
         for (Map.Entry<String, List<Course>> entry : coursesByCounty.entrySet()) {
             String countyName = entry.getKey();
             List<Course> coursesInCounty = entry.getValue();
@@ -131,15 +182,46 @@ public class GolfApiController {
                     .filter(c -> playedCourseIds.contains(c.getId()))
                     .count();
 
-            regionalData.put(countyName, new DashboardStats.RegionStat(playedInRegion, totalInRegion));
+            List<CourseDto> regionCourseDtos = coursesInCounty.stream()
+                    .map(c -> new CourseDto(
+                            c.getId(),
+                            c.getName(),
+                            c.getLatitude(),
+                            c.getLongitude(),
+                            c.getExternalId(),
+                            playedCourseIds.contains(c.getId())
+                    ))
+                    .sorted(Comparator.comparing(CourseDto::played).reversed()
+                            .thenComparing(CourseDto::name))
+                    .collect(Collectors.toList());
+
+            regionalData.put(countyName, new DashboardStats.RegionStat(playedInRegion, totalInRegion, regionCourseDtos));
         }
 
-        // 3. Build Response
+        // --- 2. NEW LOGIC: Fetch Recent Rounds ---
+        // Fetch all rounds for this user, newest first
+        List<Round> allRounds = roundRepository.findByUserIdOrderByDateDesc(user.getId());
+
+        // Take the top 5 and convert them to your DTO
+        List<DashboardStats.RoundSummary> recentRounds = allRounds.stream()
+                .limit(5)
+                .map(r -> new DashboardStats.RoundSummary(
+                        r.getId(),
+                        r.getCourse().getName(),
+                        r.getDate().toString(),
+                        r.getScore()
+                ))
+                .collect(Collectors.toList());
+
+        // --- 3. Build & Return Response ---
         DashboardStats stats = new DashboardStats();
         stats.setTotalPlayed(playedCourseIds.size());
         stats.setTotalCourses(allCourses.size());
-        stats.setPercentageComplete((double) playedCourseIds.size() / allCourses.size() * 100);
+        stats.setPercentageComplete(allCourses.isEmpty() ? 0 : (double) playedCourseIds.size() / allCourses.size() * 100);
         stats.setRegionStats(regionalData);
+
+        // Add the rounds to the response
+        stats.setRecentRounds(recentRounds);
 
         return ResponseEntity.ok(stats);
     }
@@ -198,11 +280,43 @@ public class GolfApiController {
         return ResponseEntity.ok(played);
     }
 
+    @DeleteMapping("/rounds/{roundId}")
+    public ResponseEntity<?> deleteRound(@PathVariable Long roundId, Principal principal) {
+        User user = resolveUser(principal);
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+
+        // 1. Find the round and ensure it belongs to the user
+        Round round = roundRepository.findById(roundId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        if (!round.getUser().getId().equals(user.getId())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+        Course course = round.getCourse();
+
+        // 2. Delete the round
+        roundRepository.delete(round);
+
+        // 3. SMART LOGIC: Check if we should un-mark the course as played
+        // Are there any other rounds left for this user at this course?
+        boolean hasOtherRounds = roundRepository.existsByUserIdAndCourseId(user.getId(), course.getId());
+
+        if (!hasOtherRounds) {
+            // If no rounds left, delete the "PlayedCourse" entry (Turn marker RED)
+            playedCourseRepository.findByUserIdAndCourseId(user.getId(), course.getId())
+                    .ifPresent(playedCourseRepository::delete);
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+
     // --- DTOs ---
     private record UserDto(Long id, String username) {}
+    public record RoundDto(Long id, String courseName, String date, int score) {}
 
-    // Make sure this definition stays here
-    private record CourseDto(Long id, String name, Double latitude, Double longitude, String externalId, boolean played) {}
+    public record CourseDto(Long id, String name, Double latitude, Double longitude, String externalId, boolean played) {}
 
     private static class PlayedCourseRequest {
         private String courseExternalId;

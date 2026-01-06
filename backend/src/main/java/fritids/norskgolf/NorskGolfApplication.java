@@ -55,7 +55,7 @@ public class NorskGolfApplication {
         };
     }
 
-    /*//Mock data for testing purposes
+
     @Bean
     public CommandLineRunner loadTestCourses(CourseRepository courseRepository) {
         return args -> {
@@ -63,6 +63,7 @@ public class NorskGolfApplication {
                 Course bergen = new Course();
                 bergen.setExternalId("bergen-001");
                 bergen.setName("Bergen golfklubb");
+                bergen.setCounty("Vestland");
                 bergen.setLatitude(60.3971);
                 bergen.setLongitude(5.3245);
                 courseRepository.save(bergen);
@@ -71,6 +72,7 @@ public class NorskGolfApplication {
                 Course fana = new Course();
                 fana.setExternalId("fana-001");
                 fana.setName("Fana golfklubb");
+                fana.setCounty("Vestland");
                 fana.setLatitude(60.2822);
                 fana.setLongitude(5.3221);
                 courseRepository.save(fana);
@@ -79,10 +81,11 @@ public class NorskGolfApplication {
                 Course bjorn = new Course();
                 bjorn.setExternalId("bjorn-001");
                 bjorn.setName("Bjørnafjorden golfklubb");
+                bjorn.setCounty("Vestland");
                 bjorn.setLatitude(60.1886);
                 bjorn.setLongitude(5.4827);
                 courseRepository.save(bjorn);
             }
         };
-    }*/
+    }
 }

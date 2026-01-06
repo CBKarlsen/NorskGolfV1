@@ -4,20 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="Added dynamic Api call, added buttons for the OverviewView.js&#10;and for map such that it can be swapped between">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/DashboardStats.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/service/CourseSyncService.java" afterDir="false" />
+    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="Dynamic mapping for finding all the maps and addede OverviewView.js page">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/Round.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/RoundRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/LogRoundModal.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/NorskGolfApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/NorskGolfApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/Course.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/PlayedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/PlayedCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/DashboardStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/DashboardStats.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/MapView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/MapView.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/OverviewView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/OverviewView.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -139,6 +138,11 @@
       <envs />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.start" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -171,6 +175,9 @@
       <workItem from="1766235806716" duration="703000" />
       <workItem from="1766236525451" duration="9735000" />
       <workItem from="1767358477853" duration="839000" />
+      <workItem from="1767359787484" duration="4111000" />
+      <workItem from="1767699025604" duration="3396000" />
+      <workItem from="1767703533470" duration="440000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -300,7 +307,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766239950079</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="Dynamic mapping for finding all the maps and addede OverviewView.js page">
+      <option name="closed" value="true" />
+      <created>1767359835743</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1767359835743</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -331,7 +346,8 @@
     <MESSAGE value="Backend api updated such that a user can have a course and mark the course as played aswell as store the highscore on that course" />
     <MESSAGE value="Clean up commit" />
     <MESSAGE value="Added dynamic Api call, added buttons for the OverviewView.js&#10;and for map such that it can be swapped between" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added dynamic Api call, added buttons for the OverviewView.js&#10;and for map such that it can be swapped between" />
+    <MESSAGE value="Dynamic mapping for finding all the maps and addede OverviewView.js page" />
+    <option name="LAST_COMMIT_MESSAGE" value="Dynamic mapping for finding all the maps and addede OverviewView.js page" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
