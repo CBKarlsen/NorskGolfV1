@@ -45,3 +45,5 @@ build/
 /src/main/resources/static/asset-manifest.json
 
 backend/src/main/resources/application.properties
+
+secrets.properties

@@ -4,59 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="Add round logging functionality and recent rounds display in dashboard">
-      <change afterPath="$PROJECT_DIR$/.github/workflow/maven.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/WebConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/FriendController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/SpaRedirectController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/Friendship.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/FriendshipStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/FriendshipRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/service/LeaderboardService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/golf_courses.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/asset-manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/favicon.ico" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/logo192.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/logo512.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/robots.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.c06cf657.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.c06cf657.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/453.670e15c7.chunk.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/453.670e15c7.chunk.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.e35c6bcc.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.e35c6bcc.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.e35c6bcc.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/Login.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/MapIcons.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/Navigation.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/SocialView.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/SocialView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="App icon and title uppdated">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/secrets.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/android-chrome-192x192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/android-chrome-512x512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/public/android-chrome-192x192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/public/android-chrome-512x512.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/dbnavigator.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/NorskGolfApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/NorskGolfApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/SpringConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/DashboardStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/DashboardStats.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/CourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/PlayedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/PlayedCourseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/RoundRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/RoundRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/service/CourseSyncService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/service/CourseSyncService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/LogRoundModal.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/MapView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/MapView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/OverviewView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Overview.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/robots.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/logo512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/robots.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -157,13 +122,15 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/backend/src/main/resources/static" />
+      <recent name="$PROJECT_DIR$/frontend/public" />
+      <recent name="$PROJECT_DIR$/frontend/build" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/main/static" />
       <recent name="$PROJECT_DIR$/backend/src/main/resources" />
       <recent name="$PROJECT_DIR$/backend/src/main/resources/static/static" />
       <recent name="$PROJECT_DIR$/backend/src/main/resources/static" />
       <recent name="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto" />
-      <recent name="$PROJECT_DIR$/backend" />
     </key>
   </component>
   <component name="RunManager" selected="npm.start">
@@ -227,7 +194,7 @@
       <workItem from="1767713132095" duration="1276000" />
       <workItem from="1767715074235" duration="1056000" />
       <workItem from="1767722920478" duration="10673000" />
-      <workItem from="1767739497456" duration="6860000" />
+      <workItem from="1767739497456" duration="11567000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -373,7 +340,55 @@
       <option name="project" value="LOCAL" />
       <updated>1767704000627</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Added Postgres driver for hosting">
+      <option name="closed" value="true" />
+      <created>1767784153263</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1767784153263</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Added Railway config">
+      <option name="closed" value="true" />
+      <created>1767785457072</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1767785457072</updated>
+    </task>
+    <task id="LOCAL-00021" summary="REmoved hardcoded H2 database">
+      <option name="closed" value="true" />
+      <created>1767785857264</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1767785857264</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Configure Postgres using Env Vars in properties">
+      <option name="closed" value="true" />
+      <created>1767786193415</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1767786193415</updated>
+    </task>
+    <task id="LOCAL-00023" summary="PLEASE LET RAILWAY WORK">
+      <option name="closed" value="true" />
+      <created>1767786762631</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1767786762631</updated>
+    </task>
+    <task id="LOCAL-00024" summary="App icon and title uppdated">
+      <option name="closed" value="true" />
+      <created>1767787885593</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1767787885593</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -406,7 +421,13 @@
     <MESSAGE value="Added dynamic Api call, added buttons for the OverviewView.js&#10;and for map such that it can be swapped between" />
     <MESSAGE value="Dynamic mapping for finding all the maps and addede OverviewView.js page" />
     <MESSAGE value="Add round logging functionality and recent rounds display in dashboard" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add round logging functionality and recent rounds display in dashboard" />
+    <MESSAGE value="Added Postgres driver for hosting" />
+    <MESSAGE value="Added Railway config" />
+    <MESSAGE value="REmoved hardcoded H2 database" />
+    <MESSAGE value="Configure Postgres using Env Vars in properties" />
+    <MESSAGE value="PLEASE LET RAILWAY WORK" />
+    <MESSAGE value="App icon and title uppdated" />
+    <option name="LAST_COMMIT_MESSAGE" value="App icon and title uppdated" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
