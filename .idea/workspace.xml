@@ -4,24 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="App icon and title uppdated">
+    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="SMALL BUGS, should be fixed now">
       <change afterPath="$PROJECT_DIR$/backend/src/main/resources/secrets.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/android-chrome-192x192.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/android-chrome-512x512.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/public/android-chrome-192x192.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/public/android-chrome-512x512.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/robots.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/logo192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/logo512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/manifest.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/robots.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +180,7 @@
       <workItem from="1767713132095" duration="1276000" />
       <workItem from="1767715074235" duration="1056000" />
       <workItem from="1767722920478" duration="10673000" />
-      <workItem from="1767739497456" duration="11567000" />
+      <workItem from="1767739497456" duration="12424000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -388,7 +374,23 @@
       <option name="project" value="LOCAL" />
       <updated>1767787885593</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="App icon and title uppdated">
+      <option name="closed" value="true" />
+      <created>1767789482446</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1767789482446</updated>
+    </task>
+    <task id="LOCAL-00026" summary="SMALL BUGS, should be fixed now">
+      <option name="closed" value="true" />
+      <created>1767790007245</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1767790007246</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -427,7 +429,8 @@
     <MESSAGE value="Configure Postgres using Env Vars in properties" />
     <MESSAGE value="PLEASE LET RAILWAY WORK" />
     <MESSAGE value="App icon and title uppdated" />
-    <option name="LAST_COMMIT_MESSAGE" value="App icon and title uppdated" />
+    <MESSAGE value="SMALL BUGS, should be fixed now" />
+    <option name="LAST_COMMIT_MESSAGE" value="SMALL BUGS, should be fixed now" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
