@@ -1,0 +1,136 @@
+/* Login.css */
+
+.login-container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- LEFT SIDE: THE VIBE --- */
+.login-hero {
+    flex: 1.5; /* Takes up 60% of screen on desktop */
+    background: linear-gradient(rgba(0, 50, 0, 0.6), rgba(0, 30, 0, 0.8)),
+    url('https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?q=80&w=2940&auto=format&fit=crop');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 60px;
+    color: white;
+    position: relative;
+}
+
+.hero-quote {
+    font-family: 'Playball', cursive; /* Your brand font */
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.hero-subtext {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 400px;
+    line-height: 1.6;
+}
+
+/* --- RIGHT SIDE: THE ACTION --- */
+.login-form-wrapper {
+    flex: 1; /* Takes up 40% */
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.1); /* Subtle shadow over image */
+    position: relative;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.brand-title {
+    font-family: 'Playball', cursive;
+    font-size: 4rem;
+    color: #2E7D32;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.brand-subtitle {
+    color: #666;
+    font-size: 1.1rem;
+    margin-top: 10px;
+    margin-bottom: 40px;
+}
+
+/* --- GOOGLE BUTTON --- */
+.google-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    background: white;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 15px 30px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 50px; /* Pill shape */
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.google-btn:hover {
+    background: #f9f9f9;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+    border-color: #ccc;
+}
+
+.google-btn:active {
+    transform: scale(0.98);
+}
+
+.google-icon {
+    width: 24px;
+    height: 24px;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+    }
+
+    .login-hero {
+        flex: 0.4; /* Image takes top 30% */
+        padding: 30px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .hero-quote { font-size: 2rem; margin-bottom: 10px; }
+    .hero-subtext { display: none; } /* Hide details on mobile to keep it clean */
+
+    .login-form-wrapper {
+        flex: 0.6;
+        border-radius: 25px 25px 0 0; /* Rounded top looks like a sheet */
+        margin-top: -20px; /* Pull up over the image */
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

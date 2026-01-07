@@ -1,0 +1,278 @@
+/* SocialView.css */
+
+.social-container {
+    max-width: 700px;
+    margin: 40px auto;
+
+
+    height: auto;
+    overflow: visible;
+
+
+    padding-bottom: 150px;
+}
+
+/* --- TABS --- */
+.tabs {
+    display: flex;
+    background: #f5f5f5;
+    padding: 4px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+}
+
+.tab {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    cursor: pointer;
+    border-radius: 8px;
+    font-weight: 600;
+    color: #777;
+    transition: all 0.2s ease;
+}
+
+.tab.active {
+    background: white;
+    color: #2E7D32; /* Golf Green */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* --- SECTIONS --- */
+.section-header {
+    color: #2E7D32;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    background: #f9f9f9;
+    border-radius: 12px;
+    border: 2px dashed #eee;
+}
+
+/* --- LEADERBOARD LIST --- */
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.player-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+    border: 1px solid #eee;
+    transition: transform 0.2s ease;
+}
+
+.player-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+}
+
+.player-card.is-me {
+    border: 2px solid #4CAF50;
+    background: #f1f8e9;
+}
+
+/* --- RANK BADGES --- */
+.rank {
+    font-weight: 800;
+    width: 30px;
+    font-size: 1.1rem;
+    color: #888;
+}
+
+.rank.gold { color: #FFD700; text-shadow: 0 1px 0 rgba(0,0,0,0.1); font-size: 1.4rem; }
+.rank.silver { color: #C0C0C0; text-shadow: 0 1px 0 rgba(0,0,0,0.1); font-size: 1.4rem; }
+.rank.bronze { color: #CD7F32; text-shadow: 0 1px 0 rgba(0,0,0,0.1); font-size: 1.4rem; }
+
+/* --- AVATAR & INFO --- */
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid white;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.player-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+/* --- STATS --- */
+.stats {
+    display: flex;
+    gap: 20px;
+    text-align: right;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.stat-val {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #999;
+}
+
+/* --- SEARCH & REQUESTS --- */
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #4CAF50;
+}
+
+.btn {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-primary { background: #2E7D32; color: white; }
+.btn-outline { background: #fff; border: 2px solid #eee; color: #555; }
+.btn-accept { background: #4CAF50; color: white; margin-right: 8px;}
+.btn-reject { background: #e57373; color: white; }
+
+.pending-box {
+    background: #FFF8E1;
+    border: 1px solid #FFECB3;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* --- REGIONAL PROGRESS --- */
+.region-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.region-card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+}
+
+.region-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-weight: 700;
+    color: #444;
+}
+
+.progress-track {
+    height: 8px;
+    background: #eee;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #4CAF50;
+    border-radius: 4px;
+    transition: width 0.5s ease-in-out;
+}
+
+/* Make counties with 0 progress look "inactive" */
+.region-card.inactive {
+    opacity: 0.7;
+    background: #fafafa;
+}
+
+/* --- MODAL --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* Dimmed background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Ensure it sits on top of everything */
+    backdrop-filter: blur(2px); /* Nice blur effect */
+}
+
+.modal-content {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    animation: popIn 0.2s ease-out;
+}
+
+.delete-icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #bbb;
+    font-size: 1.2rem;
+    padding: 8px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.delete-icon-btn:hover {
+    background: #ffebee;
+    color: #d32f2f;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+

@@ -1,65 +1,63 @@
-import React, { useState } from "react";
+import React from "react";
+import "./Login.css";
 
-function Login({ onLogin }) {
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+function Login() {
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError("");
-        const response = await fetch("http://localhost:8080/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            credentials: "include",
-            body: new URLSearchParams({ username, password }).toString(),
-        });
-
-        if (response.ok) {
-            // If server redirects, follow it in the browser
-            if (response.redirected) {
-                window.location.href = response.url;
-                return;
-            }
-            // otherwise try to parse user info
-            try {
-                const data = await response.json();
-                onLogin(data);
-            } catch {
-                // fallback: reload to pick up session-authenticated state
-                window.location.reload();
-            }
-        } else {
-            setError("Invalid username or password");
-        }
+    const handleGoogleLogin = () => {
+        // Redirect to your Spring Boot OAuth2 endpoint
+        // Husk å bytte ut URL-en hvis du deployer dette live senere!
+        window.location.href = "http://localhost:8080/oauth2/authorization/google";
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Login</h2>
-            <input
-                value={username}
-                onChange={e => setUsername(e.target.value)}
-                placeholder="Username"
-                required
-            />
-            <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                placeholder="Password"
-                required
-            />
-            <button type="submit">Login</button>
-            {error && <div style={{color: "red"}}>{error}</div>}
-            <button
-                type="button"
-                onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}
-            >
-                Login with Google
-            </button>
-        </form>
+        <div className="login-container">
+
+            {/* VENSTRE SIDE: Hero Bilde */}
+            <div className="login-hero">
+                <div className="hero-content">
+                    {/* Et klassisk sitat funker alltid, eller vi kan kjøre noe mer "på" */}
+                    <div className="hero-quote">"Det viktigste slaget er alltid det neste."</div>
+
+                    <div className="hero-subtext">
+                        Har du spilt dem alle? Få full oversikt over Golf-Norge, samle baner i alle fylker og konkurrer med venner. Jakten starter her.
+                    </div>
+                </div>
+            </div>
+
+            {/* HØYRE SIDE: Login Skjema */}
+            <div className="login-form-wrapper">
+                <div className="login-card">
+
+                    {/* Brand Header */}
+                    <div style={{ marginBottom: "20px" }}>
+                        <span style={{ fontSize: "3rem" }}>⛳</span>
+                        <h1 className="brand-title">GolfJakten</h1>
+                        <p className="brand-subtitle">Ditt digitale golfpass</p>
+                    </div>
+
+                    {/* Knappen */}
+                    <button onClick={handleGoogleLogin} className="google-btn">
+                        <GoogleIcon />
+                        <span>Fortsett med Google</span>
+                    </button>
+
+                    <p style={{ marginTop: "30px", fontSize: "0.85rem", color: "#999" }}>
+                        Trygg innlogging via Google OAuth 2.0
+                    </p>
+                </div>
+            </div>
+        </div>
     );
 }
+
+// Google "G" Ikon (Uendret)
+const GoogleIcon = () => (
+    <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+    </svg>
+);
 
 export default Login;

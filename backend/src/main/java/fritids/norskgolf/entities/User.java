@@ -15,6 +15,20 @@ public class User {
     @Column(nullable = false, unique = true)
     private String username;
 
+
+    @Column(unique = true)
+    private String email; // Needed for "Find by Email"
+
+    @Column
+    private String firstName; // Needed for "getFullName"
+
+    @Column
+    private String lastName;  // Needed for "getFullName"
+
+    @Column
+    private String avatar;    // Optional: URL to Google profile picture
+
+
     @Column
     private String password;
 
@@ -32,7 +46,7 @@ public class User {
     public void addPlayedCourse(Course course) {
         PlayedCourse pc = new PlayedCourse(this, course);
         this.playedCourses.add(pc);
-        course.getPlayedBy().add(pc); // keep both sides in sync
+        course.getPlayedBy().add(pc);
     }
 
     public void removePlayedCourse(Course course) {
@@ -47,6 +61,19 @@ public class User {
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 
+    // New Getters/Setters
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public String getFirstName() { return firstName; }
+    public void setFirstName(String firstName) { this.firstName = firstName; }
+
+    public String getLastName() { return lastName; }
+    public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getAvatar() { return avatar; }
+    public void setAvatar(String avatar) { this.avatar = avatar; }
+
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
@@ -58,4 +85,14 @@ public class User {
 
     public Set<PlayedCourse> getPlayedCourses() { return playedCourses; }
     public void setPlayedCourses(Set<PlayedCourse> playedCourses) { this.playedCourses = playedCourses; }
+
+
+    public String getFullName() {
+        if (this.firstName != null && this.lastName != null) {
+            return this.firstName + " " + this.lastName;
+        } else if (this.firstName != null) {
+            return this.firstName;
+        }
+        return "";
+    }
 }

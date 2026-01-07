@@ -13,8 +13,12 @@ public class DashboardStats {
     private List<RoundSummary> recentRounds;
 
     private Map<String, RegionStat> regionStats;
+    private String displayName;
+    private String avatar;
+    private String email;
+    private int bestScore;
 
-    // --- Inner Class: Round Summary (Moved UP) ---
+    // --- Inner Class: Round Summary ---
     public static class RoundSummary {
         public Long id;
         public String courseName;
@@ -31,20 +35,34 @@ public class DashboardStats {
 
     // --- Inner Class: Region Stat ---
     public static class RegionStat {
-        public long played;
-        public long total;
+        public long playedCount;
+        public long totalCount;
         public double percentage;
         public List<CourseDto> courses;
 
-        public RegionStat(long played, long total, List<CourseDto> courses) {
-            this.played = played;
-            this.total = total;
+        public RegionStat(long playedCount, long totalCount, List<CourseDto> courses) {
+            this.playedCount = playedCount;
+            this.totalCount = totalCount;
             this.courses = courses;
-            this.percentage = total > 0 ? (double) played / total * 100 : 0;
+            // FIX 1: Changed 'total' to 'totalCount'
+            this.percentage = totalCount > 0 ? (double) playedCount / totalCount * 100 : 0;
         }
     }
 
     // --- Getters & Setters ---
+    public String getDisplayName() { return displayName; }
+    public void setDisplayName(String displayName) { this.displayName = displayName; }
+
+    public String getAvatar() { return avatar; }
+    public void setAvatar(String avatar) { this.avatar = avatar; }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
+
+    public int getBestScore() { return bestScore; }
+    public void setBestScore(int bestScore) { this.bestScore = bestScore; }
+
+    // FIX 2: Changed 'totalCount' to 'totalPlayed' to match the field name
     public long getTotalPlayed() { return totalPlayed; }
     public void setTotalPlayed(long totalPlayed) { this.totalPlayed = totalPlayed; }
 
@@ -57,7 +75,6 @@ public class DashboardStats {
     public Map<String, RegionStat> getRegionStats() { return regionStats; }
     public void setRegionStats(Map<String, RegionStat> regionStats) { this.regionStats = regionStats; }
 
-    // New Getter/Setter
     public List<RoundSummary> getRecentRounds() { return recentRounds; }
     public void setRecentRounds(List<RoundSummary> recentRounds) { this.recentRounds = recentRounds; }
 }

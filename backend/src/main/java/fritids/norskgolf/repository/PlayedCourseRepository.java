@@ -3,10 +3,12 @@ package fritids.norskgolf.repository;
 import fritids.norskgolf.entities.PlayedCourse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface PlayedCourseRepository extends JpaRepository<PlayedCourse, Long> {
 
     boolean existsByUserIdAndCourseId(Long userId, Long courseId);
@@ -24,4 +26,5 @@ public interface PlayedCourseRepository extends JpaRepository<PlayedCourse, Long
         where pc.user.id = :userId
     """)
     List<PlayedCourse> findByUserIdWithCourse(Long userId);
+
 }

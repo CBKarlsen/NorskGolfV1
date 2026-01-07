@@ -4,20 +4,59 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="Dynamic mapping for finding all the maps and addede OverviewView.js page">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/Round.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/RoundRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/LogRoundModal.js" afterDir="false" />
+    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="Add round logging functionality and recent rounds display in dashboard">
+      <change afterPath="$PROJECT_DIR$/.github/workflow/maven.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/WebConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/FriendController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/SpaRedirectController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/Friendship.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/FriendshipStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/FriendshipRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/service/LeaderboardService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/golf_courses.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/asset-manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/logo192.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/logo512.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/manifest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/robots.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.c06cf657.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.c06cf657.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/453.670e15c7.chunk.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/453.670e15c7.chunk.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.e35c6bcc.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.e35c6bcc.js.LICENSE.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.e35c6bcc.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/Login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/MapIcons.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/Navigation.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/SocialView.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/SocialView.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.idea/dbnavigator.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/NorskGolfApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/NorskGolfApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/SpringConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/DashboardStats.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/DashboardStats.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/CourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/CourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/PlayedCourseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/PlayedCourseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/RoundRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/RoundRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/service/CourseSyncService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/service/CourseSyncService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/LogRoundModal.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Login.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/MapView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/MapView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/OverviewView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/OverviewView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/OverviewView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Overview.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,40 +122,46 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.NorskGolfApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/casper/Fritidsprosjekt/NorskGolf&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.start.executor&quot;: &quot;Run&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.tools&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/casper/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.NorskGolfApplication.executor": "Run",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/Users/casper/Fritidsprosjekt/NorskGolf/backend/src/main/resources/static",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.start.executor": "Run",
+    "settings.editor.selected.configurable": "configurable.group.tools",
+    "ts.external.directory.path": "/Users/casper/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/external",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;h2&quot;,
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "h2",
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/main/resources/static" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/main/resources" />
+      <recent name="$PROJECT_DIR$/backend/src/main/resources/static/static" />
+      <recent name="$PROJECT_DIR$/backend/src/main/resources/static" />
       <recent name="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto" />
       <recent name="$PROJECT_DIR$/backend" />
     </key>
@@ -177,7 +222,12 @@
       <workItem from="1767358477853" duration="839000" />
       <workItem from="1767359787484" duration="4111000" />
       <workItem from="1767699025604" duration="3396000" />
-      <workItem from="1767703533470" duration="440000" />
+      <workItem from="1767703533470" duration="738000" />
+      <workItem from="1767705193962" duration="814000" />
+      <workItem from="1767713132095" duration="1276000" />
+      <workItem from="1767715074235" duration="1056000" />
+      <workItem from="1767722920478" duration="10673000" />
+      <workItem from="1767739497456" duration="6860000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -315,7 +365,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767359835743</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Add round logging functionality and recent rounds display in dashboard">
+      <option name="closed" value="true" />
+      <created>1767704000627</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1767704000627</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -347,7 +405,8 @@
     <MESSAGE value="Clean up commit" />
     <MESSAGE value="Added dynamic Api call, added buttons for the OverviewView.js&#10;and for map such that it can be swapped between" />
     <MESSAGE value="Dynamic mapping for finding all the maps and addede OverviewView.js page" />
-    <option name="LAST_COMMIT_MESSAGE" value="Dynamic mapping for finding all the maps and addede OverviewView.js page" />
+    <MESSAGE value="Add round logging functionality and recent rounds display in dashboard" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add round logging functionality and recent rounds display in dashboard" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

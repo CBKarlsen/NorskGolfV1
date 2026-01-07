@@ -34,5 +34,14 @@ build/
 
 /pom.xml
 
+# Ignore the live database files
+/data
+*.mv.db
+*.trace.db
+
+# Keep the React build artifacts out (Maven builds them anyway)
+/src/main/resources/static/static
+/src/main/resources/static/index.html
+/src/main/resources/static/asset-manifest.json
 
 backend/src/main/resources/application.properties

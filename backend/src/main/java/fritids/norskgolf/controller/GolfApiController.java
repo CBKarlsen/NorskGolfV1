@@ -107,9 +107,8 @@ public class GolfApiController {
         User user = resolveUser(principal);
         if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        Course course = courseRepository.findByExternalId(request.courseExternalId)
+        Course course = courseRepository.findById(request.courseId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
-
         // 3. Save the Round
         Round round = new Round();
         round.setUser(user);
@@ -215,13 +214,20 @@ public class GolfApiController {
 
         // --- 3. Build & Return Response ---
         DashboardStats stats = new DashboardStats();
+        stats.setDisplayName(user.getFullName()); // Ensure user.getFullName() exists!
+        stats.setAvatar(user.getAvatar());
+        stats.setEmail(user.getEmail());
+
+        // Set Stats
         stats.setTotalPlayed(playedCourseIds.size());
         stats.setTotalCourses(allCourses.size());
         stats.setPercentageComplete(allCourses.isEmpty() ? 0 : (double) playedCourseIds.size() / allCourses.size() * 100);
         stats.setRegionStats(regionalData);
-
-        // Add the rounds to the response
         stats.setRecentRounds(recentRounds);
+
+        // Optional: Calculate Best Score (Lowest score ever)
+        // int best = allRounds.stream().mapToInt(Round::getScore).min().orElse(0);
+        // stats.setBestScore(best);
 
         return ResponseEntity.ok(stats);
     }

@@ -21,17 +21,6 @@ public class NorskGolfApplication {
         SpringApplication.run(NorskGolfApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner loadTestUser(UserRepository userRepository) {
-        return args -> {
-            if (userRepository.findByUsername("testuser").isEmpty()) {
-                User user = new User();
-                user.setUsername("testuser");
-                user.setPassword("testpass"); // Plain text for testing only
-                userRepository.save(user);
-            }
-        };
-    }
 
     @Bean
     public CommandLineRunner setPlayedCourse(UserRepository userRepository,
@@ -55,7 +44,7 @@ public class NorskGolfApplication {
         };
     }
 
-
+/*
     @Bean
     public CommandLineRunner loadTestCourses(CourseRepository courseRepository) {
         return args -> {
@@ -87,5 +76,5 @@ public class NorskGolfApplication {
                 courseRepository.save(bjorn);
             }
         };
-    }
+    }*/
 }
