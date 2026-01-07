@@ -1,0 +1,16 @@
+# nixpacks.toml
+
+# 1. Tell Railway to use Java/Maven, not Node
+providers = ["java"]
+
+# 2. Setup the environment (Java 17 matches your local setup)
+[phases.setup]
+nixPkgs = ["jdk17", "maven"]
+
+# 3. Build Command (Grants permission to Maven wrapper, then builds)
+[phases.build]
+cmds = ["chmod +x mvnw", "./mvnw clean package -DskipTests"]
+
+# 4. Start Command (Runs the JAR file created in the 'target' folder)
+[start]
+cmd = "java -jar target/*.jar"
