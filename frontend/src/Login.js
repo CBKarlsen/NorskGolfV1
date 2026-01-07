@@ -4,9 +4,7 @@ import "./Login.css";
 function Login() {
 
     const handleGoogleLogin = () => {
-        // Redirect to your Spring Boot OAuth2 endpoint
-        // Husk å bytte ut URL-en hvis du deployer dette live senere!
-        window.location.href = "http://localhost:8080/oauth2/authorization/google";
+        window.location.href = "/oauth2/authorization/google";
     };
 
     return (
