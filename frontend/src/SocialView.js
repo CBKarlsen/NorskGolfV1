@@ -1,6 +1,6 @@
 // javascript
 import React, { useState, useEffect } from "react";
-import "./SocialView.css"; // <--- Import the CSS file
+import "./SocialView.css";
 
 function SocialView() {
     const [activeTab, setActiveTab] = useState("friends");
@@ -10,34 +10,56 @@ function SocialView() {
     const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
 
+    // --- HELPER: Read CSRF Cookie ---
+    function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
+        return match ? decodeURIComponent(match[2]) : null;
+    }
+
     useEffect(() => {
         fetchFriends();
         fetchRequests();
     }, []);
 
-    const fetchFriends = () => fetch('/api/friends').then(res => res.json()).then(setFriends);
-    const fetchRequests = () => fetch('/api/friends/requests').then(res => res.json()).then(setRequests);
+    // Note: Added credentials: 'include' to GET requests ensuring the user session is recognized
+    const fetchFriends = () => fetch('/api/friends', { credentials: 'include' }).then(res => res.json()).then(setFriends);
+    const fetchRequests = () => fetch('/api/friends/requests', { credentials: 'include' }).then(res => res.json()).then(setRequests);
 
     const handleSearch = (e) => {
         e.preventDefault();
         if (!searchQuery.trim()) return;
         setLoading(true);
-        fetch(`/api/friends/search?query=${searchQuery}`)
+        fetch(`/api/friends/search?query=${searchQuery}`, { credentials: 'include' })
             .then(res => res.json())
             .then(data => { setSearchResults(data); setLoading(false); });
     };
 
+    // --- UPDATED POST REQUESTS ---
     const sendRequest = async (userId) => {
-        const res = await fetch(`/api/friends/request/${userId}`, { method: 'POST' });
+        const csrf = getCookie('XSRF-TOKEN');
+        const res = await fetch(`/api/friends/request/${userId}`, {
+            method: 'POST',
+            credentials: 'include', // 1. Allow Session Cookie
+            headers: {
+                ...(csrf ? { 'X-XSRF-TOKEN': csrf } : {}) // 2. Send CSRF Token
+            }
+        });
         if (res.ok) setSearchResults(prev => prev.map(u => u.id === userId ? { ...u, status: "SENT" } : u));
     };
 
     const respondToRequest = async (friendshipId, action) => {
-        const res = await fetch(`/api/friends/respond/${friendshipId}?action=${action}`, { method: 'POST' });
+        const csrf = getCookie('XSRF-TOKEN');
+        const res = await fetch(`/api/friends/respond/${friendshipId}?action=${action}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+                ...(csrf ? { 'X-XSRF-TOKEN': csrf } : {})
+            }
+        });
         if (res.ok) { fetchRequests(); if (action === "ACCEPT") fetchFriends(); }
     };
 
-    // Helper for Rank Icons (localized)
+    // Helper for Rank Icons
     const getRankIcon = (index) => {
         if (index === 0) return <span className="rank gold">1.</span>;
         if (index === 1) return <span className="rank silver">2.</span>;
@@ -113,7 +135,6 @@ function SocialView() {
                                                 <div className="player-name">
                                                     {friend.displayName} {isMe && "(Du)"}
                                                 </div>
-                                                {/* Optional: Add a handicap or title here later */}
                                             </div>
                                         </div>
 

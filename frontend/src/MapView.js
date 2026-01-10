@@ -3,22 +3,32 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { UnplayedIcon, PlayedIcon } from "./MapIcons";
 
-// 1. Controller for "Fly To" animation
-function MapController({ focus, onFocusComplete }) {
+// 1. Controller for "Fly To" animation and Closing Popups
+function MapController({ focus, onFocusComplete, closePopupTrigger }) {
     const map = useMap();
+
+    // Fly to location
     useEffect(() => {
         if (focus) {
             map.flyTo([focus.lat, focus.lng], focus.zoom, { animate: true, duration: 1.5 });
             onFocusComplete();
         }
     }, [focus, map, onFocusComplete]);
+
+    // Close popup when trigger changes
+    useEffect(() => {
+        if (closePopupTrigger > 0) {
+            map.closePopup();
+        }
+    }, [closePopupTrigger, map]);
+
     return null;
 }
 
 function MapView({ user, focus, onFocusComplete }) {
     // --- Data State ---
     const [courses, setCourses] = useState([]);
-    const [played, setPlayed] = useState([]);
+    const [rounds, setRounds] = useState([]);
 
     // --- Modal State ---
     const [modalOpen, setModalOpen] = useState(false);
@@ -27,6 +37,9 @@ function MapView({ user, focus, onFocusComplete }) {
     const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
     const [submitting, setSubmitting] = useState(false);
 
+    // Trigger to close map popups
+    const [closeTrigger, setCloseTrigger] = useState(0);
+
     // --- Initial Fetch ---
     useEffect(() => {
         fetch("/api/courses")
@@ -34,29 +47,47 @@ function MapView({ user, focus, onFocusComplete }) {
             .then(setCourses);
 
         if (user) {
-            fetch(`/api/users/${user.userId}/played-courses`)
+            fetch("/api/rounds")
                 .then(res => res.json())
-                .then(data => setPlayed(Array.isArray(data) ? data : []));
+                .then(data => setRounds(Array.isArray(data) ? data : []));
         }
     }, [user]);
 
-    // Calculate played IDs for the map markers
-    const playedIds = new Set(played.map(c => c.id));
+    function getCookie(name){
+        const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
+        return match ? decodeURIComponent(match[2]) : null;
+    }
 
     // --- Modal Actions ---
     const openLogRoundModal = (course) => {
         setSelectedCourse(course);
-        setScore(""); // Reset form
+        setScore("");
         setModalOpen(true);
     };
 
     const handleClose = () => {
         setModalOpen(false);
         setSelectedCourse(null);
+        setCloseTrigger(t => t + 1);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // --- VALIDATION START ---
+        const inputYear = parseInt(date.split("-")[0]);
+        const currentYear = new Date().getFullYear();
+
+        if (inputYear > currentYear) {
+            alert(`Du kan ikke velge årstallet ${inputYear}. Det er i fremtiden!`);
+            return;
+        }
+        if (inputYear < 2000) {
+            alert("Årstallet må være 2000 eller senere.");
+            return;
+        }
+        // --- VALIDATION END ---
+
         if (!score || !selectedCourse) return;
 
         setSubmitting(true);
@@ -68,15 +99,20 @@ function MapView({ user, focus, onFocusComplete }) {
         };
 
         try {
+            const csrf = getCookie('XSRF-TOKEN')
             const res = await fetch("/api/rounds", {
-                method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
+                method: "POST",
+                credentials:'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(csrf ? { 'X-XSRF-TOKEN': csrf } : {}) // <-- include CSRF token if present
+                },
+                body: JSON.stringify(payload)
             });
 
             if (res.ok) {
-                // Success!
-                // 1. Update the 'played' list locally so the flag turns GREEN instantly
-                setPlayed(prev => [...prev, selectedCourse]);
-                // 2. Close Modal
+                const newRound = await res.json();
+                setRounds(prev => [...prev, newRound]);
                 handleClose();
             } else {
                 alert("Kunne ikke lagre runden. Vennligst prøv igjen.");
@@ -90,14 +126,22 @@ function MapView({ user, focus, onFocusComplete }) {
 
     return (<>
         <MapContainer center={[60.39, 5.32]} zoom={10} style={{ height: "100%", width: "100%" }}>
-            <MapController focus={focus} onFocusComplete={onFocusComplete} />
+            <MapController focus={focus} onFocusComplete={onFocusComplete} closePopupTrigger={closeTrigger} />
             <TileLayer
                 url="https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png"
                 attribution='&copy; OpenStreetMap &copy; CartoDB'
             />
 
             {courses.map(course => {
-                const isPlayed = playedIds.has(course.id);
+                // SIKKERHETSSJEKK: Hopp over hvis banen er ugyldig
+                if (!course) return null;
+
+                const courseRounds = rounds.filter(r => r.courseId === course.id);
+                const isPlayed = courseRounds.length > 0;
+
+                const bestScore = isPlayed
+                    ? Math.min(...courseRounds.map(r => r.score))
+                    : null;
 
                 return (<Marker
                     key={course.id}
@@ -105,17 +149,27 @@ function MapView({ user, focus, onFocusComplete }) {
                     icon={isPlayed ? PlayedIcon : UnplayedIcon}
                 >
                     <Popup className="golf-popup">
-                        <div style={{ textAlign: "center" }}>
-                            <h3 style={{ margin: "0 0 5px 0", color: "#2E7D32" }}>{course.name}</h3>
-                            <p style={{ margin: "0 0 10px 0", fontSize: "0.9rem", color: "#666" }}>
-                                {isPlayed ? "✅ Bane spilt" : "❌ Ikke spilt"}
-                            </p>
+                        <div style={{textAlign: "center", minWidth: "160px"}}>
 
+                            {/* 1. Clean Title (Fjernet selectedCourse herfra!) */}
+                            <h3 style={styles.popupHeader}>{course.name || "Ukjent Bane"}</h3>
+
+                            {/* 2. Dynamic Content Area */}
+                            {isPlayed ? (
+                                <div style={styles.scoreContainer}>
+                                    <div style={styles.scoreLabel}>Beste Runde</div>
+                                    <div style={styles.scoreValue}>{bestScore}</div>
+                                </div>
+                            ) : (
+                                <p style={styles.unplayedText}>Ingen runder registrert</p>
+                            )}
+
+                            {/* 3. Action Button */}
                             <button
                                 onClick={() => openLogRoundModal(course)}
                                 style={styles.popupBtn}
                             >
-                                📝 Registrer runde
+                                {isPlayed ? "+ Ny Runde" : "Registrer Runde"}
                             </button>
                         </div>
                     </Popup>
@@ -123,12 +177,17 @@ function MapView({ user, focus, onFocusComplete }) {
             })}
         </MapContainer>
 
-        {/* --- MODAL OVERLAY (Now Translated) --- */}
+        {/* --- MODAL OVERLAY --- */}
         {modalOpen && selectedCourse && (
             <div style={styles.modalOverlay}>
                 <div style={styles.modalContent}>
-                    <h3 style={{ color: "#2E7D32", marginTop: 0 }}>Registrer runde ⛳</h3>
-                    <p><strong>Bane:</strong> {selectedCourse.name}</p>
+                    {/* Her er det trygt å bruke selectedCourse fordi vi sjekker && selectedCourse over */}
+                    <h3 style={{ color: "#333", marginTop: 0, fontSize: "1.5rem" }}>
+                        Ny Runde ⛳
+                    </h3>
+                    <p style={{ color: "#666", marginTop: "-10px", marginBottom: "20px" }}>
+                        {selectedCourse.name}
+                    </p>
 
                     <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
                         <div>
@@ -136,6 +195,8 @@ function MapView({ user, focus, onFocusComplete }) {
                             <input
                                 type="date"
                                 value={date}
+                                max={new Date().toISOString().split("T")[0]}
+                                min={"2000-01-01"}
                                 onChange={e => setDate(e.target.value)}
                                 style={styles.input}
                                 required
@@ -166,61 +227,100 @@ function MapView({ user, focus, onFocusComplete }) {
     </>);
 }
 
-// --- STYLES ---
+
 const styles = {
-    popupBtn: {
-        background: "#4CAF50",
-        color: "white",
-        border: "none",
-        padding: "8px 16px",
-        borderRadius: "20px",
-        cursor: "pointer",
-        fontWeight: "bold",
-        fontSize: "0.85rem",
-        boxShadow: "0 2px 5px rgba(0,0,0,0.2)"
-    },
+
+
     modalOverlay: {
         position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        background: "rgba(0,0,0,0.6)",
+        top: 0, left: 0, right: 0, bottom: 0,
+        background: "rgba(0,0,0,0.5)", // Darker, cleaner dim
         zIndex: 9999,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backdropFilter: "blur(3px)"
+        display: "flex", alignItems: "center", justifyContent: "center",
+        backdropFilter: "blur(4px)" // Adds a nice modern blur
     },
     modalContent: {
         background: "white",
-        padding: "25px",
-        borderRadius: "12px",
+        padding: "30px",
+        borderRadius: "16px", // Softer corners
         width: "90%",
-        maxWidth: "350px",
-        boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
-        animation: "popIn 0.2s ease-out"
+        maxWidth: "380px",
+        boxShadow: "0 20px 40px rgba(0,0,0,0.2)",
+        animation: "popIn 0.2s ease-out",
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
     },
-    label: { display: "block", marginBottom: "5px", fontWeight: "600", fontSize: "0.9rem", color: "#555" },
-    input: { width: "100%", padding: "10px", borderRadius: "6px", border: "1px solid #ccc", fontSize: "1rem" },
-    btnCancel: {
-        flex: 1,
-        padding: "12px",
-        background: "white",
-        border: "1px solid #ccc",
-        borderRadius: "6px",
-        cursor: "pointer",
-        fontWeight: "600"
+
+    // --- POPUP STYLES ---
+    popupHeader: {
+        margin: "0 0 10px 0",
+        fontSize: "1.1rem",
+        fontWeight: "700",
+        color: "#333"
     },
-    btnSubmit: {
-        flex: 1,
-        padding: "12px",
-        background: "#2E7D32",
+    scoreContainer: {
+        background: "#f1f8e9", // Very light green background
+        borderRadius: "8px",
+        padding: "10px",
+        marginBottom: "15px",
+        border: "1px solid #c8e6c9"
+    },
+    scoreLabel: {
+        fontSize: "0.75rem",
+        textTransform: "uppercase",
+        letterSpacing: "1px",
+        color: "#558b2f",
+        marginBottom: "2px"
+    },
+    scoreValue: {
+        fontSize: "1.8rem",
+        fontWeight: "800",
+        color: "#2e7d32",
+        lineHeight: "1"
+    },
+    unplayedText: {
+        color: "#757575",
+        fontStyle: "italic",
+        marginBottom: "15px",
+        fontSize: "0.9rem"
+    },
+    popupBtn: {
+        background: "#222", // Black/Dark Grey is trendy for primary actions
         color: "white",
         border: "none",
-        borderRadius: "6px",
+        padding: "10px 20px",
+        borderRadius: "8px",
         cursor: "pointer",
-        fontWeight: "600"
+        fontWeight: "600",
+        fontSize: "0.85rem",
+        width: "100%",
+        transition: "background 0.2s"
+    },
+
+    // --- FORM STYLES ---
+    input: {
+        width: "100%",
+        padding: "12px",
+        borderRadius: "8px",
+        border: "1px solid #ddd",
+        fontSize: "1rem",
+        background: "#f9f9f9"
+    },
+    label: {
+        display: "block",
+        marginBottom: "6px",
+        fontWeight: "600",
+        fontSize: "0.85rem",
+        color: "#444"
+    },
+    btnCancel: {
+        flex: 1, padding: "12px", background: "transparent",
+        border: "1px solid #ddd", borderRadius: "8px",
+        cursor: "pointer", fontWeight: "600", color: "#666"
+    },
+    btnSubmit: {
+        flex: 1, padding: "12px", background: "#2e7d32",
+        color: "white", border: "none", borderRadius: "8px",
+        cursor: "pointer", fontWeight: "600"
     }
 };
 

@@ -4,7 +4,13 @@ import "./Login.css";
 function Login() {
 
     const handleGoogleLogin = () => {
-        window.location.href = "/oauth2/authorization/google";
+        // Check if we are running on localhost (Development)
+        const isDev = window.location.hostname === "localhost";
+
+        // If Dev, go to port 8080. If Prod, just use the relative path.
+        window.location.href = isDev
+            ? "http://localhost:8080/oauth2/authorization/google"
+            : "/oauth2/authorization/google";
     };
 
     return (

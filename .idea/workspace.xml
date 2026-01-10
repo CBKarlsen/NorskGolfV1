@@ -4,10 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="SMALL BUGS, should be fixed now">
+    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="SMALL BUGS, should be fixed now x3">
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundDto.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/backend/src/main/resources/secrets.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.a764eb5d.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.a764eb5d.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.f9a6acb6.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/RoundRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/RoundRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/asset-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.c06cf657.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.c06cf657.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.a9a2d094.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.f9a6acb6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.a9a2d094.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.f9a6acb6.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.a9a2d094.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/MapView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/MapView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Overview.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Overview.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/SocialView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/SocialView.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +47,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="develop" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -119,7 +139,7 @@
       <recent name="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.start">
+  <component name="RunManager" selected="Spring Boot.NorskGolfApplication">
     <configuration name="NorskGolfApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <option name="SPRING_BOOT_MAIN_CLASS" value="fritids.norskgolf.NorskGolfApplication" />
       <method v="2">
@@ -180,7 +200,7 @@
       <workItem from="1767713132095" duration="1276000" />
       <workItem from="1767715074235" duration="1056000" />
       <workItem from="1767722920478" duration="10673000" />
-      <workItem from="1767739497456" duration="12424000" />
+      <workItem from="1767739497456" duration="31484000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -390,7 +410,23 @@
       <option name="project" value="LOCAL" />
       <updated>1767790007246</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="SMALL BUGS, should be fixed now x2">
+      <option name="closed" value="true" />
+      <created>1767790330156</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1767790330156</updated>
+    </task>
+    <task id="LOCAL-00028" summary="SMALL BUGS, should be fixed now x3">
+      <option name="closed" value="true" />
+      <created>1767790637398</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1767790637398</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -430,7 +466,9 @@
     <MESSAGE value="PLEASE LET RAILWAY WORK" />
     <MESSAGE value="App icon and title uppdated" />
     <MESSAGE value="SMALL BUGS, should be fixed now" />
-    <option name="LAST_COMMIT_MESSAGE" value="SMALL BUGS, should be fixed now" />
+    <MESSAGE value="SMALL BUGS, should be fixed now x2" />
+    <MESSAGE value="SMALL BUGS, should be fixed now x3" />
+    <option name="LAST_COMMIT_MESSAGE" value="SMALL BUGS, should be fixed now x3" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

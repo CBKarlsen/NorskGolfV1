@@ -18,6 +18,7 @@ import fritids.norskgolf.repository.PlayedCourseRepository;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import fritids.norskgolf.dto.DashboardStats;
 import java.security.Principal;
+import fritids.norskgolf.dto.RoundDto;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -107,25 +108,36 @@ public class GolfApiController {
         User user = resolveUser(principal);
         if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        Course course = courseRepository.findById(request.courseId)
+        Course course = courseRepository.findById(request.getCourseId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
-        // 3. Save the Round
+
+        // 1. Create and Save the Entity
         Round round = new Round();
         round.setUser(user);
         round.setCourse(course);
-        round.setScore(request.score);
-        // Parse date string (e.g., "2023-05-20") to LocalDate
-        round.setDate(java.time.LocalDate.parse(request.date));
+        round.setScore(request.getScore());
+        round.setDate(java.time.LocalDate.parse(request.getDate()));
 
-        roundRepository.save(round);
+        Round savedRound = roundRepository.save(round);
 
-        // 4. SYNC: Ensure this course is marked as "Played" in your map
+        // 2. Sync "Played" status
         boolean isAlreadyPlayed = playedCourseRepository.existsByUserIdAndCourseId(user.getId(), course.getId());
         if (!isAlreadyPlayed) {
             playedCourseRepository.save(new fritids.norskgolf.entities.PlayedCourse(user, course));
         }
 
-        return ResponseEntity.ok().build();
+        // 3. FIX: Create a safe DTO to return
+        // This stops the infinite loop because RoundDto does NOT contain the 'User' object
+        RoundDto responseDto = new RoundDto(
+                savedRound.getId(),
+                savedRound.getCourse().getId(),
+                savedRound.getCourse().getName(),
+                savedRound.getDate().toString(),
+                savedRound.getScore()
+        );
+
+        // 4. Return the DTO
+        return ResponseEntity.ok(responseDto);
     }
 
     @GetMapping("/rounds")
@@ -134,12 +146,13 @@ public class GolfApiController {
         User user = resolveUser(principal);
         if (user == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 
-        List<Round> rounds = roundRepository.findByUserIdOrderByDateDesc(user.getId());
+        List<Round> rounds = roundRepository.findByUserIdOrderByDateDescIdDesc(user.getId());
 
         // Convert to DTO
         List<RoundDto> dtos = rounds.stream()
                 .map(r -> new RoundDto(
                         r.getId(),
+                        r.getCourse().getId(),
                         r.getCourse().getName(),
                         r.getDate().toString(),
                         r.getScore()
@@ -199,7 +212,7 @@ public class GolfApiController {
 
         // --- 2. NEW LOGIC: Fetch Recent Rounds ---
         // Fetch all rounds for this user, newest first
-        List<Round> allRounds = roundRepository.findByUserIdOrderByDateDesc(user.getId());
+        List<Round> allRounds = roundRepository.findByUserIdOrderByDateDescIdDesc(user.getId());
 
         // Take the top 5 and convert them to your DTO
         List<DashboardStats.RoundSummary> recentRounds = allRounds.stream()
@@ -320,7 +333,7 @@ public class GolfApiController {
 
     // --- DTOs ---
     private record UserDto(Long id, String username) {}
-    public record RoundDto(Long id, String courseName, String date, int score) {}
+
 
     public record CourseDto(Long id, String name, Double latitude, Double longitude, String externalId, boolean played) {}
 

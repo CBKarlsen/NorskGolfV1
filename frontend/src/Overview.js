@@ -9,6 +9,11 @@ function Overview({onNavigate}) {
     const [roundToDelete, setRoundToDelete] = useState(null);
     const [expandedRegion, setExpandedRegion] = useState(true);
 
+    function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
+        return match ? decodeURIComponent(match[2]) : null;
+    }
+
     // --- 1. REUSABLE FETCH FUNCTION ---
     const loadOverview = () => {
         setLoading(true);
@@ -32,17 +37,19 @@ function Overview({onNavigate}) {
         loadOverview();
     }, []);
 
-// --- NEW: OPEN MODAL ---
+
     const confirmDelete = (roundId) => {
         setRoundToDelete(roundId); // This triggers the modal to show
     };
 
-    // --- NEW: ACTUAL DELETE LOGIC ---
+
     const performDelete = async () => {
         if (!roundToDelete) return;
 
         try {
-            const res = await fetch(`/api/rounds/${roundToDelete}`, { method: 'DELETE' });
+            const csrf = getCookie('XSRF-TOKEN');
+            const res = await fetch(`/api/rounds/${roundToDelete}`, { method: 'DELETE', credentials: 'include', headers:{ ...(csrf ? { 'X-XSRF-TOKEN': csrf } : {})}
+            });
             if (res.ok) {
                 loadOverview(); // Refresh data
                 setRoundToDelete(null); // Close modal
