@@ -28,9 +28,7 @@ function App() {
     };
 
     const handleLogout = () => {
-        // Redirect to Spring Boot's default logout endpoint
-        // This clears the session cookie and redirects to login
-        window.location.href = "http://localhost:8080/logout";
+        window.location.href = "/logout";
     };
 
     if (loading) return <div>Laster...</div>;
