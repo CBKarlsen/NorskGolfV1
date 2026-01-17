@@ -74,6 +74,11 @@ function MapView({ user, focus, onFocusComplete }) {
         setModalOpen(true);
     };
 
+    function getCookie(name) {
+        const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
+        return match ? decodeURIComponent(match[2]) : null;
+    }
+
     const handleClose = () => {
         setModalOpen(false);
         setSelectedCourse(null);
@@ -102,9 +107,13 @@ function MapView({ user, focus, onFocusComplete }) {
         };
 
         try {
+            const csrf = getCookie('XSRF-TOKEN');
             const res = await fetch("/api/rounds", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    ...(csrf ? { 'X-XSRF-TOKEN': csrf } : {})
+                },
                 body: JSON.stringify(payload)
             });
 
