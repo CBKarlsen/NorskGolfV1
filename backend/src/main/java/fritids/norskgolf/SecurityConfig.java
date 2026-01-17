@@ -49,6 +49,7 @@ public class SecurityConfig {
                             "/", "/index.html", "/static/**", "/*.ico", "/*.json", "/*.png",
                             "/js/**", "/css/**", "/h2-console/**", "/login/**", "/oauth2/**", "/error"
                     ).permitAll();
+                    registry.requestMatchers(org.springframework.http.HttpMethod.GET, "/api/courses").permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .headers(headers -> headers

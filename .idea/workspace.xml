@@ -4,26 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="SMALL BUGS, should be fixed now x3">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundDto.java" afterDir="false" />
+    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="Mui Frontend changes!">
       <change afterPath="$PROJECT_DIR$/backend/src/main/resources/secrets.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.a764eb5d.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.a764eb5d.css.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.f9a6acb6.js.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.7c633393.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.68b7994c.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.68b7994c.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/GolfApiController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/dto/RoundRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/RoundRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/repository/RoundRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/asset-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.c06cf657.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.c06cf657.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.a9a2d094.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.f9a6acb6.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.a9a2d094.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.f9a6acb6.js.LICENSE.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.a9a2d094.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.a764eb5d.css" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.7c633393.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.a764eb5d.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.e06f5db5.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.e06f5db5.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.68b7994c.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.e06f5db5.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/Login.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Login.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/MapView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/MapView.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/Overview.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Overview.js" afterDir="false" />
@@ -85,6 +83,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>
@@ -93,38 +94,38 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.NorskGolfApplication.executor": "Run",
-    "git-widget-placeholder": "master",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/casper/Fritidsprosjekt/NorskGolf/backend/src/main/resources/static",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.start.executor": "Run",
-    "settings.editor.selected.configurable": "configurable.group.tools",
-    "ts.external.directory.path": "/Users/casper/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.NorskGolfApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/casper/Fritidsprosjekt/NorskGolf/backend/src/main/resources/static&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.start.executor&quot;: &quot;Run&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.tools&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/casper/Library/Application Support/JetBrains/IntelliJIdea2025.2/plugins/javascript-plugin/jsLanguageServicesImpl/external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "h2",
-      "postgresql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;h2&quot;,
+      &quot;postgresql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/backend/src/main/resources/static" />
@@ -200,7 +201,9 @@
       <workItem from="1767713132095" duration="1276000" />
       <workItem from="1767715074235" duration="1056000" />
       <workItem from="1767722920478" duration="10673000" />
-      <workItem from="1767739497456" duration="31484000" />
+      <workItem from="1767739497456" duration="32943000" />
+      <workItem from="1768124407531" duration="1130000" />
+      <workItem from="1768677082984" duration="10472000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -426,7 +429,31 @@
       <option name="project" value="LOCAL" />
       <updated>1767790637398</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="added some design changes and some safety features">
+      <option name="closed" value="true" />
+      <created>1768066453241</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1768066453241</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Added a small change to the logout pathing">
+      <option name="closed" value="true" />
+      <created>1768124605936</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1768124605936</updated>
+    </task>
+    <task id="LOCAL-00031" summary="forgot to change database">
+      <option name="closed" value="true" />
+      <created>1768124889587</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1768124889587</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -444,9 +471,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="initial commit" />
-    <MESSAGE value="Added setters and getters" />
-    <MESSAGE value="Added controllers and database. Ready for frontend" />
     <MESSAGE value="Moved into backend folder, ready for react frontend folder" />
     <MESSAGE value="Added front end and a working log in page with test users" />
     <MESSAGE value="Test user now shows a map with certain courses" />
@@ -468,7 +492,11 @@
     <MESSAGE value="SMALL BUGS, should be fixed now" />
     <MESSAGE value="SMALL BUGS, should be fixed now x2" />
     <MESSAGE value="SMALL BUGS, should be fixed now x3" />
-    <option name="LAST_COMMIT_MESSAGE" value="SMALL BUGS, should be fixed now x3" />
+    <MESSAGE value="added some design changes and some safety features" />
+    <MESSAGE value="Added a small change to the logout pathing" />
+    <MESSAGE value="forgot to change database" />
+    <MESSAGE value="Mui Frontend changes!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Mui Frontend changes!" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

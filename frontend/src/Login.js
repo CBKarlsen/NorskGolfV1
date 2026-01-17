@@ -16,10 +16,9 @@ function Login() {
     return (
         <div className="login-container">
 
-            {/* VENSTRE SIDE: Hero Bilde */}
+
             <div className="login-hero">
                 <div className="hero-content">
-                    {/* Et klassisk sitat funker alltid, eller vi kan kjøre noe mer "på" */}
                     <div className="hero-quote">"Det viktigste slaget er alltid det neste."</div>
 
                     <div className="hero-subtext">
