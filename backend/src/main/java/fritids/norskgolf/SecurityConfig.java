@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers(
                             "/", "/index.html", "/static/**", "/*.ico", "/*.json", "/*.png",
-                            "/js/**", "/css/**", "/h2-console/**", "/login/**", "/oauth2/**", "/error", "/api/auth/me"
+                            "/js/**", "/css/**", "/h2-console/**", "/login/**", "/oauth2/**", "/error", "/api/auth/me", "/kart", "/venner", "/profil"
                     ).permitAll();
                     registry.requestMatchers(org.springframework.http.HttpMethod.GET, "/api/courses").permitAll();
                     registry.anyRequest().authenticated();
