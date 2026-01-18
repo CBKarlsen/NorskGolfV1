@@ -16,6 +16,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 
+
 // Icons
 import SearchIcon from '@mui/icons-material/Search';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -149,11 +150,8 @@ function SocialView({ user }) {
                     }}
                 >
                     <GroupIcon sx={{ fontSize: 60, color: '#2E7D32', mb: 2 }} />
-                    <Typography variant="h5" sx={{ color: '#2E7D32', fontWeight: 700, mb: 1 }}>
-                        Golf er best med venner!
-                    </Typography>
                     <Typography variant="body1" color="textSecondary" sx={{ mb: 3 }}>
-                        Logg inn for å finne venner, sammenligne score og klatre på topplisten. 🏆
+                        Logg inn for å finne venner, sammenligne score og klatre på topplisten.
                     </Typography>
 
                     {/* 3. UPDATED BUTTON */}

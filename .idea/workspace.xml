@@ -4,11 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="Missing image">
+    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="STILL A BUG">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/Overview.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Overview.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/android-chrome-192x192.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/android-chrome-512x512.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/asset-manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/manifest.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.4260dc1a.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.4260dc1a.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.d01b9dbb.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.d01b9dbb.js.LICENSE.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.d01b9dbb.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/SocialView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/SocialView.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -187,7 +197,7 @@
       <workItem from="1767739497456" duration="32943000" />
       <workItem from="1768124407531" duration="1130000" />
       <workItem from="1768677082984" duration="23623000" />
-      <workItem from="1768764797594" duration="2970000" />
+      <workItem from="1768764797594" duration="4286000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -501,7 +511,23 @@
       <option name="project" value="LOCAL" />
       <updated>1768767700177</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="little bug in Overview.js">
+      <option name="closed" value="true" />
+      <created>1768767837386</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1768767837386</updated>
+    </task>
+    <task id="LOCAL-00041" summary="STILL A BUG">
+      <option name="closed" value="true" />
+      <created>1768768087437</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1768768087437</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -519,8 +545,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Backend api updated such that a user can have a course and mark the course as played aswell as store the highscore on that course" />
-    <MESSAGE value="Clean up commit" />
     <MESSAGE value="Added dynamic Api call, added buttons for the OverviewView.js&#10;and for map such that it can be swapped between" />
     <MESSAGE value="Dynamic mapping for finding all the maps and addede OverviewView.js page" />
     <MESSAGE value="Add round logging functionality and recent rounds display in dashboard" />
@@ -544,7 +568,9 @@
     <MESSAGE value="redirect controller not working" />
     <MESSAGE value="index update" />
     <MESSAGE value="Missing image" />
-    <option name="LAST_COMMIT_MESSAGE" value="Missing image" />
+    <MESSAGE value="little bug in Overview.js" />
+    <MESSAGE value="STILL A BUG" />
+    <option name="LAST_COMMIT_MESSAGE" value="STILL A BUG" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
