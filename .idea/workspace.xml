@@ -4,24 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="INdex html changes for better link sharing experience">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/secrets.properties" afterDir="false" />
+    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="Missing image">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/android-chrome-192x192.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/android-chrome-512x512.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/asset-manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/manifest.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.4260dc1a.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.4260dc1a.css.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.09323cf1.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.09323cf1.js.LICENSE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.09323cf1.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Overview.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Overview.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -200,7 +187,7 @@
       <workItem from="1767739497456" duration="32943000" />
       <workItem from="1768124407531" duration="1130000" />
       <workItem from="1768677082984" duration="23623000" />
-      <workItem from="1768764797594" duration="331000" />
+      <workItem from="1768764797594" duration="2970000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -482,7 +469,39 @@
       <option name="project" value="LOCAL" />
       <updated>1768756292329</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="Index html issues should  be fixed">
+      <option name="closed" value="true" />
+      <created>1768765155356</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1768765155356</updated>
+    </task>
+    <task id="LOCAL-00037" summary="redirect controller not working">
+      <option name="closed" value="true" />
+      <created>1768766022057</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1768766022057</updated>
+    </task>
+    <task id="LOCAL-00038" summary="index update">
+      <option name="closed" value="true" />
+      <created>1768767486558</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1768767486558</updated>
+    </task>
+    <task id="LOCAL-00039" summary="Missing image">
+      <option name="closed" value="true" />
+      <created>1768767700177</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1768767700177</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -500,10 +519,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Added area such that it is possible to log in and click on courses that are played" />
-    <MESSAGE value="google authentication is added, however i need to connect the golf courses to Gmail accounts" />
-    <MESSAGE value="minor changes" />
-    <MESSAGE value="removed secret" />
     <MESSAGE value="Backend api updated such that a user can have a course and mark the course as played aswell as store the highscore on that course" />
     <MESSAGE value="Clean up commit" />
     <MESSAGE value="Added dynamic Api call, added buttons for the OverviewView.js&#10;and for map such that it can be swapped between" />
@@ -525,7 +540,11 @@
     <MESSAGE value="cookie error" />
     <MESSAGE value="Some functionality changes and a backend feature update" />
     <MESSAGE value="INdex html changes for better link sharing experience" />
-    <option name="LAST_COMMIT_MESSAGE" value="INdex html changes for better link sharing experience" />
+    <MESSAGE value="Index html issues should  be fixed" />
+    <MESSAGE value="redirect controller not working" />
+    <MESSAGE value="index update" />
+    <MESSAGE value="Missing image" />
+    <option name="LAST_COMMIT_MESSAGE" value="Missing image" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

@@ -261,7 +261,7 @@ function Overview({ user, onNavigate }) {
                         <TrendingUpIcon sx={{ color: '#2E7D32' }} />
                     </Box>
                     <Typography variant="h4" sx={{ fontWeight: 800, color: '#333', fontSize: { xs: '1.5rem', sm: '2.125rem' } }}>
-                        {Number(data.percentageComplete).toFixed(2)}
+                        {Math.round(data.percentageComplete * 100) / 100}%
                     </Typography>
                     <Typography variant="caption" sx={{ color: '#888', fontWeight: 600, fontSize: { xs: '0.65rem', sm: '0.75rem' }, display: 'block', lineHeight: 1.2 }}>
                         FREMGANG
