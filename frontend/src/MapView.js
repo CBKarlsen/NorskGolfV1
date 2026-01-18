@@ -54,6 +54,7 @@ function MapView({ user, focus, onFocusComplete }) {
     useEffect(() => {
         setLoading(true);
         const fetchCourses = fetch("/api/courses").then(res => res.json());
+
         const fetchRounds = user
             ? fetch("/api/rounds").then(res => res.json())
             : Promise.resolve([]);
@@ -209,7 +210,7 @@ function MapView({ user, focus, onFocusComplete }) {
                                 <Button
                                     variant="contained"
                                     size="small"
-                                    onClick={() => openLogRoundModal(course)}
+                                    onClick={() => user ? openLogRoundModal(course) : window.location.href = "/login"}
                                     startIcon={!isPlayed && <AddCircleIcon />}
                                     sx={{
                                         bgcolor: isPlayed ? "#333" : "#2E7D32",

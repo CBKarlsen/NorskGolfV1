@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // 1. IMPORT THIS
 import Skeleton from "@mui/material/Skeleton";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
@@ -22,8 +23,12 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import GroupIcon from '@mui/icons-material/Group';
 
-function SocialView() {
+function SocialView({ user }) {
+    // 2. INITIALIZE HOOK
+    const navigate = useNavigate();
+
     const [activeTab, setActiveTab] = useState(0);
     const [friends, setFriends] = useState([]);
     const [requests, setRequests] = useState([]);
@@ -34,15 +39,17 @@ function SocialView() {
     const [initialLoading, setInitialLoading] = useState(true);
     const [searchLoading, setSearchLoading] = useState(false);
 
-    // --- HELPER: Read CSRF Cookie ---
     function getCookie(name) {
         const match = document.cookie.match(new RegExp('(^|; )' + name + '=([^;]*)'));
         return match ? decodeURIComponent(match[2]) : null;
     }
 
     useEffect(() => {
+        if (!user) {
+            setInitialLoading(false);
+            return;
+        }
 
-        // Fetch both on mount
         const loadData = async () => {
             setInitialLoading(true);
             try {
@@ -62,7 +69,7 @@ function SocialView() {
             }
         };
         loadData();
-    }, []);
+    }, [user]);
 
     const handleSearch = (e) => {
         e.preventDefault();
@@ -91,24 +98,20 @@ function SocialView() {
             headers: { ...(csrf ? { 'X-XSRF-TOKEN': csrf } : {}) }
         });
         if (res.ok) {
-            // Refresh data locally
             setRequests(prev => prev.filter(r => r.friendshipId !== friendshipId));
             if (action === "ACCEPT") {
-                // Re-fetch friends to update leaderboard
                 fetch('/api/friends', { credentials: 'include' }).then(res => res.json()).then(setFriends);
             }
         }
     };
 
-    // Helper: Render Trophy for Top 3
     const getRankDisplay = (index) => {
-        if (index === 0) return <EmojiEventsIcon sx={{ color: "#FFD700", fontSize: 32, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))" }} />; // Gold
-        if (index === 1) return <EmojiEventsIcon sx={{ color: "#C0C0C0", fontSize: 28 }} />; // Silver
-        if (index === 2) return <EmojiEventsIcon sx={{ color: "#CD7F32", fontSize: 26 }} />; // Bronze
+        if (index === 0) return <EmojiEventsIcon sx={{ color: "#FFD700", fontSize: 32, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.2))" }} />;
+        if (index === 1) return <EmojiEventsIcon sx={{ color: "#C0C0C0", fontSize: 28 }} />;
+        if (index === 2) return <EmojiEventsIcon sx={{ color: "#CD7F32", fontSize: 26 }} />;
         return <Typography variant="h6" sx={{ color: "#888", fontWeight: "bold", width: 30, textAlign: "center" }}>#{index + 1}</Typography>;
     };
 
-    // Helper: Skeleton List
     const renderSkeletonList = () => (
         <Box sx={{ mt: 2 }}>
             {[1, 2, 3, 4].map((i) => (
@@ -124,10 +127,64 @@ function SocialView() {
         </Box>
     );
 
-    return (
-        <div className="social-container">
+    // --- GUEST VIEW ---
+    if (!user) {
+        return (
+            <Box sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '70vh',
+                p: 3
+            }}>
+                <Paper
+                    elevation={0}
+                    sx={{
+                        p: 4,
+                        textAlign: 'center',
+                        maxWidth: 400,
+                        bgcolor: '#f1f8e9',
+                        borderRadius: 4,
+                        border: '1px dashed #2E7D32'
+                    }}
+                >
+                    <GroupIcon sx={{ fontSize: 60, color: '#2E7D32', mb: 2 }} />
+                    <Typography variant="h5" sx={{ color: '#2E7D32', fontWeight: 700, mb: 1 }}>
+                        Golf er best med venner!
+                    </Typography>
+                    <Typography variant="body1" color="textSecondary" sx={{ mb: 3 }}>
+                        Logg inn for å finne venner, sammenligne score og klatre på topplisten. 🏆
+                    </Typography>
 
-            {/* --- MUI TABS --- */}
+                    {/* 3. UPDATED BUTTON */}
+                    <Button
+                        variant="contained"
+                        onClick={() => navigate("/login")}
+                        sx={{
+                            bgcolor: '#2E7D32',
+                            borderRadius: 2,
+                            px: 4,
+                            textTransform: 'none',
+                            fontWeight: 'bold',
+                            '&:hover': { bgcolor: '#1b5e20' }
+                        }}
+                    >
+                        Logg inn
+                    </Button>
+                </Paper>
+            </Box>
+        );
+    }
+
+    // --- NORMAL VIEW (Logged In) ---
+    return (
+        // 4. UPDATED CONTAINER (Box instead of div)
+        <Box sx={{
+            p: { xs: 1.5, sm: 3 },
+            pb: 10,
+            maxWidth: 'md',
+            margin: '0 auto'
+        }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
                 <Tabs
                     value={activeTab}
@@ -146,15 +203,12 @@ function SocialView() {
                 </Tabs>
             </Box>
 
-            {/* --- TAB 1: FRIENDS & LEADERBOARD --- */}
+            {/* TAB 1: FRIENDS */}
             {activeTab === 0 && (
                 <Box>
-                    {/* LOADING STATE */}
                     {initialLoading && renderSkeletonList()}
-
                     {!initialLoading && (
                         <>
-                            {/* PENDING REQUESTS ALERT */}
                             {requests.length > 0 && (
                                 <Paper
                                     elevation={0}
@@ -171,7 +225,6 @@ function SocialView() {
                                             Nye venneforespørsler
                                         </Typography>
                                     </Box>
-
                                     {requests.map(req => (
                                         <Box key={req.id} sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 1, background: 'white', p: 1.5, borderRadius: 2 }}>
                                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -190,8 +243,6 @@ function SocialView() {
                                     ))}
                                 </Paper>
                             )}
-
-                            {/* LEADERBOARD */}
                             {friends.length === 0 ? (
                                 <Box sx={{ textAlign: 'center', mt: 5, color: '#888' }}>
                                     <PersonAddIcon sx={{ fontSize: 60, color: '#e0e0e0', mb: 2 }} />
@@ -217,28 +268,21 @@ function SocialView() {
                                                 }}
                                             >
                                                 <ListItem sx={{ py: 2 }}>
-                                                    {/* RANK ICON */}
                                                     <Box sx={{ mr: 2, display: 'flex', justifyContent: 'center', width: 40 }}>
                                                         {getRankDisplay(index)}
                                                     </Box>
-
-                                                    {/* AVATAR */}
                                                     <ListItemAvatar>
                                                         <Avatar
                                                             src={friend.avatar || `https://ui-avatars.com/api/?name=${friend.displayName}`}
                                                             sx={{ border: '2px solid white', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}
                                                         />
                                                     </ListItemAvatar>
-
-                                                    {/* NAME & ME TAG */}
                                                     <Box sx={{ flex: 1 }}>
                                                         <Typography variant="subtitle1" fontWeight="700" color="text.primary">
                                                             {friend.displayName}
                                                         </Typography>
                                                         {isMe && <Chip label="Deg" size="small" color="success" sx={{ height: 20, fontSize: '0.65rem' }} />}
                                                     </Box>
-
-                                                    {/* STATS */}
                                                     <Box sx={{ textAlign: 'right', display: 'flex', gap: 3 }}>
                                                         <Box>
                                                             <Typography variant="h6" sx={{ lineHeight: 1, fontWeight: 700, color: '#333' }}>{friend.totalCourses}</Typography>
@@ -260,7 +304,7 @@ function SocialView() {
                 </Box>
             )}
 
-            {/* --- TAB 2: SEARCH --- */}
+            {/* TAB 2: SEARCH */}
             {activeTab === 1 && (
                 <Box>
                     <form onSubmit={handleSearch}>
@@ -283,23 +327,22 @@ function SocialView() {
                                         </InputAdornment>
                                     ),
                                     endAdornment: (
-                                            <InputAdornment position="end">
-                                                <Button
-                                                    type="submit"
-                                                    variant="contained"
-                                                    disableElevation
-                                                    sx={{ borderRadius: 2, bgcolor: '#2E7D32', textTransform: 'none' }}
-                                                >
-                                                    Søk
-                                                </Button>
-                                            </InputAdornment>
-                                        )}}
-                        }
+                                        <InputAdornment position="end">
+                                            <Button
+                                                type="submit"
+                                                variant="contained"
+                                                disableElevation
+                                                sx={{ borderRadius: 2, bgcolor: '#2E7D32', textTransform: 'none' }}
+                                            >
+                                                Søk
+                                            </Button>
+                                        </InputAdornment>
+                                    )
+                                }
+                            }}
                         />
                     </form>
-
                     {searchLoading && renderSkeletonList()}
-
                     <List>
                         {searchResults.map(user => (
                             <Paper
@@ -311,15 +354,12 @@ function SocialView() {
                                     <ListItemAvatar>
                                         <Avatar src={user.avatar || `https://ui-avatars.com/api/?name=${user.displayName}`} />
                                     </ListItemAvatar>
-
                                     <Box sx={{ flex: 1 }}>
                                         <Typography variant="subtitle1" fontWeight="600">{user.displayName}</Typography>
                                         <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.85rem' }}>
                                             {user.email ? user.email : "Golfer"}
                                         </Typography>
                                     </Box>
-
-                                    {/* STATUS ACTIONS */}
                                     <Box>
                                         {user.status === "NONE" && (
                                             <Button
@@ -341,7 +381,6 @@ function SocialView() {
                             </Paper>
                         ))}
                     </List>
-
                     {searchResults.length === 0 && searchQuery && !searchLoading && (
                         <Box sx={{ textAlign: 'center', mt: 5, color: '#999' }}>
                             <SearchIcon sx={{ fontSize: 40, mb: 1, opacity: 0.3 }} />
@@ -350,7 +389,7 @@ function SocialView() {
                     )}
                 </Box>
             )}
-        </div>
+        </Box>
     );
 }
 

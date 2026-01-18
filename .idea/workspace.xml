@@ -4,11 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="Mui Frontend changes!">
+    <list default="true" id="3916de93-01f6-4022-bf32-d4f6eb26502f" name="Changes" comment="cookie error">
       <change afterPath="$PROJECT_DIR$/backend/src/main/resources/secrets.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.4260dc1a.css.map" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.09323cf1.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.09323cf1.js.map" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/FriendController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/fritids/norskgolf/controller/FriendController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/asset-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/asset-manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.7c633393.css" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.4260dc1a.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/css/main.7c633393.css.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/453.670e15c7.chunk.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/453.670e15c7.chunk.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.aaca4e49.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.aaca4e49.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.09323cf1.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/static/static/js/main.aaca4e49.js.map" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/MapView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/MapView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/Overview.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/Overview.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/SocialView.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/SocialView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,7 +206,7 @@
       <workItem from="1767722920478" duration="10673000" />
       <workItem from="1767739497456" duration="32943000" />
       <workItem from="1768124407531" duration="1130000" />
-      <workItem from="1768677082984" duration="11584000" />
+      <workItem from="1768677082984" duration="20838000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <option name="closed" value="true" />
@@ -444,7 +464,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768687608042</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="cookie error">
+      <option name="closed" value="true" />
+      <created>1768691813430</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1768691813430</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -462,7 +490,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Moved into backend folder, ready for react frontend folder" />
     <MESSAGE value="Added front end and a working log in page with test users" />
     <MESSAGE value="Test user now shows a map with certain courses" />
     <MESSAGE value="Added area such that it is possible to log in and click on courses that are played" />
@@ -487,7 +514,8 @@
     <MESSAGE value="Added a small change to the logout pathing" />
     <MESSAGE value="forgot to change database" />
     <MESSAGE value="Mui Frontend changes!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Mui Frontend changes!" />
+    <MESSAGE value="cookie error" />
+    <option name="LAST_COMMIT_MESSAGE" value="cookie error" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>

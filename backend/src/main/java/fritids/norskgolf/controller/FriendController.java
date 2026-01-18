@@ -128,8 +128,8 @@ public class FriendController {
         int myCourses = (int) playedCourseRepository.countByUserId(me.getId());
         int myRounds = (int) roundRepository.countByUserId(me.getId());
 
-        // Ensure "Me" also uses the nice name logic (or adds " (You)")
-        String myName = resolveDisplayName(me) + " (You)";
+        //gets user name
+        String myName = resolveDisplayName(me);
         leaderboard.add(new FriendDto(me.getId(), myName, "ME", null, myCourses, myRounds, me.getAvatar()));
 
         // Sort: High score top
