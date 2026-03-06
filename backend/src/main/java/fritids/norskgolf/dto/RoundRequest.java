@@ -1,7 +1,7 @@
 package fritids.norskgolf.dto;
 
 public class RoundRequest {
-    // Keep fields private for safety
+
     private String courseExternalId;
     private Long courseId;
     private int score;

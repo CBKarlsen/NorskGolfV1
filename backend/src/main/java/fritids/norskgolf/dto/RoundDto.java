@@ -15,7 +15,7 @@ public class RoundDto {
         this.score = score;
     }
 
-    // Getters and Setters (needed for JSON serialization)
+    // Getters and Setters
     public Long getId() { return id; }
     public Long getCourseId() { return courseId; }
     public String getCourseName() { return courseName; }

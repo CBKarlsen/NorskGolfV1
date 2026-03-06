@@ -1,6 +1,5 @@
 package fritids.norskgolf.dto;
 
-import fritids.norskgolf.controller.GolfApiController.CourseDto;
 import java.util.List;
 import java.util.Map;
 
@@ -9,7 +8,7 @@ public class DashboardStats {
     private long totalCourses;
     private double percentageComplete;
 
-    // 1. NEW: List of recent rounds at the top level
+
     private List<RoundSummary> recentRounds;
 
     private Map<String, RegionStat> regionStats;
@@ -44,7 +43,6 @@ public class DashboardStats {
             this.playedCount = playedCount;
             this.totalCount = totalCount;
             this.courses = courses;
-            // FIX 1: Changed 'total' to 'totalCount'
             this.percentage = totalCount > 0 ? (double) playedCount / totalCount * 100 : 0;
         }
     }
@@ -62,7 +60,6 @@ public class DashboardStats {
     public int getBestScore() { return bestScore; }
     public void setBestScore(int bestScore) { this.bestScore = bestScore; }
 
-    // FIX 2: Changed 'totalCount' to 'totalPlayed' to match the field name
     public long getTotalPlayed() { return totalPlayed; }
     public void setTotalPlayed(long totalPlayed) { this.totalPlayed = totalPlayed; }
 

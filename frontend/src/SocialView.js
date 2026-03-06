@@ -74,11 +74,28 @@ function SocialView({ user }) {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        if (!searchQuery.trim()) return;
+
+        // 1. New Validation: Require at least 3 characters
+        if (!searchQuery.trim() || searchQuery.trim().length < 3) {
+            // Optional: You could set an error state here to show a message to the user
+            alert("Søket må inneholde minst 3 bokstaver.");
+            return;
+        }
+
         setSearchLoading(true);
         fetch(`/api/friends/search?query=${searchQuery}`, { credentials: 'include' })
-            .then(res => res.json())
-            .then(data => { setSearchResults(data); setSearchLoading(false); });
+            .then(res => {
+                if (!res.ok) throw new Error("Search failed");
+                return res.json();
+            })
+            .then(data => {
+                setSearchResults(data);
+                setSearchLoading(false);
+            })
+            .catch(err => {
+                console.error(err);
+                setSearchLoading(false);
+            });
     };
 
     const sendRequest = async (userId) => {
@@ -350,12 +367,17 @@ function SocialView({ user }) {
                             >
                                 <ListItem>
                                     <ListItemAvatar>
-                                        <Avatar src={user.avatar || `https://ui-avatars.com/api/?name=${user.displayName}`} />
+                                        <Avatar src={user.avatar} />
                                     </ListItemAvatar>
                                     <Box sx={{ flex: 1 }}>
-                                        <Typography variant="subtitle1" fontWeight="600">{user.displayName}</Typography>
+                                        {/* This will now show "Casper" instead of "Casper Benjamin Karlsen" */}
+                                        <Typography variant="subtitle1" fontWeight="600">
+                                            {user.displayName}
+                                        </Typography>
+
+                                        {/* Shows email to confirm identity */}
                                         <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.85rem' }}>
-                                            {user.email ? user.email : "Golfer"}
+                                            {user.email}
                                         </Typography>
                                     </Box>
                                     <Box>

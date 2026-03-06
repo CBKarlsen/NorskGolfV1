@@ -1,4 +1,4 @@
-package fritids.norskgolf.services;
+package fritids.norskgolf.service;
 
 import fritids.norskgolf.entities.User;
 import fritids.norskgolf.repository.UserRepository;

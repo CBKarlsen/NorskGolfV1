@@ -14,8 +14,8 @@ public class Round {
     private Long id;
 
     private LocalDate date;
-    private int score;     // Total strokes
-    private int stableford; // Optional: Stableford points
+    private int score;
+    private int stableford;
 
     @ManyToOne
     private User user;

@@ -3,6 +3,7 @@ package fritids.norskgolf.entities;
 import jakarta.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -20,14 +21,16 @@ public class User {
     private String email; // Needed for "Find by Email"
 
     @Column
-    private String firstName; // Needed for "getFullName"
+    private String firstName;
 
     @Column
-    private String lastName;  // Needed for "getFullName"
+    private String lastName;
 
     @Column
-    private String avatar;    // Optional: URL to Google profile picture
+    private String avatar;
 
+    @Column(unique = true, nullable = false)
+    private String publicId = UUID.randomUUID().toString();
 
     @Column
     private String password;
@@ -58,6 +61,10 @@ public class User {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 
@@ -85,6 +92,10 @@ public class User {
 
     public Set<PlayedCourse> getPlayedCourses() { return playedCourses; }
     public void setPlayedCourses(Set<PlayedCourse> playedCourses) { this.playedCourses = playedCourses; }
+
+    public String getPublicId() {
+        return publicId;
+    }
 
 
     public String getFullName() {

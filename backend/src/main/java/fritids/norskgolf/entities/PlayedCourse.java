@@ -12,7 +12,7 @@ public class PlayedCourse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id; // simple surrogate primary key
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
@@ -28,7 +28,8 @@ public class PlayedCourse {
     @Column(name = "last_played")
     private LocalDate lastPlayed; // optional
 
-    public PlayedCourse() {}
+
+    protected PlayedCourse() {}
 
     public PlayedCourse(User user, Course course) {
         this.user = user;
