@@ -72,7 +72,14 @@ public class GolfService {
         return new RoundDto(savedRound.getId(), savedRound.getCourse().getId(), savedRound.getCourse().getName(), savedRound.getDate().toString(), savedRound.getScore());
     }
 
-    // --- 4. DELETE ROUND ---
+    // --- 4. GET ROUNDS FOR USER ---
+    public List<RoundDto> getRoundsForUser(User user) {
+        return roundRepository.findByUserIdOrderByDateDescIdDesc(user.getId()).stream()
+                .map(r -> new RoundDto(r.getId(), r.getCourse().getId(), r.getCourse().getName(), r.getDate().toString(), r.getScore()))
+                .collect(Collectors.toList());
+    }
+
+    // --- 5. DELETE ROUND ---
     public void deleteRound(Long roundId, User user) {
         Round round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

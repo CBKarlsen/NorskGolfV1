@@ -25,6 +25,13 @@ public class GolfApiController {
         return ResponseEntity.ok(golfService.getAllCourses(user));
     }
 
+    @GetMapping("/rounds")
+    public ResponseEntity<List<RoundDto>> getRounds(Principal principal) {
+        User user = userService.resolveUser(principal);
+        if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        return ResponseEntity.ok(golfService.getRoundsForUser(user));
+    }
+
     @PostMapping("/rounds")
     public ResponseEntity<RoundDto> logRound(@RequestBody RoundRequest request, Principal principal) {
         User user = userService.resolveUser(principal);

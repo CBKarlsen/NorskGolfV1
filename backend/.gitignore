@@ -42,3 +42,5 @@ build/
 
 secrets.properties
 backend/src/main/resources/secrets.properties
+
+!backend/src/main/resources/static/**
