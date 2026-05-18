@@ -21,7 +21,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
     // Find all ACCEPTED friendships for a user (Where user is either requester OR receiver)
     @Query("SELECT f FROM Friendship f WHERE " +
-            "(f.requester.id = :userId OR f.receiver.id = :userId) AND f.status = 'ACCEPTED'")
+            "(f.requester.id = :userId OR f.receiver.id = :userId) AND f.status = fritids.norskgolf.entities.FriendshipStatus.ACCEPTED")
     List<Friendship> findAllFriends(Long userId);
 
     // Find pending requests waiting for ME to accept
