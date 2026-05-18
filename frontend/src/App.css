@@ -1,53 +1,51 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap");
 
 /* 2. Apply it GLOBALLY to every single element */
 * {
-    font-family: 'Inter', sans-serif !important;
+	font-family: "Inter", sans-serif;
 }
 body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    margin: 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	margin: 0;
 }
 
 .App {
-  text-align: center;
+	text-align: center;
 }
 .bottom-bar {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    padding: 12px;
-    background: rgba(255,255,255,0.98);
-    box-shadow: 0 -1px 6px rgba(0,0,0,0.12);
-    z-index: 1000;
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	gap: 12px;
+	padding: 12px;
+	background: rgba(255, 255, 255, 0.98);
+	box-shadow: 0 -1px 6px rgba(0, 0, 0, 0.12);
+	z-index: 1000;
 }
 
-
 .toggle-btn {
-    padding: 8px 16px;
-    border-radius: 6px;
-    border: 1px solid #ddd;
-    background: white;
-    cursor: pointer;
+	padding: 8px 16px;
+	border-radius: 6px;
+	border: 1px solid #ddd;
+	background: white;
+	cursor: pointer;
 }
 
 .toggle-btn[aria-pressed="true"] {
-    font-weight: 600;
-    background: #eef;
-    border-color: #99c;
+	font-weight: 600;
+	background: #eef;
+	border-color: #99c;
 }
 .app-with-bottom-bar {
-    min-height: 100vh;
-    padding-bottom: 72px; /* same height as the bar to avoid overlap */
+	min-height: 100vh;
+	padding-bottom: 72px; /* same height as the bar to avoid overlap */
 }
 
 .leaflet-div-icon.custom-icon {
-    background: transparent !important;
-    border: none !important;
+	background: transparent;
+	border: none;
 }

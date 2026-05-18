@@ -24,8 +24,9 @@ public class Friendship {
     @Enumerated(EnumType.STRING)
     private FriendshipStatus status;
 
-    private final LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
+    protected Friendship() {}
 
     public Friendship(User requester, User receiver) {
         this.requester = requester;

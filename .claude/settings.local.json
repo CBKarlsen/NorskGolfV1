@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout *)",
+      "Bash(npx @biomejs/biome init)",
+      "Bash(npx *)",
+      "Bash(npx biome *)"
+    ]
+  }
+}
