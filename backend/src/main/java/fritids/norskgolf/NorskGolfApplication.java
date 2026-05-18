@@ -5,14 +5,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import fritids.norskgolf.repository.UserRepository;
 import fritids.norskgolf.entities.User;
 import fritids.norskgolf.repository.CourseRepository;
-import fritids.norskgolf.entities.Course;
-import fritids.norskgolf.entities.PlayedCourse;
 import fritids.norskgolf.repository.PlayedCourseRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
-import java.util.List;
 
 @SpringBootApplication
 @EnableWebSecurity
