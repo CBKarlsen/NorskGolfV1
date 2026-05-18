@@ -11,18 +11,18 @@ const createFlagSvg = (color, stroke) => `
 
 // 1. Unplayed Icon (Red/Orange)
 export const UnplayedIcon = L.divIcon({
-    className: "custom-icon", // We will add a tiny bit of CSS to reset default styles
-    html: createFlagSvg("#ff6b6b", "#c0392b"),
-    iconSize: [40, 40],
-    iconAnchor: [5, 38], // Anchor the bottom of the pole (x, y)
-    popupAnchor: [10, -35]
+	className: "custom-icon", // We will add a tiny bit of CSS to reset default styles
+	html: createFlagSvg("#ff6b6b", "#c0392b"),
+	iconSize: [40, 40],
+	iconAnchor: [5, 38], // Anchor the bottom of the pole (x, y)
+	popupAnchor: [10, -35],
 });
 
 // 2. Played Icon (Green)
 export const PlayedIcon = L.divIcon({
-    className: "custom-icon",
-    html: createFlagSvg("#2E7D32", "#1b5e20"),
-    iconSize: [45, 45], // Make played ones slightly larger?
-    iconAnchor: [5, 43],
-    popupAnchor: [10, -40]
+	className: "custom-icon",
+	html: createFlagSvg("#2E7D32", "#1b5e20"),
+	iconSize: [45, 45], // Make played ones slightly larger?
+	iconAnchor: [5, 43],
+	popupAnchor: [10, -40],
 });
