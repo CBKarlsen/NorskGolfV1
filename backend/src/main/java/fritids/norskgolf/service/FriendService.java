@@ -53,7 +53,7 @@ public class FriendService {
                     String displayAvatar = isFriend ? u.getAvatar() : null;
 
                     return new FriendDto(
-                            null,
+                            u.getPublicId(),
                             displayName,
                             u.getEmail(), // Safe to show because they just typed it in!
                             status,
