@@ -1,5 +1,6 @@
-export const API_BASE = process.env.REACT_APP_API_URL || "";
-export function apiUrl(path) {
-	const base = API_BASE.replace(/\/+$/, "");
-	return base + (path.startsWith("/") ? path : `/${path}`);
+// Reads the XSRF-TOKEN cookie Spring Security sets.
+// Must be sent back as the X-XSRF-TOKEN header on every mutating request.
+export function getCookie(name) {
+	const match = document.cookie.match(new RegExp(`(^|; )${name}=([^;]*)`));
+	return match ? decodeURIComponent(match[2]) : null;
 }

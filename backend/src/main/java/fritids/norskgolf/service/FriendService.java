@@ -9,11 +9,11 @@ import fritids.norskgolf.repository.PlayedCourseRepository;
 import fritids.norskgolf.repository.RoundRepository;
 import fritids.norskgolf.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -27,39 +27,38 @@ public class FriendService {
     @Autowired private PlayedCourseRepository playedCourseRepository;
     @Autowired private RoundRepository roundRepository;
 
+    private static final int MIN_QUERY_LENGTH = 3;
+    private static final int MAX_SEARCH_RESULTS = 20;
+
     // --- 1. SEARCH ---
     public List<FriendDto> searchUsers(String query, User currentUser) {
-        List<User> matches = new ArrayList<>();
-
-        //  STRICT SEARCH: Only allow exact email matches
-        if (query != null && query.contains("@")) {
-            userRepository.findByEmail(query).ifPresent(matches::add);
+        String q = query == null ? "" : query.trim();
+        // The React client enforces this too, but that is not a control.
+        if (q.length() < MIN_QUERY_LENGTH) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Search must be at least " + MIN_QUERY_LENGTH + " characters");
         }
 
-        return matches.stream()
-                .filter(u -> !u.getId().equals(currentUser.getId())) // Remove self
+        return userRepository.searchUsers(q, currentUser.getId(), PageRequest.of(0, MAX_SEARCH_RESULTS)).stream()
                 .map(u -> {
                     String status = getFriendshipStatus(currentUser, u);
                     boolean isFriend = "FRIENDS".equals(status);
 
-                    // PRIVACY:
-                    // Since they searched by EXACT Email, we know they probably know the person.
-                    // But let's stick to the safe rule:
-                    // Friends -> Full Name. Strangers -> First Name.
+                    // PRIVACY: Friends -> Full Name + avatar. Strangers -> First Name, no avatar.
                     String displayName = isFriend ? resolveDisplayName(u) : u.getFirstName();
                     if (displayName == null) displayName = "Golfer";
 
-                    // Avatar: Hide for strangers (optional, but consistent)
-                    String displayAvatar = isFriend ? u.getAvatar() : null;
+                    // ponytail: email only if they already typed (part of) it, as before - a name
+                    // search must not hand out strangers' addresses.
+                    boolean typedEmail = u.getEmail() != null && u.getEmail().toLowerCase().contains(q.toLowerCase());
 
                     return new FriendDto(
                             u.getPublicId(),
                             displayName,
-                            u.getEmail(), // Safe to show because they just typed it in!
+                            isFriend || typedEmail ? u.getEmail() : null,
                             status,
                             null,
                             0, 0,
-                            displayAvatar
+                            isFriend ? u.getAvatar() : null
                     );
                 })
                 .collect(Collectors.toList());
@@ -114,7 +113,22 @@ public class FriendService {
         }
     }
 
-    // --- 5. LEADERBOARD ---
+    // --- 5. REMOVE (unfriend / cancel or decline a pending request) ---
+    public void removeFriendship(Long friendshipId, User currentUser) {
+        Friendship friendship = friendshipRepository.findById(friendshipId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        // Either party may remove it, in any status.
+        boolean isParty = friendship.getRequester().getId().equals(currentUser.getId())
+                || friendship.getReceiver().getId().equals(currentUser.getId());
+        if (!isParty) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN);
+        }
+
+        friendshipRepository.delete(friendship);
+    }
+
+    // --- 6. LEADERBOARD ---
     public List<FriendDto> getLeaderboard(User me) {
         List<FriendDto> leaderboard = friendshipRepository.findAllFriends(me.getId()).stream()
                 .map(f -> {

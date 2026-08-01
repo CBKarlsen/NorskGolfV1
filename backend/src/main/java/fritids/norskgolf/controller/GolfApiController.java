@@ -64,13 +64,8 @@ public class GolfApiController {
         if (user == null) return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 
 
-        return ResponseEntity.ok(golfService.markCoursePlayed(user.getId(), body.getCourseExternalId()));
+        return ResponseEntity.ok(golfService.markCoursePlayed(user.getId(), body.courseExternalId()));
     }
 
-    // Flytt til egen fil
-    private static class PlayedCourseRequest {
-        private String courseExternalId;
-        public String getCourseExternalId() { return courseExternalId; }
-        public void setCourseExternalId(String courseExternalId) { this.courseExternalId = courseExternalId; }
-    }
+    private record PlayedCourseRequest(String courseExternalId) {}
 }

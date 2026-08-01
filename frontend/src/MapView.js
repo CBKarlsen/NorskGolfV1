@@ -23,6 +23,7 @@ import Paper from "@mui/material/Paper";
 import Skeleton from "@mui/material/Skeleton";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
+import { getCookie } from "./api";
 import { PlayedIcon, UnplayedIcon } from "./MapIcons";
 
 // 1. Map Controller (Kept same)
@@ -82,11 +83,6 @@ function MapView({ user, focus, onFocusComplete }) {
 		setScore("");
 		setModalOpen(true);
 	};
-
-	function getCookie(name) {
-		const match = document.cookie.match(new RegExp(`(^|; )${name}=([^;]*)`));
-		return match ? decodeURIComponent(match[2]) : null;
-	}
 
 	const handleClose = () => {
 		setModalOpen(false);
