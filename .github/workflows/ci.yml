@@ -40,7 +40,7 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
-      - run: npx biome ci src
+      - run: npm run lint:ci
       - run: npm test -- --watchAll=false
         env:
           CI: true

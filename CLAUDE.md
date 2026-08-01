@@ -20,7 +20,8 @@ npm start                     # Dev server on :3000 (proxies /api/* to :8080)
 npm test -- -t "test name"    # Run a single test
 npm run build
 npm run deploy                # build + wipe and repopulate backend/src/main/resources/static/
-npx biome check --write .     # Lint + format (tabs, double quotes) — no npm script for it
+npm run lint                  # Biome check + format (tabs, double quotes)
+npm run lint:ci               # What CI runs — fails instead of fixing
 ```
 
 Local dev requires both backend and frontend running. The CRA proxy (`frontend/package.json` → `"proxy"`) routes `/api` calls to :8080.

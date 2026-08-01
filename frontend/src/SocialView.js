@@ -509,7 +509,10 @@ function SocialView({ user }) {
 															sx={{
 																ml: 1,
 																color: "#bdbdbd",
-																"&:hover": { color: "#d32f2f", bgcolor: "#ffebee" },
+																"&:hover": {
+																	color: "#d32f2f",
+																	bgcolor: "#ffebee",
+																},
 															}}
 														>
 															<PersonRemoveIcon fontSize="small" />
