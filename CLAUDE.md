@@ -69,13 +69,21 @@ Sessions are stored in the database (`spring-session-jdbc`, `initialize-schema=a
 
 ### Deployment
 
-Currently Railway (`backend/nixpacks.toml`). Migrating to Cloud Run:
+Production is **Cloud Run** (`gcloud` project `norskgolf`, service `norskgolf`, region `europe-north1`) with a free-tier **Neon** Postgres in Frankfurt. Redeploy with:
 
 ```bash
-cd backend && gcloud run deploy --source .      # buildpacks detect Maven; no Dockerfile
+cd backend && gcloud run deploy norskgolf --source . --region=europe-north1
 ```
 
-`backend/.gcloudignore` is load-bearing: `secrets.properties` is imported unconditionally, so uploading it would point production at the local H2 file and bake the OAuth secret into the image. `server.port=${PORT:8080}` honours the port Cloud Run injects. After deploying, add `https://<service>.run.app/login/oauth2/code/google` to the OAuth client's authorized redirect URIs.
+Buildpacks detect Maven and build the JAR — there is no Dockerfile. Env vars (`SPRING_DATASOURCE_*`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`) live on the Cloud Run service; update them with `gcloud run services update norskgolf --region=europe-north1 --update-env-vars=...`, never in the repo.
+
+Gotchas:
+- `backend/.gcloudignore` is load-bearing: `secrets.properties` is imported unconditionally, so uploading it would point production at the local H2 file and bake the OAuth secret into the image.
+- Cloud Run assigns **two** hostnames (`norskgolf-<project-number>.europe-north1.run.app` and a legacy `-lz.a.run.app`). Spring builds `redirect_uri` from whichever host the browser used, so both must be registered on the OAuth client.
+- `min-instances=0`, so an idle app cold-starts (~4s JVM + Neon wake). Sessions are in Postgres, so nobody gets logged out by it.
+- First boot against an empty DB runs `CourseSyncService`, which inserts 160 courses one at a time — a few minutes over a remote DB.
+
+`backend/nixpacks.toml` is the old Railway config, still present until that service is torn down.
 
 ### Frontend (`frontend/src/`)
 
