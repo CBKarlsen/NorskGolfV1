@@ -60,10 +60,22 @@ Protected `/api` endpoints answer an unauthenticated request with a 302 to Googl
 
 | Environment | DB | Config |
 |---|---|---|
-| Local dev | H2 (file-based) | `jdbc:h2:file:./data/golfjakten` |
-| Production | PostgreSQL | Env vars: `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD` |
+| Local dev | H2 (file-based) | `jdbc:h2:file:./data/golfjakten`, set in `secrets.properties` |
+| Production | PostgreSQL | `SPRING_DATASOURCE_URL` / `_USERNAME` / `_PASSWORD` injected by the host — **nothing in this repo configures it** |
 
 `ddl-auto=update`. Local datasource + OAuth credentials + `app.frontend.url` all live in the gitignored `backend/src/main/resources/secrets.properties`, imported unconditionally by `application.properties`. Put local-only settings there — **do not commit local changes to `application.properties`**. In prod, OAuth comes from `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`.
+
+Sessions are stored in the database (`spring-session-jdbc`, `initialize-schema=always` creates `SPRING_SESSION*` tables on first boot) rather than in memory, so a restart or a second app instance doesn't log everyone out.
+
+### Deployment
+
+Currently Railway (`backend/nixpacks.toml`). Migrating to Cloud Run:
+
+```bash
+cd backend && gcloud run deploy --source .      # buildpacks detect Maven; no Dockerfile
+```
+
+`backend/.gcloudignore` is load-bearing: `secrets.properties` is imported unconditionally, so uploading it would point production at the local H2 file and bake the OAuth secret into the image. `server.port=${PORT:8080}` honours the port Cloud Run injects. After deploying, add `https://<service>.run.app/login/oauth2/code/google` to the OAuth client's authorized redirect URIs.
 
 ### Frontend (`frontend/src/`)
 

@@ -1,0 +1,15 @@
+# Uploaded by `gcloud run deploy --source .` — anything here is NOT sent to Cloud Build.
+
+# Local-only overrides. secrets.properties is imported unconditionally by
+# application.properties, so shipping it would point production at the local
+# H2 file and bake the OAuth client secret into the image.
+src/main/resources/secrets.properties
+
+# Local H2 database
+data/
+
+# Build output — Cloud Build runs the Maven build itself
+target/
+
+.DS_Store
+*.iml
