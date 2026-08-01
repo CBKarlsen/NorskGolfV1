@@ -19,8 +19,7 @@ public class UserService {
      * Extracts Google data -> Saves to Database -> Returns DTO
      */
     public UserProfileDTO syncUser(OAuth2AuthenticationToken token) {
-        if (token == null) return null;
-
+        // Caller (AuthController) rejects a null token with 401 before we get here.
         // 1. Extract details from Google Token
         String email = token.getPrincipal().getAttribute("email");
         String firstName = token.getPrincipal().getAttribute("given_name");

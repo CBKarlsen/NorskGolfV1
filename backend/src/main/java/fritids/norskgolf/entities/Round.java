@@ -15,7 +15,6 @@ public class Round {
 
     private LocalDate date;
     private int score;
-    private int stableford;
 
     @ManyToOne
     private User user;
@@ -46,14 +45,6 @@ public class Round {
 
     public void setScore(int score) {
         this.score = score;
-    }
-
-    public int getStableford() {
-        return stableford;
-    }
-
-    public void setStableford(int stableford) {
-        this.stableford = stableford;
     }
 
     public User getUser() {

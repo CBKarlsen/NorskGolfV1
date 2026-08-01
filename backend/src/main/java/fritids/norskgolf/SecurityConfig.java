@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
@@ -16,6 +17,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RegexRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -41,15 +43,18 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(requestHandler) // 1. Set the handler
-                        .ignoringRequestMatchers("/h2-console/**")
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers(
                             "/", "/index.html", "/static/**", "/*.ico", "/*.json", "/*.png",
-                            "/js/**", "/css/**", "/h2-console/**", "/login/**", "/oauth2/**", "/error", "/api/auth/me", "/kart", "/venner", "/profil"
+                            "/js/**", "/css/**", "/login/**", "/oauth2/**", "/error", "/api/auth/me"
                     ).permitAll();
-                    registry.requestMatchers(org.springframework.http.HttpMethod.GET, "/api/courses").permitAll();
+                    // SPA shell: SpaRedirectController forwards every extensionless single-segment
+                    // path to index.html, so permit that same class of GETs instead of listing each
+                    // React route. /api/** contains a slash, so it never matches here.
+                    registry.requestMatchers(RegexRequestMatcher.regexMatcher(HttpMethod.GET, "/[^/.]*(\\?.*)?")).permitAll();
+                    registry.requestMatchers(HttpMethod.GET, "/api/courses").permitAll();
                     registry.anyRequest().authenticated();
                 })
                 .headers(headers -> headers

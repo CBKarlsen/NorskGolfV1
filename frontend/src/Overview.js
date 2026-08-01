@@ -31,6 +31,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getCookie } from "./api";
 
 function Overview({ user, onNavigate }) {
 	const navigate = useNavigate();
@@ -41,12 +42,6 @@ function Overview({ user, onNavigate }) {
 	// Delete State
 	const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 	const [roundToDelete, setRoundToDelete] = useState(null);
-
-	// Helper: Get CSRF Token
-	function getCookie(name) {
-		const match = document.cookie.match(new RegExp(`(^|; )${name}=([^;]*)`));
-		return match ? decodeURIComponent(match[2]) : null;
-	}
 
 	const loadOverview = useCallback(() => {
 		setLoading(true);

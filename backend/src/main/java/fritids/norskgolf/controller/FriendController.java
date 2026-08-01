@@ -2,8 +2,8 @@ package fritids.norskgolf.controller;
 
 import fritids.norskgolf.dto.FriendDto;
 import fritids.norskgolf.entities.User;
-import fritids.norskgolf.repository.UserRepository;
 import fritids.norskgolf.service.FriendService;
+import fritids.norskgolf.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +18,7 @@ import java.util.List;
 public class FriendController {
 
     @Autowired private FriendService friendService;
-    @Autowired private UserRepository userRepository; // Kept only for user resolution
+    @Autowired private UserService userService;
 
     @GetMapping("/search")
     public List<FriendDto> searchUsers(@RequestParam String query, Principal principal) {
@@ -43,6 +43,13 @@ public class FriendController {
         return ResponseEntity.ok().build();
     }
 
+    // Unfriend, or cancel/decline a pending request. Works for either party.
+    @DeleteMapping("/{friendshipId}")
+    public ResponseEntity<Void> removeFriendship(@PathVariable Long friendshipId, Principal principal) {
+        friendService.removeFriendship(friendshipId, resolveUser(principal));
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public List<FriendDto> getFriends(Principal principal) {
         return friendService.getLeaderboard(resolveUser(principal));
@@ -50,10 +57,10 @@ public class FriendController {
 
     // Helper to get the actual User object from the login session
     private User resolveUser(Principal principal) {
-        String name = principal.getName();
-        return userRepository.findByUsername(name)
-                .or(() -> userRepository.findByProviderId(name))
-                .or(() -> userRepository.findByEmail(name))
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
+        User user = userService.resolveUser(principal);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found");
+        }
+        return user;
     }
 }

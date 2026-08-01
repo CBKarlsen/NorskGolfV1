@@ -15,9 +15,11 @@ import fritids.norskgolf.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,8 +53,30 @@ public class GolfService {
                 .collect(Collectors.toList());
     }
 
+    // Sanity guardrail, not golf rules: rejects garbage like 0 or 900, not bad golf.
+    private static final int MIN_SCORE = 18;
+    private static final int MAX_SCORE = 200;
+
     // --- 3. LOG ROUND ---
+    @Transactional
     public RoundDto logRound(User user, RoundRequest request) {
+        // Validate before touching the DB — the client-side checks in MapView.js are bypassable.
+        if (request.getCourseId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "courseId is required");
+        }
+        if (request.getScore() < MIN_SCORE || request.getScore() > MAX_SCORE) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Score must be between " + MIN_SCORE + " and " + MAX_SCORE);
+        }
+        LocalDate date;
+        try {
+            date = LocalDate.parse(request.getDate());
+        } catch (DateTimeParseException | NullPointerException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date must be a valid yyyy-MM-dd date");
+        }
+        if (date.isAfter(LocalDate.now())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date cannot be in the future");
+        }
+
         Course course = courseRepository.findById(request.getCourseId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Course not found"));
 
@@ -61,7 +85,7 @@ public class GolfService {
         round.setUser(user);
         round.setCourse(course);
         round.setScore(request.getScore());
-        round.setDate(LocalDate.parse(request.getDate()));
+        round.setDate(date);
         Round savedRound = roundRepository.save(round);
 
         // B. Auto-mark as Played
@@ -80,6 +104,7 @@ public class GolfService {
     }
 
     // --- 5. DELETE ROUND ---
+    @Transactional
     public void deleteRound(Long roundId, User user) {
         Round round = roundRepository.findById(roundId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));

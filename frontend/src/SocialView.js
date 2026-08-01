@@ -4,12 +4,18 @@ import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import GroupIcon from "@mui/icons-material/Group";
 import NotificationsActiveIcon from "@mui/icons-material/NotificationsActive";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 // Icons
 import SearchIcon from "@mui/icons-material/Search";
 import Avatar from "@mui/material/Avatar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import List from "@mui/material/List";
@@ -23,6 +29,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // 1. IMPORT THIS
+import { getCookie } from "./api";
 
 function SocialView({ user }) {
 	// 2. INITIALIZE HOOK
@@ -33,15 +40,14 @@ function SocialView({ user }) {
 	const [requests, setRequests] = useState([]);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchResults, setSearchResults] = useState([]);
+	const [hasSearched, setHasSearched] = useState(false);
 
 	// Loading States
 	const [initialLoading, setInitialLoading] = useState(true);
 	const [searchLoading, setSearchLoading] = useState(false);
 
-	function getCookie(name) {
-		const match = document.cookie.match(new RegExp(`(^|; )${name}=([^;]*)`));
-		return match ? decodeURIComponent(match[2]) : null;
-	}
+	// Unfriend / cancel request
+	const [friendToRemove, setFriendToRemove] = useState(null);
 
 	useEffect(() => {
 		if (!user) {
@@ -81,7 +87,8 @@ function SocialView({ user }) {
 		}
 
 		setSearchLoading(true);
-		fetch(`/api/friends/search?query=${searchQuery}`, {
+		setHasSearched(false);
+		fetch(`/api/friends/search?query=${encodeURIComponent(searchQuery)}`, {
 			credentials: "include",
 		})
 			.then((res) => {
@@ -90,6 +97,7 @@ function SocialView({ user }) {
 			})
 			.then((data) => {
 				setSearchResults(data);
+				setHasSearched(true);
 				setSearchLoading(false);
 			})
 			.catch((err) => {
@@ -131,6 +139,24 @@ function SocialView({ user }) {
 					.then(setFriends);
 			}
 		}
+	};
+
+	const removeFriend = async () => {
+		if (!friendToRemove) return;
+		const csrf = getCookie("XSRF-TOKEN");
+		const res = await fetch(`/api/friends/${friendToRemove.friendshipId}`, {
+			method: "DELETE",
+			credentials: "include",
+			headers: { ...(csrf ? { "X-XSRF-TOKEN": csrf } : {}) },
+		});
+		if (res.ok) {
+			fetch("/api/friends", { credentials: "include" })
+				.then((res) => res.json())
+				.then(setFriends);
+		} else {
+			alert("Kunne ikke fjerne vennen.");
+		}
+		setFriendToRemove(null);
 	};
 
 	const getRankDisplay = (index) => {
@@ -475,6 +501,20 @@ function SocialView({ user }) {
 															</Typography>
 														</Box>
 													</Box>
+													{!isMe && friend.friendshipId && (
+														<IconButton
+															size="small"
+															aria-label="Fjern venn"
+															onClick={() => setFriendToRemove(friend)}
+															sx={{
+																ml: 1,
+																color: "#bdbdbd",
+																"&:hover": { color: "#d32f2f", bgcolor: "#ffebee" },
+															}}
+														>
+															<PersonRemoveIcon fontSize="small" />
+														</IconButton>
+													)}
 												</ListItem>
 											</Paper>
 										);
@@ -617,7 +657,7 @@ function SocialView({ user }) {
 							</Paper>
 						))}
 					</List>
-					{searchResults.length === 0 && searchQuery && !searchLoading && (
+					{hasSearched && searchResults.length === 0 && !searchLoading && (
 						<Box sx={{ textAlign: "center", mt: 5, color: "#999" }}>
 							<SearchIcon sx={{ fontSize: 40, mb: 1, opacity: 0.3 }} />
 							<Typography>Ingen golfere funnet.</Typography>
@@ -625,6 +665,34 @@ function SocialView({ user }) {
 					)}
 				</Box>
 			)}
+
+			{/* --- REMOVE FRIEND CONFIRMATION DIALOG --- */}
+			<Dialog
+				open={Boolean(friendToRemove)}
+				onClose={() => setFriendToRemove(null)}
+				slotProps={{ paper: { sx: { borderRadius: 3 } } }}
+			>
+				<DialogTitle>Fjerne venn?</DialogTitle>
+				<DialogContent>
+					<DialogContentText>
+						Er du sikker på at du vil fjerne {friendToRemove?.displayName} som
+						venn? Dette kan ikke angres.
+					</DialogContentText>
+				</DialogContent>
+				<DialogActions sx={{ p: 2 }}>
+					<Button onClick={() => setFriendToRemove(null)} color="inherit">
+						Avbryt
+					</Button>
+					<Button
+						onClick={removeFriend}
+						color="error"
+						variant="contained"
+						disableElevation
+					>
+						Fjern
+					</Button>
+				</DialogActions>
+			</Dialog>
 		</Box>
 	);
 }
