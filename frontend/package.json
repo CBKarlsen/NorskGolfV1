@@ -28,6 +28,8 @@
 		"build": "react-scripts build",
 		"test": "react-scripts test",
 		"eject": "react-scripts eject",
+		"lint": "biome check --write src",
+		"lint:ci": "biome ci src",
 		"deploy": "npm run build && shx rm -rf ../backend/src/main/resources/static/* && shx cp -r build/* ../backend/src/main/resources/static/"
 	},
 	"eslintConfig": {

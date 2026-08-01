@@ -20,7 +20,8 @@ npm start                     # Dev server on :3000 (proxies /api/* to :8080)
 npm test -- -t "test name"    # Run a single test
 npm run build
 npm run deploy                # build + wipe and repopulate backend/src/main/resources/static/
-npx biome check --write .     # Lint + format (tabs, double quotes) — no npm script for it
+npm run lint                  # Biome check + format (tabs, double quotes)
+npm run lint:ci               # What CI runs — fails instead of fixing
 ```
 
 Local dev requires both backend and frontend running. The CRA proxy (`frontend/package.json` → `"proxy"`) routes `/api` calls to :8080.
@@ -60,10 +61,30 @@ Protected `/api` endpoints answer an unauthenticated request with a 302 to Googl
 
 | Environment | DB | Config |
 |---|---|---|
-| Local dev | H2 (file-based) | `jdbc:h2:file:./data/golfjakten` |
-| Production | PostgreSQL | Env vars: `PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD` |
+| Local dev | H2 (file-based) | `jdbc:h2:file:./data/golfjakten`, set in `secrets.properties` |
+| Production | PostgreSQL | `SPRING_DATASOURCE_URL` / `_USERNAME` / `_PASSWORD` injected by the host — **nothing in this repo configures it** |
 
 `ddl-auto=update`. Local datasource + OAuth credentials + `app.frontend.url` all live in the gitignored `backend/src/main/resources/secrets.properties`, imported unconditionally by `application.properties`. Put local-only settings there — **do not commit local changes to `application.properties`**. In prod, OAuth comes from `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET`.
+
+Sessions are stored in the database (`spring-session-jdbc`, `initialize-schema=always` creates `SPRING_SESSION*` tables on first boot) rather than in memory, so a restart or a second app instance doesn't log everyone out.
+
+### Deployment
+
+Production is **Cloud Run** (`gcloud` project `norskgolf`, service `norskgolf`, region `europe-north1`) with a free-tier **Neon** Postgres in Frankfurt. Redeploy with:
+
+```bash
+cd backend && gcloud run deploy norskgolf --source . --region=europe-north1
+```
+
+Buildpacks detect Maven and build the JAR — there is no Dockerfile. Env vars (`SPRING_DATASOURCE_*`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`) live on the Cloud Run service; update them with `gcloud run services update norskgolf --region=europe-north1 --update-env-vars=...`, never in the repo.
+
+Gotchas:
+- `backend/.gcloudignore` is load-bearing: `secrets.properties` is imported unconditionally, so uploading it would point production at the local H2 file and bake the OAuth secret into the image.
+- Cloud Run assigns **two** hostnames (`norskgolf-<project-number>.europe-north1.run.app` and a legacy `-lz.a.run.app`). Spring builds `redirect_uri` from whichever host the browser used, so both must be registered on the OAuth client.
+- `min-instances=0`, so an idle app cold-starts (~4s JVM + Neon wake). Sessions are in Postgres, so nobody gets logged out by it.
+- First boot against an empty DB runs `CourseSyncService`, which inserts 160 courses one at a time — a few minutes over a remote DB.
+
+`backend/nixpacks.toml` is the old Railway config, still present until that service is torn down.
 
 ### Frontend (`frontend/src/`)
 

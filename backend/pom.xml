@@ -57,6 +57,12 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- Sessions in the DB, not in memory: Cloud Run scales to zero and can
+             run several instances, either of which would log everyone out. -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-jdbc</artifactId>
+        </dependency>
 
     </dependencies>
 

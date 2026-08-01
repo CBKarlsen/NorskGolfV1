@@ -6,5 +6,6 @@ import "@testing-library/jest-dom";
 
 // CRA pins jest 27, whose jsdom lacks TextEncoder/TextDecoder. react-router 7 needs them.
 import { TextDecoder, TextEncoder } from "node:util";
+
 global.TextEncoder = global.TextEncoder ?? TextEncoder;
 global.TextDecoder = global.TextDecoder ?? TextDecoder;
