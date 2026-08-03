@@ -51,6 +51,11 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     needs: [backend, frontend]
     runs-on: ubuntu-latest
+    # Waits for a human to approve in the Actions run before it can deploy.
+    # Reviewer and branch policy are configured on the environment itself.
+    environment:
+      name: production
+      url: https://norskgolf-778238820195.europe-north1.run.app
     permissions:
       contents: read
       id-token: write # required to mint the OIDC token for Workload Identity
