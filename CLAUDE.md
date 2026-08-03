@@ -82,7 +82,7 @@ Production is split across two services in the same Google project (`norskgolf`)
 
 The split exists so the page shell loads from an edge cache instead of waiting on a cold JVM. **`/login` is deliberately not rewritten** — React owns that route, Spring owns the callback below it at `/login/oauth2/code/google`.
 
-A merge to `master` deploys the **backend only** (`.github/workflows/ci.yml` → `deploy` job, via Workload Identity Federation, gated on an approval in the `production` environment). The frontend is deployed by hand:
+A merge to `master` deploys **both halves** — `.github/workflows/ci.yml` has a `deploy-backend` and a `deploy-frontend` job, each authenticating via Workload Identity Federation and each gated on an approval in the `production` environment. By hand:
 
 ```bash
 cd backend  && gcloud run deploy norskgolf --source . --region=europe-north1   # backend
