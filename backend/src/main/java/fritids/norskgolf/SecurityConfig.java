@@ -18,7 +18,7 @@ import org.springframework.security.web.authentication.DelegatingAuthenticationE
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -48,8 +48,12 @@ public class SecurityConfig {
 
         return http
                 .csrf(csrf -> csrf
-                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .csrfTokenRequestHandler(requestHandler) // 1. Set the handler
+                        // Not a cookie: Firebase Hosting strips every cookie except __session on
+                        // the way to Cloud Run, so an XSRF-TOKEN cookie would never reach us and
+                        // every mutating request would 403. The token rides in the session and is
+                        // handed to the SPA in the /api/auth/me response instead.
+                        .csrfTokenRepository(new HttpSessionCsrfTokenRepository())
+                        .csrfTokenRequestHandler(requestHandler)
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(registry -> {
@@ -80,11 +84,12 @@ public class SecurityConfig {
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .logoutSuccessUrl(frontendUrl)
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID", "XSRF-TOKEN")
+                        .deleteCookies("__session")
                         .permitAll()
                 )
-                // 2. Add the filter that forces the CSRF cookie to be written
-                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                // Materialises the CSRF token so it is stored in the session and can be
+                // handed to the SPA by /api/auth/me.
+                .addFilterAfter(new CsrfTokenMaterialisingFilter(), BasicAuthenticationFilter.class)
                 .build();
     }
 
@@ -115,12 +120,12 @@ public class SecurityConfig {
     }
 
 
-    private static final class CsrfCookieFilter extends OncePerRequestFilter {
+    private static final class CsrfTokenMaterialisingFilter extends OncePerRequestFilter {
         @Override
         protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
                 throws ServletException, IOException {
 
-            // Force the loading of the CSRF Token so the repo writes the cookie
+            // Deferred by default; calling getToken() forces it into the session.
             CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
             if (csrfToken != null) {
                 csrfToken.getToken();

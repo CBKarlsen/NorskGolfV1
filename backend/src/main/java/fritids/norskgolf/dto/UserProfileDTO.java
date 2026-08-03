@@ -6,6 +6,7 @@ public class UserProfileDTO {
     private String photo;
     private String userId;
     private String username;
+    private String csrfToken;
 
     public String getName() {
         return name;
@@ -33,4 +34,7 @@ public class UserProfileDTO {
     public void setUserId(String userId) { this.userId = userId; }
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
+
+    public String getCsrfToken() { return csrfToken; }
+    public void setCsrfToken(String csrfToken) { this.csrfToken = csrfToken; }
 }

@@ -29,7 +29,7 @@ import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // 1. IMPORT THIS
-import { getCookie } from "./api";
+import { csrfHeaders } from "./api";
 
 function SocialView({ user }) {
 	// 2. INITIALIZE HOOK
@@ -107,11 +107,10 @@ function SocialView({ user }) {
 	};
 
 	const sendRequest = async (userId) => {
-		const csrf = getCookie("XSRF-TOKEN");
 		const res = await fetch(`/api/friends/request/${userId}`, {
 			method: "POST",
 			credentials: "include",
-			headers: { ...(csrf ? { "X-XSRF-TOKEN": csrf } : {}) },
+			headers: csrfHeaders(),
 		});
 		if (res.ok)
 			setSearchResults((prev) =>
@@ -120,11 +119,10 @@ function SocialView({ user }) {
 	};
 
 	const cancelRequest = async (target) => {
-		const csrf = getCookie("XSRF-TOKEN");
 		const res = await fetch(`/api/friends/${target.friendshipId}`, {
 			method: "DELETE",
 			credentials: "include",
-			headers: { ...(csrf ? { "X-XSRF-TOKEN": csrf } : {}) },
+			headers: csrfHeaders(),
 		});
 		if (res.ok)
 			setSearchResults((prev) =>
@@ -136,13 +134,12 @@ function SocialView({ user }) {
 	};
 
 	const respondToRequest = async (friendshipId, action) => {
-		const csrf = getCookie("XSRF-TOKEN");
 		const res = await fetch(
 			`/api/friends/respond/${friendshipId}?action=${action}`,
 			{
 				method: "POST",
 				credentials: "include",
-				headers: { ...(csrf ? { "X-XSRF-TOKEN": csrf } : {}) },
+				headers: csrfHeaders(),
 			},
 		);
 		if (res.ok) {
@@ -159,11 +156,10 @@ function SocialView({ user }) {
 
 	const removeFriend = async () => {
 		if (!friendToRemove) return;
-		const csrf = getCookie("XSRF-TOKEN");
 		const res = await fetch(`/api/friends/${friendToRemove.friendshipId}`, {
 			method: "DELETE",
 			credentials: "include",
-			headers: { ...(csrf ? { "X-XSRF-TOKEN": csrf } : {}) },
+			headers: csrfHeaders(),
 		});
 		if (res.ok) {
 			fetch("/api/friends", { credentials: "include" })

@@ -23,7 +23,7 @@ import Paper from "@mui/material/Paper";
 import Skeleton from "@mui/material/Skeleton";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { getCookie } from "./api";
+import { csrfHeaders } from "./api";
 import { PlayedIcon, UnplayedIcon } from "./MapIcons";
 
 // 1. Map Controller (Kept same)
@@ -112,12 +112,11 @@ function MapView({ user, focus, onFocusComplete }) {
 		};
 
 		try {
-			const csrf = getCookie("XSRF-TOKEN");
 			const res = await fetch("/api/rounds", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					...(csrf ? { "X-XSRF-TOKEN": csrf } : {}),
+					...csrfHeaders(),
 				},
 				body: JSON.stringify(payload),
 			});

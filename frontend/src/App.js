@@ -34,6 +34,7 @@ import {
 	useLocation,
 	useNavigate,
 } from "react-router-dom";
+import { setCsrfToken } from "./api";
 
 function App() {
 	const [user, setUser] = useState(null);
@@ -57,6 +58,7 @@ function App() {
 			})
 			.then((data) => {
 				setUser(data);
+				setCsrfToken(data?.csrfToken);
 				setLoading(false);
 			})
 			.catch(() => setLoading(false));

@@ -1,0 +1,40 @@
+{
+  "hosting": {
+    "public": "frontend/build",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "/api/**",
+        "run": { "serviceId": "norskgolf", "region": "europe-north1" }
+      },
+      {
+        "source": "/oauth2/**",
+        "run": { "serviceId": "norskgolf", "region": "europe-north1" }
+      },
+      {
+        "source": "/login/oauth2/**",
+        "run": { "serviceId": "norskgolf", "region": "europe-north1" }
+      },
+      {
+        "source": "/logout",
+        "run": { "serviceId": "norskgolf", "region": "europe-north1" }
+      },
+      { "source": "**", "destination": "/index.html" }
+    ],
+    "headers": [
+      {
+        "source": "/static/**",
+        "headers": [
+          {
+            "key": "Cache-Control",
+            "value": "public, max-age=31536000, immutable"
+          }
+        ]
+      },
+      {
+        "source": "/index.html",
+        "headers": [{ "key": "Cache-Control", "value": "no-cache" }]
+      }
+    ]
+  }
+}

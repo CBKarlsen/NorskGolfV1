@@ -31,7 +31,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getCookie } from "./api";
+import { csrfHeaders } from "./api";
 
 function Overview({ user, onNavigate }) {
 	const navigate = useNavigate();
@@ -104,14 +104,12 @@ function Overview({ user, onNavigate }) {
 		if (!roundToDelete) return;
 
 		try {
-			const csrf = getCookie("XSRF-TOKEN");
-
 			// ✅ credentials: 'include' sends the JSESSIONID cookie
 			const res = await fetch(`/api/rounds/${roundToDelete}`, {
 				method: "DELETE",
 				credentials: "include",
 				headers: {
-					...(csrf ? { "X-XSRF-TOKEN": csrf } : {}),
+					...csrfHeaders(),
 				},
 			});
 
