@@ -51,7 +51,7 @@ CSRF uses `CookieCsrfTokenRepository.withHttpOnlyFalse()`: Spring writes a reada
 
 React routes are Norwegian (`/kart`, `/oversikt`, `/venner`). `SecurityConfig` permits SPA shell GETs as a class — `RegexRequestMatcher.regexMatcher(GET, "/[^/.]*(\\?.*)?")` — mirroring the extensionless single-segment paths `SpaRedirectController` forwards to `index.html`. A new React route therefore needs **no** security change. Every `/api/**` path contains a slash, so it can never match that rule; public API endpoints are listed explicitly (`GET /api/auth/me`, `GET /api/courses`).
 
-Protected `/api` endpoints answer an unauthenticated request with a 302 to Google OAuth, not a 401. Frontend fetches must check `res.ok` rather than assume JSON.
+A `DelegatingAuthenticationEntryPoint` in `SecurityConfig` splits the unauthenticated response by path: `/api/**` gets a bare **401**, everything else is redirected to `/login`. Built explicitly rather than via `defaultAuthenticationEntryPointFor`, because `oauth2Login` registers its own entry point into the same mapping table and the fallback would otherwise depend on configurer insertion order.
 
 ### Course data
 
@@ -102,4 +102,4 @@ React 19 + React Router 7 + Material UI 7 + Leaflet.
 - All fetches use same-origin relative paths (dev proxy in dev, same-origin serving in prod). There is no API base URL and no `.env` — don't reintroduce one without a reason.
 - CI (`.github/workflow/maven.yml`) sits in a misspelled directory — GitHub only reads `.github/workflows/`, so it never runs. Rename the folder if CI is wanted.
 - Jest needs three workarounds because CRA pins jest 27, which predates the `exports` field (`frontend/package.json` → `jest.moduleNameMapper` for react-router, a `TextEncoder`/`TextDecoder` polyfill in `setupTests.js`, and `jest.mock("./MapView")` in any test that renders `App`, since react-leaflet is ESM-only). Don't delete them expecting the suite to still run.
-- `GET /login` is served by Spring's auto-generated OAuth login page, not React's `Login.js` — `oauth2Login` has no `.loginPage()`, so its default filter intercepts `/login` before the SPA forward. Reaching `/login` by in-app navigation still renders the React page.
+- `oauth2Login` sets `.loginPage("/login")` purely so Spring's `DefaultLoginPageGeneratingFilter` stays disabled and `/login` reaches React's `Login.js` through the SPA forward. There is no Spring-rendered login page; `Login.js` navigates to `/oauth2/authorization/google` itself.
