@@ -119,6 +119,22 @@ function SocialView({ user }) {
 			);
 	};
 
+	const cancelRequest = async (target) => {
+		const csrf = getCookie("XSRF-TOKEN");
+		const res = await fetch(`/api/friends/${target.friendshipId}`, {
+			method: "DELETE",
+			credentials: "include",
+			headers: { ...(csrf ? { "X-XSRF-TOKEN": csrf } : {}) },
+		});
+		if (res.ok)
+			setSearchResults((prev) =>
+				prev.map((u) =>
+					u.id === target.id ? { ...u, status: "NONE", friendshipId: null } : u,
+				),
+			);
+		else alert("Kunne ikke avbryte forespørselen.");
+	};
+
 	const respondToRequest = async (friendshipId, action) => {
 		const csrf = getCookie("XSRF-TOKEN");
 		const res = await fetch(
@@ -623,10 +639,22 @@ function SocialView({ user }) {
 											<Chip
 												label="Sendt"
 												size="small"
+												onDelete={
+													user.friendshipId
+														? () => cancelRequest(user)
+														: undefined
+												}
+												deleteIcon={
+													<CancelIcon titleAccess="Avbryt forespørsel" />
+												}
 												sx={{
 													bgcolor: "#fff3e0",
 													color: "#e65100",
 													fontWeight: 600,
+													"& .MuiChip-deleteIcon": {
+														color: "#e65100",
+														"&:hover": { color: "#b71c1c" },
+													},
 												}}
 											/>
 										)}
