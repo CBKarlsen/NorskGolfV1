@@ -1,5 +1,6 @@
 package fritids.norskgolf.service;
 
+import fritids.norskgolf.dto.FriendDto;
 import fritids.norskgolf.entities.Friendship;
 import fritids.norskgolf.entities.User;
 import fritids.norskgolf.repository.FriendshipRepository;
@@ -11,13 +12,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -119,5 +124,35 @@ class FriendServiceTest {
         when(friendshipRepository.findById(99L)).thenReturn(Optional.empty());
 
         assertEquals(HttpStatus.NOT_FOUND, statusOf(() -> friendService.removeFriendship(99L, user(1L))));
+    }
+
+    // --- SEARCH ---
+
+    @Test
+    void searchResultCarriesFriendshipIdForOutgoingRequest() {
+        User me = user(1L);
+        User other = user(2L);
+        Friendship pending = new Friendship(me, other);
+        ReflectionTestUtils.setField(pending, "id", 10L);
+        when(userRepository.searchUsers(eq("ola"), eq(1L), any())).thenReturn(List.of(other));
+        when(friendshipRepository.findRelationship(me, other)).thenReturn(Optional.of(pending));
+
+        FriendDto result = friendService.searchUsers("ola", me).get(0);
+
+        assertEquals("SENT", result.getStatus());
+        assertEquals(10L, result.getFriendshipId());
+    }
+
+    @Test
+    void searchResultHasNoFriendshipIdWithoutRelationship() {
+        User me = user(1L);
+        User other = user(2L);
+        when(userRepository.searchUsers(eq("ola"), eq(1L), any())).thenReturn(List.of(other));
+        when(friendshipRepository.findRelationship(me, other)).thenReturn(Optional.empty());
+
+        FriendDto result = friendService.searchUsers("ola", me).get(0);
+
+        assertEquals("NONE", result.getStatus());
+        assertNull(result.getFriendshipId());
     }
 }
