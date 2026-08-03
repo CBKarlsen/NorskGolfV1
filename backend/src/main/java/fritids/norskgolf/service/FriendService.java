@@ -40,7 +40,8 @@ public class FriendService {
 
         return userRepository.searchUsers(q, currentUser.getId(), PageRequest.of(0, MAX_SEARCH_RESULTS)).stream()
                 .map(u -> {
-                    String status = getFriendshipStatus(currentUser, u);
+                    Optional<Friendship> relationship = friendshipRepository.findRelationship(currentUser, u);
+                    String status = relationship.map(f -> statusOf(f, currentUser)).orElse("NONE");
                     boolean isFriend = "FRIENDS".equals(status);
 
                     // PRIVACY: Friends -> Full Name + avatar. Strangers -> First Name, no avatar.
@@ -56,7 +57,8 @@ public class FriendService {
                             displayName,
                             isFriend || typedEmail ? u.getEmail() : null,
                             status,
-                            null,
+                            // The client needs this to cancel a request it sent (DELETE /api/friends/{id}).
+                            relationship.map(Friendship::getId).orElse(null),
                             0, 0,
                             isFriend ? u.getAvatar() : null
                     );
@@ -170,10 +172,7 @@ public class FriendService {
         return user.getEmail();
     }
 
-    private String getFriendshipStatus(User me, User other) {
-        Optional<Friendship> f = friendshipRepository.findRelationship(me, other);
-        if (f.isEmpty()) return "NONE";
-        Friendship friendship = f.get();
+    private String statusOf(Friendship friendship, User me) {
         if (friendship.getStatus() == FriendshipStatus.ACCEPTED) return "FRIENDS";
         if (friendship.getRequester().getId().equals(me.getId())) return "SENT";
         return "RECEIVED";
