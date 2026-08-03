@@ -45,7 +45,9 @@ Layered: **Controller → Service → Repository → Entity**
 1. Frontend calls `GET /api/auth/me` on load; 401 → show Google login
 2. OAuth success → Spring session cookie → redirect to `/`
 
-CSRF uses `CookieCsrfTokenRepository.withHttpOnlyFalse()`: Spring writes a readable `XSRF-TOKEN` cookie (a `CsrfCookieFilter` forces it onto every response). **Every mutating fetch must read that cookie and echo it as the `X-XSRF-TOKEN` header, plus `credentials: "include"`** — see the `getCookie` helpers in `Overview.js` / `SocialView.js`.
+**The app gets exactly one cookie, and it must be called `__session`.** Firebase Hosting strips every other cookie before forwarding to Cloud Run (it is part of the CDN cache key), so `server.servlet.session.cookie.name=__session` is load-bearing, not cosmetic — rename it and every request arrives anonymous and login fails at the OAuth callback.
+
+That rules out a cookie-based CSRF token. `SecurityConfig` uses `HttpSessionCsrfTokenRepository`; `AuthController` returns the token as `csrfToken` on `/api/auth/me`, `App.js` hands it to `setCsrfToken` in `api.js`, and mutating fetches spread `csrfHeaders()` into their headers alongside `credentials: "include"`. Don't reintroduce `document.cookie` reads for this.
 
 ### SPA routes vs security
 
@@ -70,17 +72,31 @@ Sessions are stored in the database (`spring-session-jdbc`, `initialize-schema=a
 
 ### Deployment
 
-Production is **Cloud Run** (`gcloud` project `norskgolf`, service `norskgolf`, region `europe-north1`) with a free-tier **Neon** Postgres in Frankfurt. A merge to `master` deploys automatically (`.github/workflows/ci.yml` → `deploy` job, authenticating via Workload Identity Federation). To redeploy by hand:
+Production is split across two services in the same Google project (`norskgolf`):
+
+| Serves | Where | Public URL |
+|---|---|---|
+| React build (`frontend/build`) | Firebase Hosting CDN | `https://norskgolf.web.app` |
+| `/api/**`, `/oauth2/**`, `/login/oauth2/**`, `/logout` | Cloud Run, `europe-north1` | rewritten to by `firebase.json` |
+| Database | Neon (free tier), Frankfurt | outside Google |
+
+The split exists so the page shell loads from an edge cache instead of waiting on a cold JVM. **`/login` is deliberately not rewritten** — React owns that route, Spring owns the callback below it at `/login/oauth2/code/google`.
+
+A merge to `master` deploys the **backend only** (`.github/workflows/ci.yml` → `deploy` job, via Workload Identity Federation, gated on an approval in the `production` environment). The frontend is deployed by hand:
 
 ```bash
-cd backend && gcloud run deploy norskgolf --source . --region=europe-north1
+cd backend  && gcloud run deploy norskgolf --source . --region=europe-north1   # backend
+cd frontend && npm run build && cd .. && npx firebase-tools deploy --only hosting   # frontend
 ```
+
+The Firebase CLI needs Node ≥20; the machine's default `node` may be older (`PATH="/opt/homebrew/opt/node@20/bin:$PATH"`).
 
 Buildpacks detect Maven and build the JAR — there is no Dockerfile. Env vars (`SPRING_DATASOURCE_*`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`) live on the Cloud Run service; update them with `gcloud run services update norskgolf --region=europe-north1 --update-env-vars=...`, never in the repo.
 
 Gotchas:
 - `backend/.gcloudignore` is load-bearing: `secrets.properties` is imported unconditionally, so uploading it would point production at the local H2 file and bake the OAuth secret into the image.
-- Cloud Run assigns **two** hostnames (`norskgolf-<project-number>.europe-north1.run.app` and a legacy `-lz.a.run.app`). Spring builds `redirect_uri` from whichever host the browser used, so both must be registered on the OAuth client.
+- Behind Firebase, Spring sees the `run.app` host, so `{baseUrl}` would build an OAuth `redirect_uri` pointing off the public domain. It is pinned by the `SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT_URI` env var on the Cloud Run service; the repo keeps `{baseUrl}` for local dev. `server.tomcat.use-relative-redirects=true` stops Tomcat rewriting relative redirects to absolute `run.app` URLs for the same reason.
+- Cloud Run also answers on two `run.app` hostnames directly. Those bypass Firebase (and so keep all cookies), which makes them useful for debugging but they are not the canonical entry point.
 - `min-instances=0`, so an idle app cold-starts (~4s JVM + Neon wake). Sessions are in Postgres, so nobody gets logged out by it.
 - First boot against an empty DB runs `CourseSyncService`, which inserts 160 courses one at a time — a few minutes over a remote DB.
 
