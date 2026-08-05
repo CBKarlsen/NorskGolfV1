@@ -33,7 +33,7 @@ public class GolfService {
 
     // --- 1. GET ALL COURSES ---
     public List<CourseDto> getAllCourses(User currentUser) {
-        List<Course> allCourses = courseRepository.findAll();
+        List<Course> allCourses = courseRepository.findByActiveTrue();
         Set<Long> playedIds = new HashSet<>();
 
         if (currentUser != null) {
@@ -124,7 +124,7 @@ public class GolfService {
 
     // --- 5. DASHBOARD STATS (The Big Logic) ---
     public DashboardStats getDashboardStats(User user) {
-        List<Course> allCourses = courseRepository.findAll();
+        List<Course> allCourses = courseRepository.findByActiveTrue();
         Set<Long> playedIds = new HashSet<>(playedCourseRepository.findCourseIdsByUserId(user.getId()));
 
         // A. Regional Data Calculation

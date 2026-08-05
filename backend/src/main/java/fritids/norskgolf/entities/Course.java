@@ -20,6 +20,13 @@ public class Course {
 
     private String county;
 
+    private String municipality;
+
+    private Integer holes;
+
+    @Column(nullable = false)
+    private boolean active = true;
+
     @Column(unique = true)
     private String externalId; // Unique identifier from a map API
 
@@ -42,6 +49,15 @@ public class Course {
 
     public String getCounty() { return county; }
     public void setCounty(String county) { this.county = county; }
+
+    public String getMunicipality() { return municipality; }
+    public void setMunicipality(String municipality) { this.municipality = municipality; }
+
+    public Integer getHoles() { return holes; }
+    public void setHoles(Integer holes) { this.holes = holes; }
+
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 
     public String getExternalId() { return externalId; }
     public void setExternalId(String externalId) { this.externalId = externalId; }
