@@ -51,12 +51,24 @@ class ClubMatcherTest {
 
     @Test
     void reportsAmbiguityInsteadOfGuessing() {
+        // two distinct rows that both normalise to the same name — a genuine, unresolvable collision
         Course first = course("Moss Golfklubb", 59.4340, 10.6580);
-        Course second = course("Moss & Rygge Golfklubb", 59.4350, 10.6590);
+        Course second = course("Moss GK", 59.4350, 10.6590);
 
         ClubMatcher.Match match = matcher.match(club("Moss Golfklubb", 59.4345, 10.6585), List.of(first, second));
 
         assertTrue(match.ambiguous());
+    }
+
+    @Test
+    void matchesByNameEvenWhenAnotherDifferentlyNamedCourseIsAlsoNearby() {
+        Course moss = course("Moss Golfklubb", 59.4340, 10.6580);
+        Course mossOgRygge = course("Moss & Rygge Golfklubb", 59.4350, 10.6590);
+
+        ClubMatcher.Match match = matcher.match(club("Moss Golfklubb", 59.4345, 10.6585), List.of(moss, mossOgRygge));
+
+        assertSame(moss, match.course());
+        assertFalse(match.ambiguous());
     }
 
     @Test

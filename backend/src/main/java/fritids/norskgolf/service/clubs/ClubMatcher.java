@@ -38,14 +38,25 @@ public class ClubMatcher {
     }
 
     public Match match(ClubRecord club, List<Course> candidates) {
-        // Proximity alone decides: a second nearby course (regardless of name — clubs merge,
-        // rename, or share a name) means we can't be sure which one is the real match, so it's
-        // reported as ambiguous rather than resolved by an exact-but-possibly-coincidental name hit.
+        String target = normalise(club.name());
+
         List<Course> near = candidates.stream()
                 .filter(c -> c.getLatitude() != null && c.getLongitude() != null)
                 .filter(c -> distanceKm(club.lat(), club.lon(), c.getLatitude(), c.getLongitude()) <= MAX_KM)
                 .toList();
 
+        List<Course> sameName = near.stream()
+                .filter(c -> normalise(c.getName()).equals(target))
+                .toList();
+
+        // An exact normalised-name match wins even if another, differently-named course is
+        // also nearby: skipping it as "ambiguous" would deactivate the club's row until a
+        // human intervenes, which is worse than a rare wrong pick. Only a genuine name
+        // collision (two candidates with the same normalised name) counts as ambiguous.
+        if (sameName.size() == 1) return new Match(sameName.get(0), false);
+        if (sameName.size() > 1) return new Match(null, true);
+
+        // no exact name match nearby: one nearby candidate is a probable match, several is ambiguous
         if (near.size() == 1) return new Match(near.get(0), false);
         if (near.size() > 1) return new Match(null, true);
 
