@@ -47,6 +47,8 @@ Layered: **Controller → Service → Repository → Entity**
 
 **The app gets exactly one cookie, and it must be called `__session`.** Firebase Hosting strips every other cookie before forwarding to Cloud Run (it is part of the CDN cache key), so `server.servlet.session.cookie.name=__session` is load-bearing, not cosmetic — rename it and every request arrives anonymous and login fails at the OAuth callback.
 
+**`app.frontend.url` is the CORS allowlist, and it must be an absolute origin.** Behind Firebase the app sees the `run.app` host while the browser says `norskgolf.web.app`, so Spring treats the SPA as cross-origin and enforces CORS on it. Browsers send `Origin` on writes but not on same-origin reads, so a bad value here breaks every POST/DELETE while GETs look fine — and **curl cannot reproduce it, because curl sends no `Origin` header**. Reach for a preflight (`OPTIONS` with `Origin` + `Access-Control-Request-Method`) or server-side debug logging instead. `GET /api/csrf` exists so the CSRF round-trip can be exercised without logging in.
+
 That rules out a cookie-based CSRF token. `SecurityConfig` uses `HttpSessionCsrfTokenRepository`; `AuthController` returns the token as `csrfToken` on `/api/auth/me`, `App.js` hands it to `setCsrfToken` in `api.js`, and mutating fetches spread `csrfHeaders()` into their headers alongside `credentials: "include"`. Don't reintroduce `document.cookie` reads for this.
 
 ### SPA routes vs security

@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(registry -> {
                     registry.requestMatchers(
                             "/", "/index.html", "/static/**", "/*.ico", "/*.json", "/*.png",
-                            "/js/**", "/css/**", "/login/**", "/oauth2/**", "/error", "/api/auth/me"
+                            "/js/**", "/css/**", "/login/**", "/oauth2/**", "/error", "/api/auth/me", "/api/csrf"
                     ).permitAll();
                     // SPA shell: SpaRedirectController forwards every extensionless single-segment
                     // path to index.html, so permit that same class of GETs instead of listing each
