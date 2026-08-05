@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * The property is set explicitly here: a developer machine has secrets.properties on the classpath
  * pointing at localhost, which would otherwise decide the outcome.
  */
-@SpringBootTest(properties = "app.frontend.url=https://norskgolf.web.app")
+@SpringBootTest(properties = "app.frontend.url=https://golfjakten.no,https://norskgolf.web.app")
 @AutoConfigureMockMvc
 class CorsConfigTest {
 
@@ -34,6 +34,15 @@ class CorsConfigTest {
 
     @Test
     void preflightFromTheConfiguredFrontendOriginIsAllowed() throws Exception {
+        mockMvc.perform(options("/api/rounds")
+                        .header("Origin", "https://golfjakten.no")
+                        .header("Access-Control-Request-Method", "POST"))
+                .andExpect(status().isOk())
+                .andExpect(header().string("Access-Control-Allow-Origin", "https://golfjakten.no"));
+    }
+
+    @Test
+    void preflightFromTheSecondConfiguredOriginIsAlsoAllowed() throws Exception {
         mockMvc.perform(options("/api/rounds")
                         .header("Origin", "https://norskgolf.web.app")
                         .header("Access-Control-Request-Method", "POST"))
@@ -56,10 +65,12 @@ class CorsConfigTest {
         try (InputStream in = new ClassPathResource("application.properties").getInputStream()) {
             properties.load(in);
         }
-        String url = properties.getProperty("app.frontend.url");
+        String value = properties.getProperty("app.frontend.url");
 
-        assertNotNull(url, "app.frontend.url is missing from application.properties");
-        assertTrue(url.startsWith("http://") || url.startsWith("https://"),
-                "app.frontend.url must be an absolute origin for CORS, was: " + url);
+        assertNotNull(value, "app.frontend.url is missing from application.properties");
+        for (String url : value.split(",")) {
+            assertTrue(url.trim().startsWith("http://") || url.trim().startsWith("https://"),
+                    "every app.frontend.url entry must be an absolute origin for CORS, was: " + url);
+        }
     }
 }
