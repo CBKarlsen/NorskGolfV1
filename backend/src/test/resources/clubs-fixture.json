@@ -1,0 +1,20 @@
+[
+  {
+    "clubId": "miklagard-gk",
+    "name": "Miklagard Golfklubb",
+    "lat": 60.0234,
+    "lon": 11.1421,
+    "municipality": "Ullensaker",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "aalesund-gk",
+    "name": "Ålesund Golfklubb",
+    "lat": 62.5312,
+    "lon": 6.1189,
+    "municipality": "Ålesund",
+    "county": "Møre og Romsdal",
+    "holes": 18
+  }
+]

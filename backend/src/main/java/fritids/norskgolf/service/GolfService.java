@@ -33,7 +33,7 @@ public class GolfService {
 
     // --- 1. GET ALL COURSES ---
     public List<CourseDto> getAllCourses(User currentUser) {
-        List<Course> allCourses = courseRepository.findAll();
+        List<Course> allCourses = courseRepository.findByActiveTrue();
         Set<Long> playedIds = new HashSet<>();
 
         if (currentUser != null) {
@@ -124,7 +124,7 @@ public class GolfService {
 
     // --- 5. DASHBOARD STATS (The Big Logic) ---
     public DashboardStats getDashboardStats(User user) {
-        List<Course> allCourses = courseRepository.findAll();
+        List<Course> allCourses = courseRepository.findByActiveTrue();
         Set<Long> playedIds = new HashSet<>(playedCourseRepository.findCourseIdsByUserId(user.getId()));
 
         // A. Regional Data Calculation
@@ -153,9 +153,13 @@ public class GolfService {
         stats.setDisplayName(user.getFullName());
         stats.setAvatar(user.getAvatar());
         stats.setEmail(user.getEmail());
-        stats.setTotalPlayed(playedIds.size());
+        // Count only played courses that are still active: playedIds includes rounds on courses
+        // the club-list reconciler has since deactivated, and counting those against a
+        // active-only denominator produces "34 av 30" and a percentage above 100.
+        int totalPlayed = (int) allCourses.stream().filter(c -> playedIds.contains(c.getId())).count();
+        stats.setTotalPlayed(totalPlayed);
         stats.setTotalCourses(allCourses.size());
-        stats.setPercentageComplete(allCourses.isEmpty() ? 0 : (double) playedIds.size() / allCourses.size() * 100);
+        stats.setPercentageComplete(allCourses.isEmpty() ? 0 : (double) totalPlayed / allCourses.size() * 100);
         stats.setRegionStats(regionalData);
         stats.setRecentRounds(recentRounds);
 

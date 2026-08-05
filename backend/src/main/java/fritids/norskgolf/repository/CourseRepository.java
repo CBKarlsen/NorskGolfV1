@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface CourseRepository extends JpaRepository<Course, Long> {
     Optional<Course> findByExternalId(String externalId);
     List<Course> findByName(String name);
+    List<Course> findByActiveTrue();
 
 }

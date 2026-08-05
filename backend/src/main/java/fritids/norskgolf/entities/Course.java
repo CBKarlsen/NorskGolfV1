@@ -1,6 +1,8 @@
 package fritids.norskgolf.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,6 +21,18 @@ public class Course {
     private Double longitude;
 
     private String county;
+
+    private String municipality;
+
+    private Integer holes;
+
+    // @ColumnDefault is load-bearing, not decoration: ddl-auto=update emits
+    // "alter table courses add column active boolean not null" without it, which Postgres
+    // rejects on a table that already has rows. The Java initialiser below only applies to
+    // new JVM objects — the DDL default is what backfills the existing ~160 production rows.
+    @Column(nullable = false)
+    @ColumnDefault("true")
+    private boolean active = true;
 
     @Column(unique = true)
     private String externalId; // Unique identifier from a map API
@@ -42,6 +56,15 @@ public class Course {
 
     public String getCounty() { return county; }
     public void setCounty(String county) { this.county = county; }
+
+    public String getMunicipality() { return municipality; }
+    public void setMunicipality(String municipality) { this.municipality = municipality; }
+
+    public Integer getHoles() { return holes; }
+    public void setHoles(Integer holes) { this.holes = holes; }
+
+    public boolean isActive() { return active; }
+    public void setActive(boolean active) { this.active = active; }
 
     public String getExternalId() { return externalId; }
     public void setExternalId(String externalId) { this.externalId = externalId; }

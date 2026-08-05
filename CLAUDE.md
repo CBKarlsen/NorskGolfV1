@@ -59,7 +59,11 @@ A `DelegatingAuthenticationEntryPoint` in `SecurityConfig` splits the unauthenti
 
 ### Course data
 
-`CourseSyncService` runs on `ApplicationReadyEvent` and seeds courses **only when the `course` table is empty**: `resources/golf_courses.json` first, falling back to a live Overpass API query for Norway. To re-import, clear the table first.
+`backend/src/main/resources/golf_clubs.json` is the curated list of Norwegian golf clubs and the source of truth for the collection game — one entry per club, carrying `clubId`, name, coordinates, municipality, county and hole count.
+
+`CourseSyncService` reconciles it into the `course` table on every boot: matches by `clubId`, else by normalised name within 3 km; updates matched rows in place so `played_course` and `round` foreign keys survive; inserts new clubs; and **deactivates** courses the list no longer contains rather than deleting them, so a logged round is never lost. Ambiguous matches are logged and skipped for a human to resolve.
+
+Set `app.clubs.dry-run=true` to log what would change without writing.
 
 ### Database
 
