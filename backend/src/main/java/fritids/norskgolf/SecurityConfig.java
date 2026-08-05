@@ -52,7 +52,7 @@ public class SecurityConfig {
                         // the way to Cloud Run, so an XSRF-TOKEN cookie would never reach us and
                         // every mutating request would 403. The token rides in the session and is
                         // handed to the SPA in the /api/auth/me response instead.
-                        .csrfTokenRepository(new HttpSessionCsrfTokenRepository())
+                        .csrfTokenRepository(csrfTokenRepository())
                         .csrfTokenRequestHandler(requestHandler)
                 )
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
@@ -91,6 +91,17 @@ public class SecurityConfig {
                 // handed to the SPA by /api/auth/me.
                 .addFilterAfter(new CsrfTokenMaterialisingFilter(), BasicAuthenticationFilter.class)
                 .build();
+    }
+
+    /**
+     * The header name is set explicitly and must stay X-XSRF-TOKEN: this repository defaults to
+     * X-CSRF-TOKEN, while the SPA and the CORS allowlist both use X-XSRF-TOKEN. Leaving the
+     * default silently 403s every mutating request. Covered by SecurityConfigTest.
+     */
+    static HttpSessionCsrfTokenRepository csrfTokenRepository() {
+        HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+        repository.setHeaderName("X-XSRF-TOKEN");
+        return repository;
     }
 
     /**
