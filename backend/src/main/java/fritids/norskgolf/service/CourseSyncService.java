@@ -1,140 +1,106 @@
 package fritids.norskgolf.service;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fritids.norskgolf.entities.Course;
 import fritids.norskgolf.repository.CourseRepository;
+import fritids.norskgolf.service.clubs.ClubListLoader;
+import fritids.norskgolf.service.clubs.ClubMatcher;
+import fritids.norskgolf.service.clubs.ClubRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
-import org.springframework.util.FileCopyUtils;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CourseSyncService {
 
-    private final CourseRepository courseRepository;
-    private final RestClient restClient;
+    private static final Logger log = LoggerFactory.getLogger(CourseSyncService.class);
+    private static final String CLUB_LIST = "golf_clubs.json";
 
-    public CourseSyncService(CourseRepository courseRepository) {
+    private final CourseRepository courseRepository;
+    private final ClubListLoader loader;
+    private final ClubMatcher matcher;
+
+    @Value("${app.clubs.dry-run:false}")
+    private boolean dryRun;
+
+    public CourseSyncService(CourseRepository courseRepository, ClubListLoader loader, ClubMatcher matcher) {
         this.courseRepository = courseRepository;
-        this.restClient = RestClient.create();
+        this.loader = loader;
+        this.matcher = matcher;
     }
+
+    public record SyncSummary(int matched, int inserted, int deactivated, List<String> ambiguous) {}
 
     @EventListener(ApplicationReadyEvent.class)
-    public void syncCourses() {
-        if (courseRepository.count() > 0) {
-            System.out.println("✅ Courses already in database. Skipping sync.");
-            return;
-        }
-
-        System.out.println("🌍 Database empty. Starting sync...");
-
-        // STRATEGY 1: Local File (Fast & Reliable)
-        try {
-            ClassPathResource resource = new ClassPathResource("golf_courses.json");
-            if (resource.exists()) {
-                System.out.println("📂 Found 'golf_courses.json' locally. Importing...");
-                String json = FileCopyUtils.copyToString(
-                        new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
-                parseAndSaveCourses(json);
-                System.out.println("✅ Imported from local file!");
-                return; // Stop here, success!
-            }
-        } catch (Exception e) {
-            System.err.println("⚠️ Could not read local file: " + e.getMessage());
-        }
-
-        // STRATEGY 2: Internet (Backup / Slow)
-        System.out.println("☁️ Local file missing. Calling Overpass API (This might fail)...");
-        String overpassUrl = "https://overpass-api.de/api/interpreter?data=" +
-                "[out:json][timeout:90];" +
-                "area[\"ISO3166-1\"=\"NO\"]->.searchArea;" +
-                "nwr[\"leisure\"=\"golf_course\"](area.searchArea);" +
-                "out center;";
-
-        try {
-            String response = restClient.get()
-                    .uri(overpassUrl)
-                    .retrieve()
-                    .body(String.class);
-
-            parseAndSaveCourses(response);
-            System.out.println("✅ Imported from Internet!");
-
-        } catch (Exception e) {
-            System.err.println("❌ Internet sync failed: " + e.getMessage());
-        }
+    public void syncOnStartup() {
+        SyncSummary summary = reconcile(loader.load(CLUB_LIST), dryRun);
+        log.info("Club sync{}: {} matched, {} inserted, {} deactivated, {} ambiguous",
+                dryRun ? " (DRY RUN)" : "", summary.matched(), summary.inserted(),
+                summary.deactivated(), summary.ambiguous().size());
+        summary.ambiguous().forEach(name -> log.warn("Ambiguous club, needs a human: {}", name));
     }
 
-    private void parseAndSaveCourses(String jsonResponse) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            JsonNode root = mapper.readTree(jsonResponse);
-            JsonNode elements = root.path("elements");
-            Set<String> processedNames = new HashSet<>();
+    @Transactional
+    public SyncSummary reconcile(List<ClubRecord> clubs, boolean dryRunMode) {
+        List<Course> existing = new ArrayList<>(courseRepository.findAll());
+        List<Course> unclaimed = new ArrayList<>(existing);
+        List<String> ambiguous = new ArrayList<>();
+        int matched = 0;
+        int inserted = 0;
 
-            for (JsonNode node : elements) {
-                if (node.has("tags") && node.path("tags").has("name")) {
-                    String name = node.path("tags").get("name").asText().trim();
+        for (ClubRecord club : clubs) {
+            Course byId = existing.stream()
+                    .filter(c -> club.clubId().equals(c.getExternalId()))
+                    .findFirst()
+                    .orElse(null);
 
-                    if (processedNames.contains(name)) continue; // Skip duplicates
-                    processedNames.add(name);
+            ClubMatcher.Match match = byId != null
+                    ? new ClubMatcher.Match(byId, false)
+                    : matcher.match(club, unclaimed);
 
-                    String externalId = String.valueOf(node.get("id").asLong());
-
-                    // Coordinates logic
-                    double lat = 0, lon = 0;
-                    if (node.has("center")) {
-                        lat = node.get("center").get("lat").asDouble();
-                        lon = node.get("center").get("lon").asDouble();
-                    } else if (node.has("lat")) {
-                        lat = node.get("lat").asDouble();
-                        lon = node.get("lon").asDouble();
-                    } else {
-                        continue;
-                    }
-
-                    // County Logic
-                    String county = "";
-                    if (node.path("tags").has("addr:county")) {
-                        county = node.path("tags").get("addr:county").asText();
-                    }
-                    if (county.isEmpty()) {
-                        county = estimateCounty(lat, lon);
-                    }
-
-                    Course course = new Course();
-                    course.setExternalId(externalId);
-                    course.setName(name);
-                    course.setLatitude(lat);
-                    course.setLongitude(lon);
-                    course.setCounty(county);
-
-                    courseRepository.save(course);
-                }
+            if (match.ambiguous()) {
+                ambiguous.add(club.name());
+                continue;
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+            Course course = match.course();
+            if (course == null) {
+                course = new Course();
+                inserted++;
+            } else {
+                unclaimed.remove(course);
+                matched++;
+            }
+
+            apply(club, course);
+            if (!dryRunMode) courseRepository.save(course);
         }
+
+        int deactivated = 0;
+        for (Course leftover : unclaimed) {
+            if (!leftover.isActive()) continue;
+            deactivated++;
+            leftover.setActive(false);
+            if (!dryRunMode) courseRepository.save(leftover);
+        }
+
+        return new SyncSummary(matched, inserted, deactivated, ambiguous);
     }
 
-    private String estimateCounty(double lat, double lon) {
-        if (lon > 10.0 && lat > 68.0) return "Troms og Finnmark";
-        if (lat > 65.0) return "Nordland";
-        if (lat > 62.5 && lon > 9.0) return "Trøndelag";
-        if (lat < 62.5 && lat > 59.5 && lon < 8.0) return "Vestland";
-        if (lat < 59.5 && lon < 7.5) return "Rogaland";
-        if (lat < 59.0 && lon > 7.5) return "Agder";
-        if (lat > 59.0 && lat < 60.5 && lon > 10.0) return "Viken";
-        if (lat > 60.5 && lat < 62.5 && lon > 8.0 && lon < 12.0) return "Innlandet";
-        if (lat > 59.0 && lon > 9.0 && lon < 10.5) return "Vestfold og Telemark";
-        return "Andre fylker";
+    private void apply(ClubRecord club, Course course) {
+        course.setExternalId(club.clubId());
+        course.setName(club.name());
+        course.setLatitude(club.lat());
+        course.setLongitude(club.lon());
+        course.setMunicipality(club.municipality());
+        course.setCounty(club.county());
+        course.setHoles(club.holes());
+        course.setActive(true);
     }
 }
