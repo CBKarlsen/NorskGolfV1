@@ -41,7 +41,7 @@ public class User {
     @Column(unique = true)
     private String providerId;
 
-    // Join table with extra attributes (bestScore, lastPlayed)
+    // Join entity: which courses this user has played
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<PlayedCourse> playedCourses = new HashSet<>();
 
