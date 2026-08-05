@@ -1458,8 +1458,8 @@
     "holes": 18
   },
   {
-    "clubId": "trondheim-gk-il-tempo-golf-country-club",
-    "name": "Trondheim Golfklubb, IL Tempo Golf & Country Club",
+    "clubId": "trondheim-gk",
+    "name": "Trondheim Golfklubb",
     "lat": 63.422434,
     "lon": 10.334843,
     "municipality": "Trondheim",
@@ -1476,8 +1476,8 @@
     "holes": 18
   },
   {
-    "clubId": "tyrifjord-gk-holevaeringen-idrettslag-golfgruppe",
-    "name": "Tyrifjord Golfklubb, Holeværingen idrettslag - Golfgruppe",
+    "clubId": "tyrifjord-gk",
+    "name": "Tyrifjord Golfklubb",
     "lat": 60.052762,
     "lon": 10.270642,
     "municipality": "Hole",

@@ -18,6 +18,8 @@ public class ClubMatcher {
     public static String normalise(String name) {
         if (name == null) return "";
         String folded = name.toLowerCase(Locale.ROOT)
+                .replaceAll("\\([^)]*\\)", " ")
+                .replace("&", " og ")
                 .replace("ø", "o").replace("æ", "ae").replace("å", "a")
                 .replace("aa", "a");
         folded = Normalizer.normalize(folded, Normalizer.Form.NFD).replaceAll("\\p{M}", "");

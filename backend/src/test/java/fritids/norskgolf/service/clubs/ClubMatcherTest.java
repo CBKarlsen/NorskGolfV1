@@ -94,6 +94,28 @@ class ClubMatcherTest {
     }
 
     @Test
+    void normalisationTreatsAmpersandAndOgAsEquivalent() {
+        assertEquals(ClubMatcher.normalise("Arendal & Omegn Golfklubb"), ClubMatcher.normalise("Arendal og Omegn Golfklubb"));
+    }
+
+    @Test
+    void normalisationIgnoresAParentheticalSuffix() {
+        assertEquals(ClubMatcher.normalise("Sandnes Golfklubb (Bærheim Golfpark)"), ClubMatcher.normalise("Sandnes Golfklubb"));
+    }
+
+    @Test
+    void matchesAmpersandClubDespiteAnUnrelatedNearbyAmpersandName() {
+        // arendal is ~1.1 km from the club, playAndPay ~0.2 km — both within the 3 km radius
+        Course arendal = course("Arendal & Omegn Golfklubb", 58.470892, 8.7720);
+        Course playAndPay = course("Play&pay, 9 holes, par 27", 58.462799, 8.7720);
+
+        ClubMatcher.Match match = matcher.match(club("Arendal og Omegn Golfklubb", 58.4610, 8.7720), List.of(arendal, playAndPay));
+
+        assertSame(arendal, match.course());
+        assertFalse(match.ambiguous());
+    }
+
+    @Test
     void distanceIsRoughlyRight() {
         // Oslo to Bergen is about 300 km
         double km = ClubMatcher.distanceKm(59.9139, 10.7522, 60.3913, 5.3221);

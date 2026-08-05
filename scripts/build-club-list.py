@@ -72,6 +72,9 @@ EXTRA_CLUBS = [
 def clean_club_name(name):
     """"Alta Golfklubb / Alta Golfpark AS" is one club; the company half is not its name."""
     name = re.sub(r"\(.*?\)", " ", name)          # "(pay and play)", "(nedlagt?)"
+    # An alias tacked on after a comma is not the club's name, e.g.
+    # "Trondheim Golfklubb, IL Tempo Golf & Country Club".
+    name = name.split(",", 1)[0]
     # The club and the company that runs it are separated by a slash, in either order:
     # "Alta Golfklubb / Alta Golfpark AS" but also "Haga Golf AS / Haga Golfklubb".
     # Prefer whichever side names a klubb; fall back to the first.
