@@ -37,8 +37,7 @@ public class GolfService {
         Set<Long> playedIds = new HashSet<>();
 
         if (currentUser != null) {
-            playedCourseRepository.findByUserId(currentUser.getId())
-                    .forEach(pc -> playedIds.add(pc.getCourse().getId()));
+            playedIds.addAll(playedCourseRepository.findCourseIdsByUserId(currentUser.getId()));
         }
 
         return allCourses.stream()
@@ -126,8 +125,7 @@ public class GolfService {
     // --- 5. DASHBOARD STATS (The Big Logic) ---
     public DashboardStats getDashboardStats(User user) {
         List<Course> allCourses = courseRepository.findAll();
-        Set<Long> playedIds = playedCourseRepository.findByUserId(user.getId())
-                .stream().map(pc -> pc.getCourse().getId()).collect(Collectors.toSet());
+        Set<Long> playedIds = new HashSet<>(playedCourseRepository.findCourseIdsByUserId(user.getId()));
 
         // A. Regional Data Calculation
         Map<String, DashboardStats.RegionStat> regionalData = new HashMap<>();

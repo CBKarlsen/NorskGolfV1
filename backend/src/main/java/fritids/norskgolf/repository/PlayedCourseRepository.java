@@ -20,6 +20,11 @@ public interface PlayedCourseRepository extends JpaRepository<PlayedCourse, Long
 
     Optional<PlayedCourse> findByUserIdAndCourse_ExternalId(Long userId, String externalId);
 
+    // Just the ids: PlayedCourse.course is LAZY, and open-in-view is off, so dereferencing it
+    // outside a transaction would fail. Nothing here needs the Course itself.
+    @Query("select pc.course.id from PlayedCourse pc where pc.user.id = :userId")
+    List<Long> findCourseIdsByUserId(Long userId);
+
     @Query("""
         select pc from PlayedCourse pc
         join fetch pc.course c
