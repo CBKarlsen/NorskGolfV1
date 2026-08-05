@@ -3,8 +3,7 @@
 Track which Norwegian golf courses you have played, log your rounds, and compare
 your progress with friends.
 
-Live at
-[norskgolf-778238820195.europe-north1.run.app](https://norskgolf-778238820195.europe-north1.run.app).
+Live at [golfjakten.no](https://golfjakten.no).
 
 ## What it does
 
