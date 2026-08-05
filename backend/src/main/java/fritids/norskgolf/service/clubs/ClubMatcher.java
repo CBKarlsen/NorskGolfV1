@@ -37,13 +37,18 @@ public class ClubMatcher {
         return earthRadiusKm * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
-    public Match match(ClubRecord club, List<Course> candidates) {
-        String target = normalise(club.name());
-
-        List<Course> near = candidates.stream()
+    /** Candidates within {@link #MAX_KM} of the club, regardless of name. */
+    public List<Course> nearby(ClubRecord club, List<Course> candidates) {
+        return candidates.stream()
                 .filter(c -> c.getLatitude() != null && c.getLongitude() != null)
                 .filter(c -> distanceKm(club.lat(), club.lon(), c.getLatitude(), c.getLongitude()) <= MAX_KM)
                 .toList();
+    }
+
+    public Match match(ClubRecord club, List<Course> candidates) {
+        String target = normalise(club.name());
+
+        List<Course> near = nearby(club, candidates);
 
         List<Course> sameName = near.stream()
                 .filter(c -> normalise(c.getName()).equals(target))

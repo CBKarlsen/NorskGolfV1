@@ -66,6 +66,11 @@ public class CourseSyncService {
 
             if (match.ambiguous()) {
                 ambiguous.add(club.name());
+                // The club IS present in the curated list; the matcher just couldn't pick a
+                // winner among several nearby candidates. Pull those candidates out of
+                // "unclaimed" so they are not deactivated as if the club were absent — they
+                // keep their current state until a human resolves the collision.
+                unclaimed.removeAll(matcher.nearby(club, unclaimed));
                 continue;
             }
 
@@ -73,21 +78,32 @@ public class CourseSyncService {
             if (course == null) {
                 course = new Course();
                 inserted++;
+                apply(club, course);
+                if (!dryRunMode) courseRepository.save(course);
             } else {
+                // course is the exact instance matcher.match()/byId picked out of unclaimed, so
+                // remove() resolves it via Course#equals (externalId-based) without ambiguity.
                 unclaimed.remove(course);
                 matched++;
+                // course is a MANAGED entity (straight from courseRepository.findAll()): calling
+                // a setter on it marks it dirty, and @Transactional's commit-time flush would
+                // write that change regardless of dryRunMode. Only mutate it when this is real.
+                if (!dryRunMode) {
+                    apply(club, course);
+                    courseRepository.save(course);
+                }
             }
-
-            apply(club, course);
-            if (!dryRunMode) courseRepository.save(course);
         }
 
         int deactivated = 0;
         for (Course leftover : unclaimed) {
             if (!leftover.isActive()) continue;
             deactivated++;
-            leftover.setActive(false);
-            if (!dryRunMode) courseRepository.save(leftover);
+            // same managed-entity caveat as above: don't flip the flag unless this is real.
+            if (!dryRunMode) {
+                leftover.setActive(false);
+                courseRepository.save(leftover);
+            }
         }
 
         return new SyncSummary(matched, inserted, deactivated, ambiguous);
