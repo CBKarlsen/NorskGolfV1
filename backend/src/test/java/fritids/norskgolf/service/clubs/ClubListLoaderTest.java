@@ -23,6 +23,12 @@ class ClubListLoaderTest {
         assertEquals("Akershus", miklagard.county());
         assertEquals(18, miklagard.holes());
         assertEquals(60.0234, miklagard.lat(), 0.0001);
+
+        ClubRecord aalesund = clubs.get(1);
+        assertEquals("aalesund-gk", aalesund.clubId());
+        assertEquals("Ålesund Golfklubb", aalesund.name());
+        assertEquals("Møre og Romsdal", aalesund.county());
+        assertEquals(18, aalesund.holes());
     }
 
     @Test
