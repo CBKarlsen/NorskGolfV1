@@ -30,6 +30,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -37,8 +38,14 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
+    /** Comma-separated public origins. First one is canonical (post-logout redirect); all are
+     *  allowed by CORS, so a domain switchover doesn't break writes on the old host. */
     @Value("${app.frontend.url}")
-    private String frontendUrl;
+    private String frontendUrls;
+
+    private List<String> frontendOrigins() {
+        return Arrays.stream(frontendUrls.split(",")).map(String::trim).filter(s -> !s.isEmpty()).toList();
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -82,7 +89,7 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl(frontendUrl)
+                        .logoutSuccessUrl(frontendOrigins().get(0))
                         .invalidateHttpSession(true)
                         .deleteCookies("__session")
                         .permitAll()
@@ -119,7 +126,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(frontendUrl));
+        configuration.setAllowedOrigins(frontendOrigins());
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         // Explicitly allowing headers helps with CORS preflight checks
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-XSRF-TOKEN"));

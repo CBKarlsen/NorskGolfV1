@@ -47,7 +47,7 @@ Layered: **Controller → Service → Repository → Entity**
 
 **The app gets exactly one cookie, and it must be called `__session`.** Firebase Hosting strips every other cookie before forwarding to Cloud Run (it is part of the CDN cache key), so `server.servlet.session.cookie.name=__session` is load-bearing, not cosmetic — rename it and every request arrives anonymous and login fails at the OAuth callback.
 
-**`app.frontend.url` is the CORS allowlist, and it must be an absolute origin.** Behind Firebase the app sees the `run.app` host while the browser says `norskgolf.web.app`, so Spring treats the SPA as cross-origin and enforces CORS on it. Browsers send `Origin` on writes but not on same-origin reads, so a bad value here breaks every POST/DELETE while GETs look fine — and **curl cannot reproduce it, because curl sends no `Origin` header**. Reach for a preflight (`OPTIONS` with `Origin` + `Access-Control-Request-Method`) or server-side debug logging instead. `GET /api/csrf` exists so the CSRF round-trip can be exercised without logging in.
+**`app.frontend.url` is the CORS allowlist: a comma-separated list of absolute origins**, first one canonical (post-logout redirect). Behind Firebase the app sees the `run.app` host while the browser says `golfjakten.no`, so Spring treats the SPA as cross-origin and enforces CORS on it. Browsers send `Origin` on writes but not on same-origin reads, so a bad value here breaks every POST/DELETE while GETs look fine — and **curl cannot reproduce it, because curl sends no `Origin` header**. Reach for a preflight (`OPTIONS` with `Origin` + `Access-Control-Request-Method`) or server-side debug logging instead. `GET /api/csrf` exists so the CSRF round-trip can be exercised without logging in.
 
 That rules out a cookie-based CSRF token. `SecurityConfig` uses `HttpSessionCsrfTokenRepository`; `AuthController` returns the token as `csrfToken` on `/api/auth/me`, `App.js` hands it to `setCsrfToken` in `api.js`, and mutating fetches spread `csrfHeaders()` into their headers alongside `credentials: "include"`. Don't reintroduce `document.cookie` reads for this.
 
@@ -78,7 +78,7 @@ Production is split across two services in the same Google project (`norskgolf`)
 
 | Serves | Where | Public URL |
 |---|---|---|
-| React build (`frontend/build`) | Firebase Hosting CDN | `https://norskgolf.web.app` |
+| React build (`frontend/build`) | Firebase Hosting CDN | `https://golfjakten.no` (canonical), `https://norskgolf.web.app` |
 | `/api/**`, `/oauth2/**`, `/login/oauth2/**`, `/logout` | Cloud Run, `europe-north1` | rewritten to by `firebase.json` |
 | Database | Neon (free tier), Frankfurt | outside Google |
 
@@ -97,7 +97,7 @@ Buildpacks detect Maven and build the JAR — there is no Dockerfile. Env vars (
 
 Gotchas:
 - `backend/.gcloudignore` is load-bearing: `secrets.properties` is imported unconditionally, so uploading it would point production at the local H2 file and bake the OAuth secret into the image.
-- Behind Firebase, Spring sees the `run.app` host, so `{baseUrl}` would build an OAuth `redirect_uri` pointing off the public domain. It is pinned by the `SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT_URI` env var on the Cloud Run service; the repo keeps `{baseUrl}` for local dev. `server.tomcat.use-relative-redirects=true` stops Tomcat rewriting relative redirects to absolute `run.app` URLs for the same reason.
+- Behind Firebase, Spring sees the `run.app` host, so `{baseUrl}` would build an OAuth `redirect_uri` pointing off the public domain. It is pinned to `https://golfjakten.no/login/oauth2/code/google` by the `SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GOOGLE_REDIRECT_URI` env var on the Cloud Run service; the repo keeps `{baseUrl}` for local dev. Both public hosts therefore send users to `golfjakten.no` to log in. `server.tomcat.use-relative-redirects=true` stops Tomcat rewriting relative redirects to absolute `run.app` URLs for the same reason.
 - Cloud Run also answers on two `run.app` hostnames directly. Those bypass Firebase (and so keep all cookies), which makes them useful for debugging but they are not the canonical entry point.
 - `min-instances=0`, so an idle app cold-starts (~4s JVM + Neon wake). Sessions are in Postgres, so nobody gets logged out by it.
 - First boot against an empty DB runs `CourseSyncService`, which inserts 160 courses one at a time — a few minutes over a remote DB.
