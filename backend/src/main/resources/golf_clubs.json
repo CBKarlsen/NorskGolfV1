@@ -1,20 +1,1640 @@
 [
   {
+    "clubId": "alta-gk",
+    "name": "Alta Golfklubb",
+    "lat": 69.92246,
+    "lon": 23.09117,
+    "municipality": "Alta",
+    "county": "Finnmark",
+    "holes": 9
+  },
+  {
+    "clubId": "arendal-og-omegn-gk",
+    "name": "Arendal og Omegn Golfklubb",
+    "lat": 58.625143,
+    "lon": 8.855195,
+    "municipality": "Tvedestrand",
+    "county": "Agder",
+    "holes": 18
+  },
+  {
+    "clubId": "asker-gk",
+    "name": "Asker Golfklubb",
+    "lat": 59.830678,
+    "lon": 10.388625,
+    "municipality": "Asker",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "askim-gk",
+    "name": "Askim Golfklubb",
+    "lat": 59.595116,
+    "lon": 11.171817,
+    "municipality": "Indre Østfold",
+    "county": "Østfold",
+    "holes": 9
+  },
+  {
+    "clubId": "atlungstad-gk",
+    "name": "Atlungstad Golfklubb",
+    "lat": 60.758961,
+    "lon": 11.080665,
+    "municipality": "Stange",
+    "county": "Innlandet",
+    "holes": 18
+  },
+  {
+    "clubId": "austraatt-gk",
+    "name": "Austrått Golfklubb",
+    "lat": 63.70106,
+    "lon": 9.73642,
+    "municipality": "Ørland",
+    "county": "Trøndelag",
+    "holes": 9
+  },
+  {
+    "clubId": "ballerud-gk",
+    "name": "Ballerud Golfklubb",
+    "lat": 59.908421,
+    "lon": 10.579393,
+    "municipality": "Bærum",
+    "county": "Akershus",
+    "holes": 9
+  },
+  {
+    "clubId": "bamble-gk",
+    "name": "Bamble Golfklubb",
+    "lat": 58.951829,
+    "lon": 9.595258,
+    "municipality": "Bamble",
+    "county": "Telemark",
+    "holes": 9
+  },
+  {
+    "clubId": "bergen-gk",
+    "name": "Bergen Golfklubb",
+    "lat": 60.448933,
+    "lon": 5.320181,
+    "municipality": "Bergen",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "bjaavann-gk",
+    "name": "Bjaavann Golfklubb",
+    "lat": 58.238908,
+    "lon": 8.054403,
+    "municipality": "Kristiansand",
+    "county": "Agder",
+    "holes": 18
+  },
+  {
+    "clubId": "bjornefjorden-gk",
+    "name": "Bjørnefjorden Golfklubb",
+    "lat": 60.19109,
+    "lon": 5.484461,
+    "municipality": "Bjørnafjorden",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "bodo-gk",
+    "name": "Bodø Golfklubb",
+    "lat": 67.277023,
+    "lon": 14.733404,
+    "municipality": "Bodø",
+    "county": "Nordland",
+    "holes": 9
+  },
+  {
+    "clubId": "borre-gk",
+    "name": "Borre Golfklubb",
+    "lat": 59.401987,
+    "lon": 10.461998,
+    "municipality": "Horten",
+    "county": "Vestfold",
+    "holes": 18
+  },
+  {
+    "clubId": "borregaard-gk",
+    "name": "Borregaard Golfklubb",
+    "lat": 59.29533,
+    "lon": 11.13342,
+    "municipality": "Sarpsborg",
+    "county": "Østfold",
+    "holes": 9
+  },
+  {
+    "clubId": "bronnoysund-gk",
+    "name": "Brønnøysund Golfklubb",
+    "lat": 65.547882,
+    "lon": 12.273754,
+    "municipality": "Brønnøy",
+    "county": "Nordland",
+    "holes": 6
+  },
+  {
+    "clubId": "byneset-gk",
+    "name": "Byneset Golfklubb",
+    "lat": 63.354162,
+    "lon": 10.14378,
+    "municipality": "Trondheim",
+    "county": "Trøndelag",
+    "holes": 18
+  },
+  {
+    "clubId": "baerum-gk",
+    "name": "Bærum Golfklubb",
+    "lat": 59.95811,
+    "lon": 10.496223,
+    "municipality": "Bærum",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "dalane-gk",
+    "name": "Dalane Golfklubb",
+    "lat": 58.338571,
+    "lon": 6.29779,
+    "municipality": "Sokndal",
+    "county": "Rogaland",
+    "holes": 6
+  },
+  {
+    "clubId": "drammen-gk",
+    "name": "Drammen Golfklubb",
+    "lat": 59.666779,
+    "lon": 10.223173,
+    "municipality": "Drammen",
+    "county": "Buskerud",
+    "holes": 18
+  },
+  {
+    "clubId": "drobak-gk",
+    "name": "Drøbak Golfklubb",
+    "lat": 59.675177,
+    "lon": 10.649151,
+    "municipality": "Frogn",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "egersund-gk",
+    "name": "Egersund Golfklubb",
+    "lat": 58.4892,
+    "lon": 5.915159,
+    "municipality": "Eigersund",
+    "county": "Rogaland",
+    "holes": 9
+  },
+  {
+    "clubId": "eiker-gk",
+    "name": "Eiker Golfklubb",
+    "lat": 59.735954,
+    "lon": 10.012759,
+    "municipality": "Drammen",
+    "county": "Buskerud",
+    "holes": 9
+  },
+  {
+    "clubId": "ekholtbruket-gk",
+    "name": "Ekholtbruket Golfklubb",
+    "lat": 59.404696,
+    "lon": 10.689106,
+    "municipality": "Moss",
+    "county": "Østfold",
+    "holes": 6
+  },
+  {
+    "clubId": "elverum-gk",
+    "name": "Elverum Golfklubb",
+    "lat": 60.874721,
+    "lon": 11.66912,
+    "municipality": "Elverum",
+    "county": "Innlandet",
+    "holes": 18
+  },
+  {
+    "clubId": "fana-gk",
+    "name": "Fana Golfklubb",
+    "lat": 60.290782,
+    "lon": 5.312714,
+    "municipality": "Bergen",
+    "county": "Vestland",
+    "holes": 18
+  },
+  {
+    "clubId": "farsund-gk",
+    "name": "Farsund Golfklubb",
+    "lat": 58.0737631,
+    "lon": 6.7716306,
+    "municipality": "Farsund",
+    "county": "Agder",
+    "holes": null
+  },
+  {
+    "clubId": "fet-gk",
+    "name": "Fet Golfklubb",
+    "lat": 59.916468,
+    "lon": 11.17756,
+    "municipality": "Lillestrøm",
+    "county": "Akershus",
+    "holes": 9
+  },
+  {
+    "clubId": "floro-gk",
+    "name": "Florø Golfklubb",
+    "lat": 61.60986,
+    "lon": 5.13044,
+    "municipality": "Kinn",
+    "county": "Vestland",
+    "holes": 6
+  },
+  {
+    "clubId": "frosta-gk",
+    "name": "Frosta Golfklubb",
+    "lat": 63.583316,
+    "lon": 10.803003,
+    "municipality": "Frosta",
+    "county": "Trøndelag",
+    "holes": 6
+  },
+  {
+    "clubId": "gamle-fredrikstad-gk",
+    "name": "Gamle Fredrikstad Golfklubb",
+    "lat": 59.204135,
+    "lon": 10.96103,
+    "municipality": "Fredrikstad",
+    "county": "Østfold",
+    "holes": 18
+  },
+  {
+    "clubId": "garder-gk",
+    "name": "Garder Golfklubb",
+    "lat": 59.568598,
+    "lon": 10.78209,
+    "municipality": "Vestby",
+    "county": "Akershus",
+    "holes": 6
+  },
+  {
+    "clubId": "geilo-gk",
+    "name": "Geilo Golfklubb",
+    "lat": 60.524684,
+    "lon": 8.196497,
+    "municipality": "Hol",
+    "county": "Buskerud",
+    "holes": 9
+  },
+  {
+    "clubId": "giske-gk",
+    "name": "Giske Golfklubb",
+    "lat": 62.534567,
+    "lon": 6.126432,
+    "municipality": "Giske",
+    "county": "Møre og Romsdal",
+    "holes": 6
+  },
+  {
+    "clubId": "gjerdrum-gk",
+    "name": "Gjerdrum Golfklubb",
+    "lat": 60.072954,
+    "lon": 11.0419,
+    "municipality": "Gjerdrum",
+    "county": "Akershus",
+    "holes": 9
+  },
+  {
+    "clubId": "gjersjoen-gk",
+    "name": "Gjersjøen Golfklubb",
+    "lat": 59.768568,
+    "lon": 10.780515,
+    "municipality": "Nordre Follo",
+    "county": "Akershus",
+    "holes": 9
+  },
+  {
+    "clubId": "gjovik-og-toten-gk",
+    "name": "Gjøvik og Toten Golfklubb",
+    "lat": 60.697889,
+    "lon": 10.735669,
+    "municipality": "Vestre Toten",
+    "county": "Innlandet",
+    "holes": 9
+  },
+  {
+    "clubId": "gran-gk",
+    "name": "Gran Golfklubb",
+    "lat": 60.366547,
+    "lon": 10.556197,
+    "municipality": "Gran",
+    "county": "Innlandet",
+    "holes": 9
+  },
+  {
+    "clubId": "grenland-og-omegn-gk",
+    "name": "Grenland og omegn Golfklubb",
+    "lat": 59.268623,
+    "lon": 9.570432,
+    "municipality": "Skien",
+    "county": "Telemark",
+    "holes": 18
+  },
+  {
+    "clubId": "grimstad-gk",
+    "name": "Grimstad Golfklubb",
+    "lat": 58.356447,
+    "lon": 8.629191,
+    "municipality": "Grimstad",
+    "county": "Agder",
+    "holes": 9
+  },
+  {
+    "clubId": "grini-gk",
+    "name": "Grini Golfklubb",
+    "lat": 59.950568,
+    "lon": 10.625226,
+    "municipality": "Bærum",
+    "county": "Akershus",
+    "holes": 9
+  },
+  {
+    "clubId": "groruddalen-gk",
+    "name": "Groruddalen Golfklubb",
+    "lat": 59.968142,
+    "lon": 10.91439,
+    "municipality": "Oslo",
+    "county": "Oslo",
+    "holes": 9
+  },
+  {
+    "clubId": "gronmo-gk",
+    "name": "Grønmo Golfklubb",
+    "lat": 59.843596,
+    "lon": 10.859824,
+    "municipality": "Oslo",
+    "county": "Oslo",
+    "holes": 9
+  },
+  {
+    "clubId": "gumoy-golf",
+    "name": "Gumøy golf",
+    "lat": 58.8924,
+    "lon": 9.52259,
+    "municipality": "Kragerø",
+    "county": "Telemark",
+    "holes": 9
+  },
+  {
+    "clubId": "hafjell-golf",
+    "name": "Hafjell golf",
+    "lat": 61.244475,
+    "lon": 10.453567,
+    "municipality": "Øyer",
+    "county": "Innlandet",
+    "holes": 9
+  },
+  {
+    "clubId": "haga-gk",
+    "name": "Haga Golfklubb",
+    "lat": 59.944142,
+    "lon": 10.579993,
+    "municipality": "Bærum",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "hakadal-gk",
+    "name": "Hakadal Golfklubb",
+    "lat": 60.124687,
+    "lon": 10.835275,
+    "municipality": "Nittedal",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "halden-gk",
+    "name": "Halden Golfklubb",
+    "lat": 59.119056,
+    "lon": 11.40942,
+    "municipality": "Halden",
+    "county": "Østfold",
+    "holes": 18
+  },
+  {
+    "clubId": "hammerfest-og-kvalsund-gk",
+    "name": "Hammerfest og Kvalsund Golfklubb",
+    "lat": 70.445034,
+    "lon": 24.32887,
+    "municipality": "Hammerfest",
+    "county": "Finnmark",
+    "holes": 6
+  },
+  {
+    "clubId": "hardanger-gk",
+    "name": "Hardanger Golfklubb",
+    "lat": 60.374528,
+    "lon": 6.185979,
+    "municipality": "Kvam",
+    "county": "Vestland",
+    "holes": 6
+  },
+  {
+    "clubId": "harstad-gk",
+    "name": "Harstad Golfklubb",
+    "lat": 68.831824,
+    "lon": 16.486949,
+    "municipality": "Harstad",
+    "county": "Troms",
+    "holes": 9
+  },
+  {
+    "clubId": "hasvik-gk",
+    "name": "Hasvik Golfklubb",
+    "lat": 70.4874399,
+    "lon": 22.1416628,
+    "municipality": "Hasvik",
+    "county": "Finnmark",
+    "holes": null
+  },
+  {
+    "clubId": "haugaland-gk",
+    "name": "Haugaland Golfklubb",
+    "lat": 59.549969,
+    "lon": 5.365352,
+    "municipality": "Sveio",
+    "county": "Vestland",
+    "holes": 18
+  },
+  {
+    "clubId": "hauger-gk",
+    "name": "Hauger Golfklubb",
+    "lat": 60.002189,
+    "lon": 10.984277,
+    "municipality": "Nittedal",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "haugesund-gk",
+    "name": "Haugesund Golfklubb",
+    "lat": 59.392444,
+    "lon": 5.352649,
+    "municipality": "Karmøy",
+    "county": "Rogaland",
+    "holes": 9
+  },
+  {
+    "clubId": "helgeland-gk",
+    "name": "Helgeland Golfklubb",
+    "lat": 65.926706,
+    "lon": 13.308682,
+    "municipality": "Vefsn",
+    "county": "Nordland",
+    "holes": 9
+  },
+  {
+    "clubId": "hemsedal-golfalpin-golfbane",
+    "name": "Hemsedal Golfalpin golfbane",
+    "lat": 60.786822,
+    "lon": 8.742446,
+    "municipality": "Hemsedal",
+    "county": "Buskerud",
+    "holes": 18
+  },
+  {
+    "clubId": "hemsedal-gk",
+    "name": "Hemsedal Golfklubb",
+    "lat": 60.923268,
+    "lon": 8.429637,
+    "municipality": "Hemsedal",
+    "county": "Buskerud",
+    "holes": 9
+  },
+  {
+    "clubId": "herdla-gk",
+    "name": "Herdla Golfklubb",
+    "lat": 60.563826,
+    "lon": 4.953737,
+    "municipality": "Askøy",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "hinnoy-gk",
+    "name": "Hinnøy Golfklubb",
+    "lat": 68.6774,
+    "lon": 16.5146,
+    "municipality": "Harstad",
+    "county": "Troms",
+    "holes": 18
+  },
+  {
+    "clubId": "hitra-froya-gk",
+    "name": "Hitra Frøya Golfklubb",
+    "lat": 63.511068,
+    "lon": 9.019293,
+    "municipality": "Hitra",
+    "county": "Trøndelag",
+    "holes": 9
+  },
+  {
+    "clubId": "hof-gk",
+    "name": "Hof Golfklubb",
+    "lat": 59.536368,
+    "lon": 10.088357,
+    "municipality": "Holmestrand",
+    "county": "Vestfold",
+    "holes": 9
+  },
+  {
+    "clubId": "holtsmark-gk",
+    "name": "Holtsmark Golfklubb",
+    "lat": 59.872619,
+    "lon": 10.265424,
+    "municipality": "Lier",
+    "county": "Buskerud",
+    "holes": 18
+  },
+  {
+    "clubId": "hovden-gk",
+    "name": "Hovden Golfklubb",
+    "lat": 59.493631,
+    "lon": 7.398123,
+    "municipality": "Bykle",
+    "county": "Agder",
+    "holes": 9
+  },
+  {
+    "clubId": "huseby-og-hanko-gk",
+    "name": "Huseby og Hankø Golfklubb",
+    "lat": 59.266938,
+    "lon": 10.790666,
+    "municipality": "Fredrikstad",
+    "county": "Østfold",
+    "holes": 9
+  },
+  {
+    "clubId": "husoy-gk",
+    "name": "Husøy Golfklubb",
+    "lat": 59.239267,
+    "lon": 10.46707,
+    "municipality": "Tønsberg",
+    "county": "Vestfold",
+    "holes": 9
+  },
+  {
+    "clubId": "hvaler-gk",
+    "name": "Hvaler Golfklubb",
+    "lat": 59.051329,
+    "lon": 11.023836,
+    "municipality": "Hvaler",
+    "county": "Østfold",
+    "holes": 9
+  },
+  {
+    "clubId": "hvam-gk",
+    "name": "Hvam Golfklubb",
+    "lat": 60.105746,
+    "lon": 11.382875,
+    "municipality": "Nes",
+    "county": "Akershus",
+    "holes": 9
+  },
+  {
+    "clubId": "ibestad-gk",
+    "name": "Ibestad Golfklubb",
+    "lat": 68.8249,
+    "lon": 17.2049,
+    "municipality": "Ibestad",
+    "county": "Troms",
+    "holes": null
+  },
+  {
+    "clubId": "jaeren-gk",
+    "name": "Jæren Golfklubb",
+    "lat": 58.703169,
+    "lon": 5.694212,
+    "municipality": "Time",
+    "county": "Rogaland",
+    "holes": 9
+  },
+  {
+    "clubId": "karasjok-gk",
+    "name": "Karasjok Golfklubb",
+    "lat": 69.464213,
+    "lon": 25.517282,
+    "municipality": "Karasjok",
+    "county": "Finnmark",
+    "holes": 9
+  },
+  {
+    "clubId": "karmoy-gk",
+    "name": "Karmøy Golfklubb",
+    "lat": 59.153625,
+    "lon": 5.24918,
+    "municipality": "Karmøy",
+    "county": "Rogaland",
+    "holes": 9
+  },
+  {
+    "clubId": "kjekstad-gk",
+    "name": "Kjekstad Golfklubb",
+    "lat": 59.74907,
+    "lon": 10.37994,
+    "municipality": "Asker",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "klaebu-gk",
+    "name": "Klæbu Golfklubb",
+    "lat": 63.32615,
+    "lon": 10.482112,
+    "municipality": "Trondheim",
+    "county": "Trøndelag",
+    "holes": 9
+  },
+  {
+    "clubId": "kongsberg-golfbane",
+    "name": "Kongsberg Golfbane",
+    "lat": 59.615644,
+    "lon": 9.716024,
+    "municipality": "Kongsberg",
+    "county": "Buskerud",
+    "holes": 18
+  },
+  {
+    "clubId": "kongsvinger-gk",
+    "name": "Kongsvinger Golfklubb",
+    "lat": 60.120732,
+    "lon": 12.052121,
+    "municipality": "Kongsvinger",
+    "county": "Innlandet",
+    "holes": 18
+  },
+  {
+    "clubId": "kragero-gk",
+    "name": "Kragerø Golfklubb",
+    "lat": 58.847199,
+    "lon": 9.397247,
+    "municipality": "Kragerø",
+    "county": "Telemark",
+    "holes": 18
+  },
+  {
+    "clubId": "kristiansand-gk",
+    "name": "Kristiansand Golfklubb",
+    "lat": 58.141949,
+    "lon": 8.081035,
+    "municipality": "Kristiansand",
+    "county": "Agder",
+    "holes": 9
+  },
+  {
+    "clubId": "kristiansund-og-omegn-gk",
+    "name": "Kristiansund og Omegn Golfklubb",
+    "lat": 63.110272,
+    "lon": 7.852811,
+    "municipality": "Kristiansund",
+    "county": "Møre og Romsdal",
+    "holes": 9
+  },
+  {
+    "clubId": "krokhol-gk",
+    "name": "Krokhol Golfklubb",
+    "lat": 59.802302,
+    "lon": 10.926213,
+    "municipality": "Nordre Follo",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "kvinnherad-gk",
+    "name": "Kvinnherad Golfklubb",
+    "lat": 59.861699,
+    "lon": 5.76528,
+    "municipality": "Kvinnherad",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "kvitfjell-golf",
+    "name": "Kvitfjell golf",
+    "lat": 61.472858,
+    "lon": 10.169324,
+    "municipality": "Ringebu",
+    "county": "Innlandet",
+    "holes": 18
+  },
+  {
+    "clubId": "land-gk",
+    "name": "Land Golfklubb",
+    "lat": 60.645377,
+    "lon": 10.36645,
+    "municipality": "Søndre Land",
+    "county": "Innlandet",
+    "holes": 18
+  },
+  {
+    "clubId": "larvik-gk",
+    "name": "Larvik Golfklubb",
+    "lat": 59.032681,
+    "lon": 10.013685,
+    "municipality": "Larvik",
+    "county": "Vestfold",
+    "holes": 18
+  },
+  {
+    "clubId": "lillehammer-golf-park",
+    "name": "Lillehammer Golf Park",
+    "lat": 61.127063,
+    "lon": 10.471591,
+    "municipality": "Lillehammer",
+    "county": "Innlandet",
+    "holes": 9
+  },
+  {
+    "clubId": "lillestrom-gk",
+    "name": "Lillestrøm Golfklubb",
+    "lat": 59.955362,
+    "lon": 11.073994,
+    "municipality": "Lillestrøm",
+    "county": "Akershus",
+    "holes": 6
+  },
+  {
+    "clubId": "lindesnes-gk",
+    "name": "Lindesnes Golfklubb",
+    "lat": 58.0436174,
+    "lon": 7.1342185,
+    "municipality": "Lindesnes",
+    "county": "Agder",
+    "holes": null
+  },
+  {
+    "clubId": "lofoten-gk",
+    "name": "Lofoten Golfklubb",
+    "lat": 68.341336,
+    "lon": 14.137205,
+    "municipality": "Vågan",
+    "county": "Nordland",
+    "holes": 9
+  },
+  {
+    "clubId": "lommedalen-gk",
+    "name": "Lommedalen Golfklubb",
+    "lat": 59.965843,
+    "lon": 10.469444,
+    "municipality": "Bærum",
+    "county": "Akershus",
+    "holes": 9
+  },
+  {
+    "clubId": "losby-gk",
+    "name": "Losby Golfklubb",
+    "lat": 59.895121,
+    "lon": 10.986681,
+    "municipality": "Lørenskog",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "laerdal-gk",
+    "name": "Lærdal Golfklubb",
+    "lat": 61.0438,
+    "lon": 7.6263,
+    "municipality": "Lærdal",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "mandal-gk",
+    "name": "Mandal Golfklubb",
+    "lat": 58.036788,
+    "lon": 7.421426,
+    "municipality": "Lindesnes",
+    "county": "Agder",
+    "holes": 9
+  },
+  {
+    "clubId": "meland-gk",
+    "name": "Meland Golfklubb",
+    "lat": 60.542177,
+    "lon": 5.085564,
+    "municipality": "Alver",
+    "county": "Vestland",
+    "holes": 18
+  },
+  {
+    "clubId": "midt-troms-gk",
+    "name": "Midt-Troms Golfklubb",
+    "lat": 68.9888,
+    "lon": 18.5182,
+    "municipality": "Bardu",
+    "county": "Troms",
+    "holes": 6
+  },
+  {
     "clubId": "miklagard-gk",
     "name": "Miklagard Golfklubb",
-    "lat": 60.0234,
-    "lon": 11.1421,
+    "lat": 60.079127,
+    "lon": 11.155767,
     "municipality": "Ullensaker",
     "county": "Akershus",
     "holes": 18
   },
   {
+    "clubId": "mjosen-gk",
+    "name": "Mjøsen Golfklubb",
+    "lat": 60.951472,
+    "lon": 10.693678,
+    "municipality": "Ringsaker",
+    "county": "Innlandet",
+    "holes": 18
+  },
+  {
+    "clubId": "mo-i-rana",
+    "name": "Mo i Rana",
+    "lat": 66.314524,
+    "lon": 13.979364,
+    "municipality": "Rana",
+    "county": "Nordland",
+    "holes": 6
+  },
+  {
+    "clubId": "modum-gk",
+    "name": "Modum Golfklubb",
+    "lat": 59.968338,
+    "lon": 10.013942,
+    "municipality": "Modum",
+    "county": "Buskerud",
+    "holes": 9
+  },
+  {
+    "clubId": "molde-gk",
+    "name": "Molde Golfklubb",
+    "lat": 62.75379,
+    "lon": 7.257318,
+    "municipality": "Molde",
+    "county": "Møre og Romsdal",
+    "holes": 9
+  },
+  {
+    "clubId": "moss-og-rygge-gk",
+    "name": "Moss og Rygge Golfklubb",
+    "lat": 59.368112,
+    "lon": 10.683613,
+    "municipality": "Moss",
+    "county": "Østfold",
+    "holes": 18
+  },
+  {
+    "clubId": "mork-gk",
+    "name": "Mørk Golfklubb",
+    "lat": 59.529166,
+    "lon": 11.001358,
+    "municipality": "Indre Østfold",
+    "county": "Østfold",
+    "holes": 18
+  },
+  {
+    "clubId": "namdal-gk",
+    "name": "Namdal Golfklubb",
+    "lat": 64.488648,
+    "lon": 11.994614,
+    "municipality": "Overhalla",
+    "county": "Trøndelag",
+    "holes": 9
+  },
+  {
+    "clubId": "namsos-gk",
+    "name": "Namsos Golfklubb",
+    "lat": 64.42921,
+    "lon": 11.491432,
+    "municipality": "Namsos",
+    "county": "Trøndelag",
+    "holes": 6
+  },
+  {
+    "clubId": "narvik-gk",
+    "name": "Narvik Golfklubb",
+    "lat": 68.240856,
+    "lon": 17.41568,
+    "municipality": "Narvik",
+    "county": "Nordland",
+    "holes": 18
+  },
+  {
+    "clubId": "nes-gk",
+    "name": "Nes Golfklubb",
+    "lat": 60.161737,
+    "lon": 11.426992,
+    "municipality": "Nes",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "nesbyen-gk",
+    "name": "Nesbyen Golfklubb",
+    "lat": 60.534,
+    "lon": 9.0248,
+    "municipality": "Nesbyen",
+    "county": "Buskerud",
+    "holes": null
+  },
+  {
+    "clubId": "nordfjord-gk",
+    "name": "Nordfjord Golfklubb",
+    "lat": 61.9103,
+    "lon": 6.012043,
+    "municipality": "Stad",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "nordhaug-gk",
+    "name": "Nordhaug Golfklubb",
+    "lat": 59.9374,
+    "lon": 10.571,
+    "municipality": "Bærum",
+    "county": "Akershus",
+    "holes": 9
+  },
+  {
+    "clubId": "nordvegen-gk",
+    "name": "Nordvegen Golfklubb",
+    "lat": 59.396859,
+    "lon": 5.246992,
+    "municipality": "Karmøy",
+    "county": "Rogaland",
+    "holes": 18
+  },
+  {
+    "clubId": "norefjell-gk",
+    "name": "Norefjell Golfklubb",
+    "lat": 60.186929,
+    "lon": 9.607362,
+    "municipality": "Krødsherad",
+    "county": "Buskerud",
+    "holes": 18
+  },
+  {
+    "clubId": "norsjo-gk",
+    "name": "Norsjø Golfklubb",
+    "lat": 59.303287,
+    "lon": 9.263525,
+    "municipality": "Nome",
+    "county": "Telemark",
+    "holes": 18
+  },
+  {
+    "clubId": "north-cape-golf-club",
+    "name": "North Cape Golf Club",
+    "lat": 70.069537,
+    "lon": 24.98874,
+    "municipality": "Porsanger",
+    "county": "Finnmark",
+    "holes": 9
+  },
+  {
+    "clubId": "naeroysund-gk",
+    "name": "Nærøysund Golfklubb",
+    "lat": 64.856386,
+    "lon": 11.291125,
+    "municipality": "Nærøysund",
+    "county": "Trøndelag",
+    "holes": 6
+  },
+  {
+    "clubId": "notteroy-golf",
+    "name": "Nøtterøy golf",
+    "lat": 59.226386,
+    "lon": 10.4002,
+    "municipality": "Færder",
+    "county": "Vestfold",
+    "holes": 18
+  },
+  {
+    "clubId": "odda-gk",
+    "name": "Odda Golfklubb",
+    "lat": 60.092048,
+    "lon": 6.530654,
+    "municipality": "Ullensvang",
+    "county": "Vestland",
+    "holes": 6
+  },
+  {
+    "clubId": "ogna-gk",
+    "name": "Ogna Golfklubb",
+    "lat": 58.523158,
+    "lon": 5.795364,
+    "municipality": "Hå",
+    "county": "Rogaland",
+    "holes": 9
+  },
+  {
+    "clubId": "onsoy-gk",
+    "name": "Onsøy Golfklubb",
+    "lat": 59.270625,
+    "lon": 10.790453,
+    "municipality": "Fredrikstad",
+    "county": "Østfold",
+    "holes": 18
+  },
+  {
+    "clubId": "oppdal-gk",
+    "name": "Oppdal Golfklubb",
+    "lat": 62.595638,
+    "lon": 9.709758,
+    "municipality": "Oppdal",
+    "county": "Trøndelag",
+    "holes": 9
+  },
+  {
+    "clubId": "oppegaard-gk",
+    "name": "Oppegård Golfklubb",
+    "lat": 59.771831,
+    "lon": 10.813389,
+    "municipality": "Nordre Follo",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "oslo-gk",
+    "name": "Oslo Golfklubb",
+    "lat": 59.961741,
+    "lon": 10.639817,
+    "municipality": "Oslo",
+    "county": "Oslo",
+    "holes": 18
+  },
+  {
+    "clubId": "oustoen-country-club",
+    "name": "Oustøen Country Club",
+    "lat": 59.868915,
+    "lon": 10.584116,
+    "municipality": "Bærum",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "preikestolen-gk",
+    "name": "Preikestolen Golfklubb",
+    "lat": 58.992932,
+    "lon": 6.101738,
+    "municipality": "Strand",
+    "county": "Rogaland",
+    "holes": 9
+  },
+  {
+    "clubId": "randaberg-gk",
+    "name": "Randaberg Golfklubb",
+    "lat": 59.026508,
+    "lon": 5.589414,
+    "municipality": "Randaberg",
+    "county": "Rogaland",
+    "holes": 9
+  },
+  {
+    "clubId": "rauma-gk",
+    "name": "Rauma Golfklubb",
+    "lat": 62.55064,
+    "lon": 7.692116,
+    "municipality": "Rauma",
+    "county": "Møre og Romsdal",
+    "holes": 9
+  },
+  {
+    "clubId": "ringerike-gk",
+    "name": "Ringerike Golfklubb",
+    "lat": 60.34914,
+    "lon": 10.103315,
+    "municipality": "Ringerike",
+    "county": "Buskerud",
+    "holes": 9
+  },
+  {
+    "clubId": "rjukan-gk",
+    "name": "Rjukan Golfklubb",
+    "lat": 59.9283,
+    "lon": 8.763,
+    "municipality": "Tinn",
+    "county": "Telemark",
+    "holes": null
+  },
+  {
+    "clubId": "romerike-gk",
+    "name": "Romerike Golfklubb",
+    "lat": 59.935807,
+    "lon": 11.436691,
+    "municipality": "Aurskog-Høland",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "rygge-flystasjon-golf-club",
+    "name": "Rygge Flystasjon Golf Club",
+    "lat": 59.386533,
+    "lon": 10.773009,
+    "municipality": "Moss",
+    "county": "Østfold",
+    "holes": 6
+  },
+  {
+    "clubId": "roros-gk",
+    "name": "Røros Golfklubb",
+    "lat": 62.591246,
+    "lon": 11.361893,
+    "municipality": "Røros",
+    "county": "Trøndelag",
+    "holes": 9
+  },
+  {
+    "clubId": "salten-gk",
+    "name": "Salten Golfklubb",
+    "lat": 67.344769,
+    "lon": 14.539501,
+    "municipality": "Bodø",
+    "county": "Nordland",
+    "holes": 18
+  },
+  {
+    "clubId": "sandane-gk",
+    "name": "Sandane Golfklubb",
+    "lat": 61.761469,
+    "lon": 6.239603,
+    "municipality": "Gloppen",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "sande-gk",
+    "name": "Sande Golfklubb",
+    "lat": 59.602527,
+    "lon": 10.227984,
+    "municipality": "Holmestrand",
+    "county": "Vestfold",
+    "holes": 9
+  },
+  {
+    "clubId": "sandefjord-gk",
+    "name": "Sandefjord Golfklubb",
+    "lat": 59.110399,
+    "lon": 10.181533,
+    "municipality": "Sandefjord",
+    "county": "Vestfold",
+    "holes": 18
+  },
+  {
+    "clubId": "sandnes-gk",
+    "name": "Sandnes Golfklubb",
+    "lat": 58.870339,
+    "lon": 5.687926,
+    "municipality": "Sandnes",
+    "county": "Rogaland",
+    "holes": 18
+  },
+  {
+    "clubId": "sauda-gk",
+    "name": "Sauda Golfklubb",
+    "lat": 59.64754,
+    "lon": 6.31967,
+    "municipality": "Sauda",
+    "county": "Rogaland",
+    "holes": 9
+  },
+  {
+    "clubId": "selbu-gk",
+    "name": "Selbu Golfklubb",
+    "lat": 63.191366,
+    "lon": 11.096569,
+    "municipality": "Selbu",
+    "county": "Trøndelag",
+    "holes": 9
+  },
+  {
+    "clubId": "selje-gk",
+    "name": "Selje Golfklubb",
+    "lat": 62.040044,
+    "lon": 5.366212,
+    "municipality": "Stad",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "setesdal-gk",
+    "name": "Setesdal Golfklubb",
+    "lat": 58.56714,
+    "lon": 7.78484,
+    "municipality": "Evje Og Hornnes",
+    "county": "Agder",
+    "holes": 6
+  },
+  {
+    "clubId": "sirdal-gk",
+    "name": "Sirdal Golfklubb",
+    "lat": 58.9406,
+    "lon": 6.9166,
+    "municipality": "Sirdal",
+    "county": "Agder",
+    "holes": null
+  },
+  {
+    "clubId": "skei-gk",
+    "name": "Skei Golfklubb",
+    "lat": 61.336853,
+    "lon": 10.090118,
+    "municipality": "Gausdal",
+    "county": "Innlandet",
+    "holes": 18
+  },
+  {
+    "clubId": "ski-gk",
+    "name": "Ski Golfklubb",
+    "lat": 59.71967,
+    "lon": 10.919114,
+    "municipality": "Nordre Follo",
+    "county": "Akershus",
+    "holes": 9
+  },
+  {
+    "clubId": "skjeberg-gk",
+    "name": "Skjeberg Golfklubb",
+    "lat": 59.276278,
+    "lon": 11.197901,
+    "municipality": "Sarpsborg",
+    "county": "Østfold",
+    "holes": 18
+  },
+  {
+    "clubId": "smola-gk",
+    "name": "Smøla Golfklubb",
+    "lat": 63.423881,
+    "lon": 7.858134,
+    "municipality": "Smøla",
+    "county": "Møre og Romsdal",
+    "holes": 9
+  },
+  {
+    "clubId": "sola-gk",
+    "name": "Sola Golfklubb",
+    "lat": 58.891643,
+    "lon": 5.695887,
+    "municipality": "Sandnes",
+    "county": "Rogaland",
+    "holes": 18
+  },
+  {
+    "clubId": "solastranden-gk",
+    "name": "Solastranden Golfklubb",
+    "lat": 58.8758048,
+    "lon": 5.6103164,
+    "municipality": "Sola",
+    "county": "Rogaland",
+    "holes": null
+  },
+  {
+    "clubId": "solum-gk",
+    "name": "Solum Golfklubb",
+    "lat": 59.466676,
+    "lon": 10.315896,
+    "municipality": "Holmestrand",
+    "county": "Vestfold",
+    "holes": 18
+  },
+  {
+    "clubId": "soon-gk",
+    "name": "Soon Golfklubb",
+    "lat": 59.532281,
+    "lon": 10.680145,
+    "municipality": "Vestby",
+    "county": "Akershus",
+    "holes": 9
+  },
+  {
+    "clubId": "sorknes-gk",
+    "name": "Sorknes Golfklubb",
+    "lat": 61.170162,
+    "lon": 11.337582,
+    "municipality": "Åmot",
+    "county": "Innlandet",
+    "holes": 18
+  },
+  {
+    "clubId": "sotra-gk",
+    "name": "Sotra Golfklubb",
+    "lat": 60.35304,
+    "lon": 5.08761,
+    "municipality": "Øygarden",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "sportsklubben-hoken",
+    "name": "Sportsklubben Høken",
+    "lat": 69.2772,
+    "lon": 15.969,
+    "municipality": "Andøy",
+    "county": "Nordland",
+    "holes": 9
+  },
+  {
+    "clubId": "stavanger-gk",
+    "name": "Stavanger Golfklubb",
+    "lat": 58.955998,
+    "lon": 5.667563,
+    "municipality": "Stavanger",
+    "county": "Rogaland",
+    "holes": 18
+  },
+  {
+    "clubId": "steinkjer-gk",
+    "name": "Steinkjer Golfklubb",
+    "lat": 64.019659,
+    "lon": 11.529714,
+    "municipality": "Steinkjer",
+    "county": "Trøndelag",
+    "holes": 9
+  },
+  {
+    "clubId": "stiklestad-gk",
+    "name": "Stiklestad Golfklubb",
+    "lat": 63.817607,
+    "lon": 11.428948,
+    "municipality": "Verdal",
+    "county": "Trøndelag",
+    "holes": 18
+  },
+  {
+    "clubId": "stjordal-gk",
+    "name": "Stjørdal Golfklubb",
+    "lat": 63.486685,
+    "lon": 10.926903,
+    "municipality": "Stjørdal",
+    "county": "Trøndelag",
+    "holes": 18
+  },
+  {
+    "clubId": "stord-gk",
+    "name": "Stord Golfklubb",
+    "lat": 59.807867,
+    "lon": 5.515622,
+    "municipality": "Stord",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "stranda-gk",
+    "name": "Stranda Golfklubb",
+    "lat": 62.228178,
+    "lon": 6.902302,
+    "municipality": "Stranda",
+    "county": "Møre og Romsdal",
+    "holes": 6
+  },
+  {
+    "clubId": "sunndal-gk",
+    "name": "Sunndal Golfklubb",
+    "lat": 62.66524,
+    "lon": 8.539136,
+    "municipality": "Sunndal",
+    "county": "Møre og Romsdal",
+    "holes": 6
+  },
+  {
+    "clubId": "sunnfjord-gk",
+    "name": "Sunnfjord Golfklubb",
+    "lat": 61.487973,
+    "lon": 6.080559,
+    "municipality": "Sunnfjord",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "sunnmore-gk",
+    "name": "Sunnmøre Golfklubb",
+    "lat": 62.359408,
+    "lon": 6.075066,
+    "municipality": "Hareid",
+    "county": "Møre og Romsdal",
+    "holes": 9
+  },
+  {
+    "clubId": "surnadal-gk",
+    "name": "Surnadal Golfklubb",
+    "lat": 62.896275,
+    "lon": 8.563555,
+    "municipality": "Surnadal",
+    "county": "Møre og Romsdal",
+    "holes": 9
+  },
+  {
+    "clubId": "tingvoll-gk",
+    "name": "Tingvoll Golfklubb",
+    "lat": 63.0097,
+    "lon": 7.9987,
+    "municipality": "Tingvoll",
+    "county": "Møre og Romsdal",
+    "holes": null
+  },
+  {
+    "clubId": "tjome-gk",
+    "name": "Tjøme Golfklubb",
+    "lat": 59.111329,
+    "lon": 10.392865,
+    "municipality": "Færder",
+    "county": "Vestfold",
+    "holes": 18
+  },
+  {
+    "clubId": "tromso-gk",
+    "name": "Tromsø Golfklubb",
+    "lat": 69.652582,
+    "lon": 19.593314,
+    "municipality": "Tromsø",
+    "county": "Troms",
+    "holes": 18
+  },
+  {
+    "clubId": "trondheim-gk-il-tempo-golf-country-club",
+    "name": "Trondheim Golfklubb, IL Tempo Golf & Country Club",
+    "lat": 63.422434,
+    "lon": 10.334843,
+    "municipality": "Trondheim",
+    "county": "Trøndelag",
+    "holes": 9
+  },
+  {
+    "clubId": "trysil-gk",
+    "name": "Trysil Golfklubb",
+    "lat": 61.304357,
+    "lon": 12.245091,
+    "municipality": "Trysil",
+    "county": "Innlandet",
+    "holes": 18
+  },
+  {
+    "clubId": "tyrifjord-gk-holevaeringen-idrettslag-golfgruppe",
+    "name": "Tyrifjord Golfklubb, Holeværingen idrettslag - Golfgruppe",
+    "lat": 60.052762,
+    "lon": 10.270642,
+    "municipality": "Hole",
+    "county": "Buskerud",
+    "holes": 18
+  },
+  {
+    "clubId": "tysnes-golf",
+    "name": "Tysnes golf",
+    "lat": 60.0162,
+    "lon": 5.5497,
+    "municipality": "Tysnes",
+    "county": "Vestland",
+    "holes": 6
+  },
+  {
+    "clubId": "tonsberg-gk",
+    "name": "Tønsberg Golfklubb",
+    "lat": 59.337587,
+    "lon": 10.301181,
+    "municipality": "Tønsberg",
+    "county": "Vestfold",
+    "holes": 9
+  },
+  {
+    "clubId": "ullensaker-gk",
+    "name": "Ullensaker Golfklubb",
+    "lat": 60.153534,
+    "lon": 11.101912,
+    "municipality": "Ullensaker",
+    "county": "Akershus",
+    "holes": 9
+  },
+  {
+    "clubId": "utsikten-gk",
+    "name": "Utsikten Golfklubb",
+    "lat": 58.30904,
+    "lon": 6.994075,
+    "municipality": "Kvinesdal",
+    "county": "Agder",
+    "holes": 18
+  },
+  {
+    "clubId": "valdres-gk",
+    "name": "Valdres Golfklubb",
+    "lat": 60.92691,
+    "lon": 9.339035,
+    "municipality": "Nord-Aurdal",
+    "county": "Innlandet",
+    "holes": 9
+  },
+  {
+    "clubId": "vanylven-gk",
+    "name": "Vanylven Golfklubb",
+    "lat": 62.114725,
+    "lon": 5.671576,
+    "municipality": "Vanylven",
+    "county": "Møre og Romsdal",
+    "holes": 9
+  },
+  {
+    "clubId": "varanger-gk",
+    "name": "Varanger Golfklubb",
+    "lat": 70.110107,
+    "lon": 29.373377,
+    "municipality": "Vadsø",
+    "county": "Finnmark",
+    "holes": 18
+  },
+  {
+    "clubId": "veierland-gk",
+    "name": "Veierland Golfklubb",
+    "lat": 59.1646,
+    "lon": 10.3519,
+    "municipality": "Færder",
+    "county": "Vestfold",
+    "holes": null
+  },
+  {
+    "clubId": "vesteraalen-gk",
+    "name": "Vesterålen Golfklubb",
+    "lat": 68.663639,
+    "lon": 15.47711,
+    "municipality": "Sortland",
+    "county": "Nordland",
+    "holes": 6
+  },
+  {
+    "clubId": "vestfold-gk",
+    "name": "Vestfold Golfklubb",
+    "lat": 59.242635,
+    "lon": 10.356137,
+    "municipality": "Sandefjord",
+    "county": "Vestfold",
+    "holes": 18
+  },
+  {
+    "clubId": "vildmarken-gk",
+    "name": "Vildmarken Golfklubb",
+    "lat": 60.285761,
+    "lon": 5.550619,
+    "municipality": "Bjørnafjorden",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "volda-gk",
+    "name": "Volda Golfklubb",
+    "lat": 62.140757,
+    "lon": 6.132251,
+    "municipality": "Volda",
+    "county": "Møre og Romsdal",
+    "holes": 9
+  },
+  {
+    "clubId": "voss-gk",
+    "name": "Voss Golfklubb",
+    "lat": 60.679518,
+    "lon": 6.485015,
+    "municipality": "Voss",
+    "county": "Vestland",
+    "holes": 9
+  },
+  {
+    "clubId": "vraadal-gk",
+    "name": "Vrådal Golfklubb",
+    "lat": 59.31035,
+    "lon": 8.44292,
+    "municipality": "Kviteseid",
+    "county": "Telemark",
+    "holes": 6
+  },
+  {
     "clubId": "aalesund-gk",
     "name": "Ålesund Golfklubb",
-    "lat": 62.5312,
-    "lon": 6.1189,
+    "lat": 62.489265,
+    "lon": 6.727186,
     "municipality": "Ålesund",
     "county": "Møre og Romsdal",
     "holes": 18
+  },
+  {
+    "clubId": "ostmarka-gk",
+    "name": "Østmarka Golfklubb",
+    "lat": 59.724459,
+    "lon": 11.04187,
+    "municipality": "Enebakk",
+    "county": "Akershus",
+    "holes": 18
+  },
+  {
+    "clubId": "oya-golfpark",
+    "name": "Øya Golfpark",
+    "lat": 59.303498,
+    "lon": 11.151295,
+    "municipality": "Sarpsborg",
+    "county": "Østfold",
+    "holes": null
   }
 ]
