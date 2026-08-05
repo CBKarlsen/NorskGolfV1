@@ -72,6 +72,28 @@ class ClubMatcherTest {
     }
 
     @Test
+    void matchesTheOnlyNearbyCandidateWhenNoNameMatches() {
+        // renamed since the OSM import: same place, no name in common
+        Course existing = course("Gamle Nes Bane", 60.5600, 11.5200);
+
+        ClubMatcher.Match match = matcher.match(club("Nes Golfklubb", 60.5605, 11.5205), List.of(existing));
+
+        assertSame(existing, match.course());
+        assertFalse(match.ambiguous());
+    }
+
+    @Test
+    void reportsAmbiguityWhenSeveralNearbyCandidatesNoneMatchByName() {
+        Course first = course("Gamle Nes Bane", 60.5600, 11.5200);
+        Course second = course("Nes Driving Range", 60.5610, 11.5210);
+
+        ClubMatcher.Match match = matcher.match(club("Nes Golfklubb", 60.5605, 11.5205), List.of(first, second));
+
+        assertTrue(match.ambiguous());
+        assertNull(match.course());
+    }
+
+    @Test
     void distanceIsRoughlyRight() {
         // Oslo to Bergen is about 300 km
         double km = ClubMatcher.distanceKm(59.9139, 10.7522, 60.3913, 5.3221);
