@@ -1,5 +1,6 @@
 package fritids.norskgolf.service;
 
+import fritids.norskgolf.dto.CourseDto;
 import fritids.norskgolf.entities.Course;
 import fritids.norskgolf.entities.PlayedCourse;
 import fritids.norskgolf.entities.Round;
@@ -31,6 +32,7 @@ class CourseSyncServiceTest {
     @Autowired private UserRepository userRepository;
     @Autowired private PlayedCourseRepository playedCourseRepository;
     @Autowired private RoundRepository roundRepository;
+    @Autowired private GolfService golfService;
 
     @Test
     void updatesMatchesInsertsNewAndDeactivatesTheRestWithoutLosingHistory() {
@@ -226,5 +228,84 @@ class CourseSyncServiceTest {
 
         assertTrue(courseRepository.findById(first.getId()).orElseThrow().isActive());
         assertTrue(courseRepository.findById(second.getId()).orElseThrow().isActive());
+    }
+
+    @Test
+    void refusesAListThatWouldDeactivateMostOfTheCourses() {
+        // A truncated or wrong club list looks exactly like "almost every club closed". Rather
+        // than gut the game, the reconciler must refuse the whole run and leave the table alone.
+        roundRepository.deleteAll();
+        playedCourseRepository.deleteAll();
+        courseRepository.deleteAll();
+
+        for (int i = 0; i < 12; i++) {
+            Course c = new Course();
+            c.setName("Klubb " + i);
+            c.setExternalId("osm-" + i);
+            c.setLatitude(58.0 + i * 0.5);   // >50 km apart, so nothing matches by proximity
+            c.setLongitude(7.0);
+            c.setActive(true);
+            courseRepository.save(c);
+        }
+
+        List<ClubRecord> truncated = List.of(
+                new ClubRecord("klubb-0", "Klubb 0", 58.0, 7.0, "Kommune", "Agder", 18));
+
+        // 11 of 12 active courses = 92%, far past the 30% ceiling
+        assertThrows(IllegalStateException.class, () -> courseSyncService.reconcile(truncated, false));
+
+        assertEquals(12, courseRepository.findByActiveTrue().size(), "a refused run must write nothing");
+        assertEquals("Klubb 0", courseRepository.findByExternalId("osm-0").orElseThrow().getName(),
+                "not even the matched row may be rewritten");
+    }
+
+    @Test
+    void aDeactivatedCourseStaysInTheUsersPlayedHistory() {
+        // The core promise of deactivate-never-delete: the course leaves the map and the
+        // denominator, but the round you logged there is still yours.
+        roundRepository.deleteAll();
+        playedCourseRepository.deleteAll();
+        courseRepository.deleteAll();
+
+        Course gone = new Course();
+        gone.setName("Nedlagt Golfklubb");
+        gone.setExternalId("osm-gone");
+        gone.setLatitude(59.0);
+        gone.setLongitude(10.0);
+        gone.setActive(false);
+        gone = courseRepository.save(gone);
+
+        User user = new User();
+        user.setUsername("history@test.local");
+        user.setEmail("history@test.local");
+        user.setProviderId("history-test");
+        user = userRepository.save(user);
+        playedCourseRepository.save(new PlayedCourse(user, gone));
+
+        assertTrue(courseRepository.findByActiveTrue().isEmpty());
+        assertEquals(List.of("Nedlagt Golfklubb"),
+                golfService.getPlayedCourses(user.getId()).stream().map(CourseDto::name).toList());
+    }
+
+    @Test
+    void findByActiveTrueExcludesInactiveRowsInTheDatabase() {
+        roundRepository.deleteAll();
+        playedCourseRepository.deleteAll();
+        courseRepository.deleteAll();
+
+        Course active = new Course();
+        active.setName("Aktiv Golfklubb");
+        active.setExternalId("aktiv");
+        active.setActive(true);
+        courseRepository.save(active);
+
+        Course inactive = new Course();
+        inactive.setName("Inaktiv Golfklubb");
+        inactive.setExternalId("inaktiv");
+        inactive.setActive(false);
+        courseRepository.save(inactive);
+
+        assertEquals(List.of("Aktiv Golfklubb"),
+                courseRepository.findByActiveTrue().stream().map(Course::getName).toList());
     }
 }

@@ -37,9 +37,29 @@ public class CourseSyncService {
 
     public record SyncSummary(int matched, int inserted, int deactivated, List<String> ambiguous) {}
 
+    /** A club list that would deactivate more than this share of the active courses is refused. */
+    private static final double MAX_DEACTIVATION_SHARE = 0.30;
+    /** Below this many active courses a percentage is noise — a fresh or test database, not the real list. */
+    private static final int GUARD_FLOOR = 10;
+
+    /** One planned write. A null course means "insert this club". */
+    private record Decision(Course course, ClubRecord club) {}
+
+    // @Transactional belongs HERE, not only on reconcile(): syncOnStartup calls reconcile on
+    // itself, and self-invocation never passes the Spring proxy. Spring's event multicaster does
+    // invoke this listener through the proxy, so the whole import runs as one transaction.
+    @Transactional
     @EventListener(ApplicationReadyEvent.class)
     public void syncOnStartup() {
-        SyncSummary summary = reconcile(loader.load(CLUB_LIST), dryRun);
+        SyncSummary summary;
+        try {
+            summary = reconcile(loader.load(CLUB_LIST), dryRun);
+        } catch (RuntimeException e) {
+            // A refused or unreadable club list must not stop the app from starting: the existing
+            // course table is perfectly usable, it just isn't updated this boot.
+            log.error("Club sync skipped, database left untouched: {}", e.getMessage());
+            return;
+        }
         log.info("Club sync{}: {} matched, {} inserted, {} deactivated, {} ambiguous",
                 dryRun ? " (DRY RUN)" : "", summary.matched(), summary.inserted(),
                 summary.deactivated(), summary.ambiguous().size());
@@ -51,9 +71,13 @@ public class CourseSyncService {
         List<Course> existing = new ArrayList<>(courseRepository.findAll());
         List<Course> unclaimed = new ArrayList<>(existing);
         List<String> ambiguous = new ArrayList<>();
+        List<Decision> decisions = new ArrayList<>();
         int matched = 0;
         int inserted = 0;
 
+        // Phase 1: decide. Nothing is mutated here — existing rows are MANAGED entities, and a
+        // setter alone would be flushed at commit, so no decision may touch one until the
+        // runaway guard below has passed and dryRunMode has been checked.
         for (ClubRecord club : clubs) {
             Course byId = existing.stream()
                     .filter(c -> club.clubId().equals(c.getExternalId()))
@@ -76,37 +100,64 @@ public class CourseSyncService {
 
             Course course = match.course();
             if (course == null) {
-                course = new Course();
                 inserted++;
-                apply(club, course);
-                if (!dryRunMode) courseRepository.save(course);
             } else {
-                // course is the exact instance matcher.match()/byId picked out of unclaimed, so
-                // remove() resolves it via Course#equals (externalId-based) without ambiguity.
-                unclaimed.remove(course);
+                unclaimed.removeIf(c -> c == course);
                 matched++;
-                // course is a MANAGED entity (straight from courseRepository.findAll()): calling
-                // a setter on it marks it dirty, and @Transactional's commit-time flush would
-                // write that change regardless of dryRunMode. Only mutate it when this is real.
+            }
+            decisions.add(new Decision(course, club));
+        }
+
+        List<Course> toDeactivate = unclaimed.stream().filter(Course::isActive).toList();
+
+        // Phase 2: guard. A wrong or truncated list looks exactly like "almost every club closed".
+        long activeBefore = existing.stream().filter(Course::isActive).count();
+        if (!dryRunMode && activeBefore >= GUARD_FLOOR && toDeactivate.size() > activeBefore * MAX_DEACTIVATION_SHARE) {
+            throw new IllegalStateException(String.format(
+                    "club list would deactivate %d of %d active courses (limit %.0f%%) — refusing to write",
+                    toDeactivate.size(), activeBefore, MAX_DEACTIVATION_SHARE * 100));
+        }
+
+        // Phase 3: log every decision, then write. A dry run logs all of it so the diff can be
+        // read; a real run logs only what changed, so a stable list doesn't spam every boot.
+        for (Decision d : decisions) {
+            if (d.course() == null) {
+                log.info("Club sync: INSERT {} ({})", d.club().name(), d.club().clubId());
                 if (!dryRunMode) {
-                    apply(club, course);
+                    Course course = new Course();
+                    apply(d.club(), course);
                     courseRepository.save(course);
+                }
+            } else {
+                boolean renamed = !d.club().name().equals(d.course().getName());
+                if (dryRunMode || renamed) {
+                    log.info("Club sync: MATCH existing '{}' -> '{}' ({}, {})",
+                            d.course().getName(), d.club().name(), d.club().clubId(), distance(d));
+                }
+                if (!dryRunMode) {
+                    apply(d.club(), d.course());
+                    courseRepository.save(d.course());
                 }
             }
         }
 
-        int deactivated = 0;
-        for (Course leftover : unclaimed) {
-            if (!leftover.isActive()) continue;
-            deactivated++;
-            // same managed-entity caveat as above: don't flip the flag unless this is real.
+        for (Course leftover : toDeactivate) {
+            log.info("Club sync: DEACTIVATE '{}' ({}) — no club in the list matched it",
+                    leftover.getName(), leftover.getExternalId());
             if (!dryRunMode) {
                 leftover.setActive(false);
                 courseRepository.save(leftover);
             }
         }
 
-        return new SyncSummary(matched, inserted, deactivated, ambiguous);
+        return new SyncSummary(matched, inserted, toDeactivate.size(), ambiguous);
+    }
+
+    private static String distance(Decision d) {
+        Course c = d.course();
+        if (c.getLatitude() == null || c.getLongitude() == null) return "no coordinates";
+        return String.format("%.2f km away", ClubMatcher.distanceKm(
+                d.club().lat(), d.club().lon(), c.getLatitude(), c.getLongitude()));
     }
 
     private void apply(ClubRecord club, Course course) {

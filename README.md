@@ -7,7 +7,7 @@ Live at [golfjakten.no](https://golfjakten.no).
 
 ## What it does
 
-- **Map** — every golf course in Norway (~160, sourced from OpenStreetMap), with
+- **Map** — every golf club in Norway, from a curated list kept in the repo, with
   the ones you have played marked. Public: no login needed to browse.
 - **Rounds** — log a score and date on any course. Playing a course marks it as
   played; deleting your last round there un-marks it.
@@ -59,9 +59,13 @@ cd backend && ./mvnw spring-boot:run    # :8080
 cd frontend && npm install && npm start # :3000, proxies /api to :8080
 ```
 
-On first start the backend seeds the course table from
-`backend/src/main/resources/golf_courses.json`, falling back to a live Overpass
-API query if that file is missing. It only seeds when the table is empty.
+The course list is curated in `backend/src/main/resources/golf_clubs.json` — one
+entry per club, with coordinates, municipality, county and hole count. On every
+start the backend reconciles the course table against it: entries are matched to
+existing rows by club id, or by name and proximity, updated in place, inserted
+if new, and deactivated (never deleted) if no entry matches, so rounds logged at
+a course that leaves the list stay in your history. Set `app.clubs.dry-run=true`
+to log the diff without writing.
 
 ## Tests
 

@@ -1,5 +1,6 @@
 package fritids.norskgolf.service;
 
+import fritids.norskgolf.dto.DashboardStats;
 import fritids.norskgolf.entities.Course;
 import fritids.norskgolf.entities.User;
 import fritids.norskgolf.repository.CourseRepository;
@@ -37,5 +38,33 @@ class GolfServiceActiveCoursesTest {
         when(playedCourseRepository.findCourseIdsByUserId(1L)).thenReturn(List.of());
 
         assertEquals(1, golfService.getAllCourses(user).size());
+    }
+
+    @Test
+    void countsOnlyActiveCoursesTowardsProgressSoThePercentageCannotExceed100() {
+        // The user has played three courses, two of which the club-list reconciler deactivated.
+        // Counting all three against an active-only denominator gave "3 av 2" and 150%.
+        Course active = course(1L, "Miklagard Golfklubb", "Akershus");
+        when(courseRepository.findByActiveTrue()).thenReturn(List.of(active));
+
+        User user = new User();
+        user.setId(1L);
+        when(playedCourseRepository.findCourseIdsByUserId(1L)).thenReturn(List.of(1L, 2L, 3L));
+        when(roundRepository.findByUserIdOrderByDateDescIdDesc(1L)).thenReturn(List.of());
+
+        DashboardStats stats = golfService.getDashboardStats(user);
+
+        assertEquals(1, stats.getTotalPlayed());
+        assertEquals(1, stats.getTotalCourses());
+        assertEquals(100.0, stats.getPercentageComplete(), 0.001);
+    }
+
+    private static Course course(Long id, String name, String county) {
+        Course c = new Course();
+        c.setId(id);
+        c.setName(name);
+        c.setCounty(county);
+        c.setActive(true);
+        return c;
     }
 }

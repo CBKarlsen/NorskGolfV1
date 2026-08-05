@@ -1,6 +1,8 @@
 package fritids.norskgolf.entities;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.ColumnDefault;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +26,12 @@ public class Course {
 
     private Integer holes;
 
+    // @ColumnDefault is load-bearing, not decoration: ddl-auto=update emits
+    // "alter table courses add column active boolean not null" without it, which Postgres
+    // rejects on a table that already has rows. The Java initialiser below only applies to
+    // new JVM objects — the DDL default is what backfills the existing ~160 production rows.
     @Column(nullable = false)
+    @ColumnDefault("true")
     private boolean active = true;
 
     @Column(unique = true)
