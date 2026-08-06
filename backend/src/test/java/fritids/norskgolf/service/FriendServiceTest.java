@@ -1,9 +1,13 @@
 package fritids.norskgolf.service;
 
 import fritids.norskgolf.dto.FriendDto;
+import fritids.norskgolf.entities.Course;
 import fritids.norskgolf.entities.Friendship;
 import fritids.norskgolf.entities.User;
+import fritids.norskgolf.repository.CourseRepository;
 import fritids.norskgolf.repository.FriendshipRepository;
+import fritids.norskgolf.repository.PlayedCourseRepository;
+import fritids.norskgolf.repository.RoundRepository;
 import fritids.norskgolf.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,8 +26,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -35,6 +41,9 @@ class FriendServiceTest {
 
     @Mock private UserRepository userRepository;
     @Mock private FriendshipRepository friendshipRepository;
+    @Mock private PlayedCourseRepository playedCourseRepository;
+    @Mock private RoundRepository roundRepository;
+    @Mock private CourseRepository courseRepository;
 
     @InjectMocks private FriendService friendService;
 
@@ -43,6 +52,14 @@ class FriendServiceTest {
         u.setId(id);
         u.setPublicId("public-" + id);
         return u;
+    }
+
+    private static Course course(long id, String county) {
+        Course c = new Course();
+        c.setId(id);
+        c.setCounty(county);
+        c.setActive(true);
+        return c;
     }
 
     private HttpStatus statusOf(Executable call) {
@@ -154,5 +171,59 @@ class FriendServiceTest {
 
         assertEquals("NONE", result.getStatus());
         assertNull(result.getFriendshipId());
+    }
+
+    // --- LEADERBOARD ---
+
+    @Test
+    void leaderboardCountsOnlyActiveCoursesSoAFriendsTotalMatchesTheirOwnDashboard() {
+        // Course 99 is not in findByActiveTrue: the club reconciler deactivated it.
+        // Counting it would inflate the friend's BANER figure above what /oversikt shows.
+        when(courseRepository.findByActiveTrue()).thenReturn(List.of(course(1L, "Oslo")));
+
+        User me = user(1);
+        when(friendshipRepository.findAllFriends(1L)).thenReturn(List.of());
+        when(playedCourseRepository.findCourseIdsByUserId(1L)).thenReturn(List.of(1L, 99L));
+        when(roundRepository.countByUserId(1L)).thenReturn(7);
+
+        FriendDto meRow = friendService.getLeaderboard(me).get(0);
+
+        assertEquals(1, meRow.getTotalCourses());
+        assertEquals(7, meRow.getTotalRounds());
+    }
+
+    @Test
+    void leaderboardReportsHowManyFylkerEachRowHasFinished() {
+        // Oslo is fully played, Vestfold is not. Two fylker exist in total.
+        when(courseRepository.findByActiveTrue()).thenReturn(List.of(
+                course(1L, "Oslo"), course(2L, "Oslo"),
+                course(3L, "Vestfold"), course(4L, "Vestfold")));
+
+        User me = user(1);
+        when(friendshipRepository.findAllFriends(1L)).thenReturn(List.of());
+        when(playedCourseRepository.findCourseIdsByUserId(1L)).thenReturn(List.of(1L, 2L, 3L));
+        when(roundRepository.countByUserId(1L)).thenReturn(3);
+
+        FriendDto meRow = friendService.getLeaderboard(me).get(0);
+
+        assertEquals(1, meRow.getFylkerComplete());
+        assertEquals(2, meRow.getFylkerTotal());
+    }
+
+    @Test
+    void leaderboardLoadsTheCourseListOnceRatherThanPerRow() {
+        // One query for the whole leaderboard, not one per friend.
+        when(courseRepository.findByActiveTrue()).thenReturn(List.of(course(1L, "Oslo")));
+
+        User me = user(1);
+        User friend = user(2);
+        Friendship f = new Friendship(me, friend);
+        ReflectionTestUtils.setField(f, "id", 10L);
+        when(friendshipRepository.findAllFriends(1L)).thenReturn(List.of(f));
+        when(playedCourseRepository.findCourseIdsByUserId(anyLong())).thenReturn(List.of(1L));
+        when(roundRepository.countByUserId(anyLong())).thenReturn(1);
+
+        assertEquals(2, friendService.getLeaderboard(me).size());
+        verify(courseRepository, times(1)).findByActiveTrue();
     }
 }
