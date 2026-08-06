@@ -88,7 +88,9 @@ Production is split across two services in the same Google project (`norskgolf`)
 
 The split exists so the page shell loads from an edge cache instead of waiting on a cold JVM. **`/login` is deliberately not rewritten** — React owns that route, Spring owns the callback below it at `/login/oauth2/code/google`.
 
-A merge to `master` deploys **both halves** — `.github/workflows/ci.yml` has a `deploy-backend` and a `deploy-frontend` job, each authenticating via Workload Identity Federation and each gated on an approval in the `production` environment. By hand:
+A merge to `master` deploys **only the halves it touched** — `.github/workflows/ci.yml` has a `deploy-backend` and a `deploy-frontend` job, each authenticating via Workload Identity Federation and each gated on an approval in the `production` environment. A `changes` job diffs the merge against `github.event.before` and sets the two flags: anything under `backend/` deploys the backend, anything under `frontend/` or `firebase.json` deploys the frontend. Tests always run on both. A merge that touches neither (docs, workflow edits) deploys nothing; when the base commit can't be resolved — a force-push or a first push — it deploys both rather than guess.
+
+By hand:
 
 ```bash
 cd backend  && gcloud run deploy norskgolf --source . --region=europe-north1   # backend
@@ -105,6 +107,13 @@ Gotchas:
 - Cloud Run also answers on two `run.app` hostnames directly. Those bypass Firebase (and so keep all cookies), which makes them useful for debugging but they are not the canonical entry point.
 - `min-instances=0`, so an idle app cold-starts (~4s JVM + Neon wake). Sessions are in Postgres, so nobody gets logged out by it.
 - First boot against an empty DB runs `CourseSyncService`, which inserts 160 courses one at a time — a few minutes over a remote DB.
+- Every backend deploy pushes another image to the `cloud-run-source-deploy` Artifact Registry repo, and storage there is the only cost in this stack that grows without bound. `scripts/artifact-registry-cleanup-policy.json` keeps the last 10 versions (~5 deploys of rollback room) and expires the rest after 3 days. It is **not** applied automatically — apply or update it with:
+  ```bash
+  gcloud artifacts repositories set-cleanup-policies cloud-run-source-deploy \
+    --location=europe-north1 --project=norskgolf \
+    --policy=scripts/artifact-registry-cleanup-policy.json
+  ```
+  Add `--dry-run` to have the policy log what it would delete instead of deleting it. Cloud Run pins images by digest, so deleting one an older revision references makes that revision unrollbackable — hence keeping 10 rather than a token 1 or 2.
 
 ### Frontend (`frontend/src/`)
 

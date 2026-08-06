@@ -46,10 +46,52 @@ jobs:
           CI: true
       - run: npm run build
 
-  deploy-backend:
-    # Only after a merge to master, and only if both test jobs passed.
+  changes:
+    # Which half of the repo a merge actually touched. Without this, a frontend-only
+    # change rebuilds and redeploys the whole JVM image — a Cloud Build run, another
+    # stored image in Artifact Registry, and a cold start for the next visitor, all to
+    # ship bytes that Firebase serves. The JAR's copy of the React build under
+    # backend/src/main/resources/static/ is only refreshed by `npm run deploy` locally
+    # anyway, so skipping the backend deploy changes nothing users see.
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [backend, frontend]
+    runs-on: ubuntu-latest
+    outputs:
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # The diff below needs the pre-merge commit, which a shallow clone lacks.
+          fetch-depth: 0
+      - id: filter
+        env:
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+        run: |
+          # A first push or a force-push leaves no usable "before" commit. Deploy both
+          # halves rather than guess: a wasted deploy is far cheaper than a skipped one
+          # that leaves production on stale code.
+          if [ -z "$BEFORE" ] || ! git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
+            echo "no usable base commit ($BEFORE) — deploying both halves"
+            echo "backend=true" >> "$GITHUB_OUTPUT"
+            echo "frontend=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          changed=$(git diff --name-only "$BEFORE" "$AFTER")
+          echo "changed files:"
+          echo "$changed"
+          if grep -q '^backend/' <<< "$changed"; then b=true; else b=false; fi
+          # firebase.json owns the hosting rewrites, so it ships with the frontend.
+          if grep -qE '^(frontend/|firebase\.json$)' <<< "$changed"; then f=true; else f=false; fi
+          echo "backend=$b" >> "$GITHUB_OUTPUT"
+          echo "frontend=$f" >> "$GITHUB_OUTPUT"
+          echo "deploy backend=$b frontend=$f"
+
+  deploy-backend:
+    # Only after a merge to master, only if both test jobs passed, and only if the
+    # backend actually changed.
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && needs.changes.outputs.backend == 'true'
+    needs: [backend, frontend, changes]
     runs-on: ubuntu-latest
     # Waits for a human to approve in the Actions run before it can deploy.
     # Reviewer and branch policy are configured on the environment itself.
@@ -78,8 +120,8 @@ jobs:
   deploy-frontend:
     # The React build lives on Firebase Hosting, not in the JAR, so it needs its
     # own deploy — otherwise a frontend-only change merges and never goes live.
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-    needs: [backend, frontend]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master' && needs.changes.outputs.frontend == 'true'
+    needs: [backend, frontend, changes]
     runs-on: ubuntu-latest
     environment:
       name: production
