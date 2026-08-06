@@ -112,14 +112,23 @@ for every row, which is redundant on the wire, but the endpoint returns a bare
 larger change than the redundancy costs. `SocialView` stays self-contained — no
 second fetch.
 
-Counting a user's completed fylker needs a grouped aggregate: for each county with
-active courses, does the user's played set cover all of them. One native query per
-user, matching the `countByUserId` pattern `mapToDto` already uses.
+Counting a user's completed fylker asks, for each county with active courses,
+whether the user's played set covers all of them. Rather than express that as a
+grouped SQL aggregate, `getLeaderboard` loads `courseRepository.findByActiveTrue()`
+**once** for the whole request and reuses the county grouping for every row; each
+row then costs the existing `playedCourseRepository.findCourseIdsByUserId` and a
+set intersection in Java.
 
-That makes three count queries per friend where there are two today — 3N on a
-leaderboard. Acceptable at hobby scale, and marked with a `ponytail:` comment
-naming the ceiling and the fix (load active courses once, load all friends' played
-ids in one query, count in Java) rather than building that now.
+That one played-ids set answers both questions — completed fylker *and* the
+active-only played count — so it replaces today's `countByUserId` instead of adding
+to it. No new SQL to get wrong, and the leaderboard goes from 2N queries to 2N + 1.
+
+Null counties bucket under `"Unknown"`, mirroring `GolfService.getDashboardStats`
+exactly, so a fylke count means the same thing on both screens.
+
+A query per row remains. Marked with a `ponytail:` comment naming the ceiling and
+the fix — fetch every row's played ids in one `where user_id in (...)` query —
+rather than building that now.
 
 **The bug is worth fixing whether or not badges ship.** `mapToDto` counts played
 courses with `playedCourseRepository.countByUserId`, which includes courses the
