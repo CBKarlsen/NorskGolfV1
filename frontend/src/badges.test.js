@@ -16,7 +16,7 @@ test("a brand new account earns nothing and reports honest progress", () => {
 	});
 
 	expect(badges.every((b) => !b.earned)).toBe(true);
-	expect(find(badges, "Første klubb").hint).toBe("0 / 1 klubber");
+	expect(find(badges, "Første klubb").hint).toBe("0 / 1 klubb");
 });
 
 test("earns a tier the moment the threshold is reached exactly", () => {
@@ -73,4 +73,34 @@ test("caps the hint so an overshoot does not read as 37 / 10", () => {
 	});
 
 	expect(find(badges, "Ti klubber").hint).toBe("10 / 10 klubber");
+});
+
+test("has all eleven badges, grouped Klubber, then Fylker, then Runder", () => {
+	const badges = computeBadges({
+		totalPlayed: 0,
+		roundCount: 0,
+		regionStats: {},
+	});
+
+	expect(badges.length).toBe(11);
+	expect(badges.map((b) => b.group)).toEqual([
+		"Klubber",
+		"Klubber",
+		"Klubber",
+		"Klubber",
+		"Klubber",
+		"Fylker",
+		"Fylker",
+		"Fylker",
+		"Runder",
+		"Runder",
+		"Runder",
+	]);
+});
+
+test("survives an old backend response with no fields at all", () => {
+	const badges = computeBadges({});
+
+	expect(badges.every((b) => !b.earned)).toBe(true);
+	expect(badges.some((b) => b.hint.includes("NaN"))).toBe(false);
 });

@@ -15,7 +15,7 @@ public class DashboardStats {
     private String displayName;
     private String avatar;
     private String email;
-    private int roundCount;
+    private long roundCount;
 
     // --- Inner Class: Round Summary ---
     public static class RoundSummary {
@@ -59,8 +59,8 @@ public class DashboardStats {
 
     // Every round ever logged. recentRounds is capped at 5, so this is the only
     // lifetime total the frontend can see.
-    public int getRoundCount() { return roundCount; }
-    public void setRoundCount(int roundCount) { this.roundCount = roundCount; }
+    public long getRoundCount() { return roundCount; }
+    public void setRoundCount(long roundCount) { this.roundCount = roundCount; }
 
     public long getTotalPlayed() { return totalPlayed; }
     public void setTotalPlayed(long totalPlayed) { this.totalPlayed = totalPlayed; }

@@ -17,6 +17,7 @@ const GROUPS = [
 	{
 		name: "Klubber",
 		unit: "klubber",
+		unitSingular: "klubb",
 		value: (s) => s.totalPlayed ?? 0,
 		tiers: [
 			[1, "Første klubb"],
@@ -29,6 +30,7 @@ const GROUPS = [
 	{
 		name: "Fylker",
 		unit: "fylker",
+		unitSingular: "fylke",
 		value: (s) => completedFylker(s.regionStats),
 		tiers: [
 			[1, "Første fylke"],
@@ -41,6 +43,7 @@ const GROUPS = [
 	{
 		name: "Runder",
 		unit: "runder",
+		unitSingular: "runde",
 		value: (s) => s.roundCount ?? 0,
 		tiers: [
 			[10, "Ti runder"],
@@ -56,11 +59,12 @@ export function computeBadges(stats) {
 
 		return group.tiers.map(([tier, label]) => {
 			const target = typeof tier === "function" ? tier(stats) : tier;
+			const unit = target === 1 ? group.unitSingular : group.unit;
 
 			return {
 				group: group.name,
 				label,
-				hint: `${Math.min(current, target)} / ${target} ${group.unit}`,
+				hint: `${Math.min(current, target)} / ${target} ${unit}`,
 				current,
 				target,
 				// target === 0 means the goal does not exist yet (no fylker loaded).

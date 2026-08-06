@@ -77,7 +77,7 @@ class GolfServiceActiveCoursesTest {
 
         DashboardStats stats = golfService.getDashboardStats(user);
 
-        assertEquals(7, stats.getRoundCount());
+        assertEquals(7L, stats.getRoundCount());
         assertEquals(5, stats.getRecentRounds().size());
     }
 

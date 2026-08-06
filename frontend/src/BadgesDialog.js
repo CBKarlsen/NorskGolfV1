@@ -1,7 +1,9 @@
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
@@ -45,7 +47,7 @@ function BadgesDialog({ open, onClose }) {
 		>
 			<DialogTitle sx={{ fontWeight: 700, color: "#2E7D32", pb: 0.5 }}>
 				Merker
-				{badges && (
+				{badges?.length > 0 && (
 					<Typography
 						component="div"
 						variant="body2"
@@ -113,6 +115,12 @@ function BadgesDialog({ open, onClose }) {
 					))
 				)}
 			</DialogContent>
+
+			<DialogActions sx={{ p: 2 }}>
+				<Button onClick={onClose} color="inherit">
+					Lukk
+				</Button>
+			</DialogActions>
 		</Dialog>
 	);
 }

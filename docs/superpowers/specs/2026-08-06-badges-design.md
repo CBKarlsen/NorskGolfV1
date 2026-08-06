@@ -39,11 +39,15 @@ for free by a 9-hole round.
 
 ## Badge definitions
 
-`frontend/src/badges.js` holds a flat array of definitions and one exported
-function. No class, no registry, no plugin seam for the one caller.
+`frontend/src/badges.js` holds a nested table — three groups, each with a
+list of tiers — and one exported function. No class, no registry, no plugin
+seam for the one caller. The table is nested rather than flat so each
+group's value accessor (`totalPlayed`, `completedFylker`, `roundCount`) is
+written once instead of repeated on all eleven rows; there is no `id` field
+because `label` is unique per badge and already doubles as the render key.
 
 ```
-computeBadges(stats) -> [{ id, label, hint, current, target, earned }]
+computeBadges(stats) -> [{ group, label, hint, current, target, earned }]
 ```
 
 | Group  | Thresholds  | Source                                            |

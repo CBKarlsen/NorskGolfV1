@@ -42,6 +42,7 @@ test("shows the error copy when the fetch fails, instead of hanging on the spinn
 	expect(
 		await screen.findByText("Kunne ikke hente merkene dine."),
 	).toBeInTheDocument();
+	expect(screen.queryByText(/låst opp/)).not.toBeInTheDocument();
 });
 
 test("reopening after a failed fetch shows the spinner again, not the stale error", async () => {

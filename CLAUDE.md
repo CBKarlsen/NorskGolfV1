@@ -123,6 +123,8 @@ React 19 + React Router 7 + Material UI 7 + Leaflet.
 - `MapView.js` — Leaflet map of courses (public)
 - `Overview.js` — Authenticated dashboard: stats, round history
 - `SocialView.js` — Friends and leaderboard
+- `badges.js` — pure threshold function over the overview stats; no badge table exists
+- `BadgesDialog.js` — self-fetching dialog opened from the avatar menu; the second `/api/overview` consumer
 
 ## Key constraints
 
