@@ -7,6 +7,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import PublicIcon from "@mui/icons-material/Public";
 import RadioButtonUncheckedIcon from "@mui/icons-material/RadioButtonUnchecked";
 import SportsGolfIcon from "@mui/icons-material/SportsGolf";
+import StarIcon from "@mui/icons-material/Star";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
@@ -32,6 +33,36 @@ import Typography from "@mui/material/Typography";
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { csrfHeaders } from "./api";
+
+// Splits the fylker into the ones still to finish and the ones already collected.
+// Exported for the unit test — the ranking is the whole feature, so it is worth pinning down.
+export function splitRegions(regionStats) {
+	const rows = Object.entries(regionStats).map(([name, stats]) => ({
+		name,
+		stats,
+		remaining: stats.totalCount - stats.playedCount,
+		progress:
+			stats.totalCount > 0 ? (stats.playedCount / stats.totalCount) * 100 : 0,
+	}));
+
+	return {
+		inProgress: rows
+			.filter((r) => r.remaining > 0)
+			.sort(
+				(a, b) =>
+					b.progress - a.progress ||
+					// Untouched fylker all tie at 0%. Rank those A-Å instead of smallest-first,
+					// so a one-club fylke you have never visited doesn't leapfrog one you are
+					// halfway through — and a logged-out visitor gets a plain alphabetical list
+					// rather than one silently ordered by club count.
+					(a.stats.playedCount === 0 ? 0 : a.remaining - b.remaining) ||
+					a.name.localeCompare(b.name, "nb"),
+			),
+		completed: rows
+			.filter((r) => r.remaining === 0)
+			.sort((a, b) => a.name.localeCompare(b.name, "nb")),
+	};
+}
 
 function Overview({ user, onNavigate }) {
 	const navigate = useNavigate();
@@ -186,14 +217,120 @@ function Overview({ user, onNavigate }) {
 
 	if (!data) return null;
 
-	const sortedRegions = Object.entries(data.regionStats).sort((a, b) => {
-		// 1. Sort by Played Count (High to Low)
-		const countDiff = b[1].playedCount - a[1].playedCount;
-		if (countDiff !== 0) return countDiff;
+	const { inProgress, completed } = splitRegions(data.regionStats);
 
-		// 2. If tied, sort Alphabetically (A-Z)
-		return a[0].localeCompare(b[0]);
-	});
+	const renderRegion = ({ name, stats, remaining, progress }) => {
+		const done = remaining === 0;
+		return (
+			<Accordion
+				key={name}
+				disableGutters
+				elevation={0}
+				sx={{
+					mb: 1.5,
+					borderRadius: "12px !important",
+					border: done ? "1px solid #FFD700" : "1px solid #f0f0f0",
+					"&:before": { display: "none" },
+				}}
+			>
+				<AccordionSummary
+					expandIcon={<ExpandMoreIcon />}
+					sx={{ borderRadius: 3, px: 2 }}
+				>
+					<Box sx={{ width: "100%" }}>
+						<Box
+							sx={{
+								display: "flex",
+								justifyContent: "space-between",
+								alignItems: "center",
+								gap: 1,
+								mb: 0.5,
+							}}
+						>
+							<Typography
+								variant="subtitle2"
+								fontWeight={600}
+								sx={{ display: "flex", alignItems: "center", gap: 0.5 }}
+							>
+								{done && <StarIcon sx={{ fontSize: 16, color: "#FFD700" }} />}
+								{name}
+							</Typography>
+							<Typography
+								variant="caption"
+								sx={{ color: "#666", whiteSpace: "nowrap" }}
+							>
+								{done
+									? `Fullført — ${stats.totalCount} av ${stats.totalCount}`
+									: `${stats.playedCount} / ${stats.totalCount} · ${remaining} igjen`}
+							</Typography>
+						</Box>
+						<LinearProgress
+							variant="determinate"
+							value={progress}
+							sx={{
+								height: 6,
+								borderRadius: 3,
+								bgcolor: "#e0e0e0",
+								"& .MuiLinearProgress-bar": {
+									bgcolor: done ? "#FFD700" : "#2E7D32",
+								},
+							}}
+						/>
+					</Box>
+				</AccordionSummary>
+				<AccordionDetails sx={{ pt: 0, px: 2, pb: 2 }}>
+					<List dense>
+						{stats.courses.map((course) => (
+							<ListItem
+								key={course.id}
+								sx={{
+									pl: 0,
+									borderBottom: "1px dashed #eee",
+									cursor: "pointer",
+									"&:hover": { bgcolor: "#f9f9f9" },
+								}}
+								onClick={() => onNavigate(course.latitude, course.longitude)}
+							>
+								<Box sx={{ mr: 1.5, display: "flex", alignItems: "center" }}>
+									{course.played ? (
+										<CheckCircleIcon fontSize="small" color="success" />
+									) : (
+										<RadioButtonUncheckedIcon
+											fontSize="small"
+											color="disabled"
+										/>
+									)}
+								</Box>
+								<ListItemText
+									primary={
+										<Typography variant="body2">{course.name}</Typography>
+									}
+								/>
+								{course.played && (
+									<Chip
+										label="Spilt"
+										size="small"
+										color="success"
+										variant="outlined"
+										sx={{ height: 20, fontSize: "0.65rem" }}
+									/>
+								)}
+							</ListItem>
+						))}
+					</List>
+				</AccordionDetails>
+			</Accordion>
+		);
+	};
+
+	const sectionLabelSx = {
+		display: "block",
+		mb: 1,
+		pl: 0.5,
+		fontWeight: 700,
+		letterSpacing: 1,
+		color: "#888",
+	};
 
 	return (
 		<Box
@@ -412,108 +549,32 @@ function Overview({ user, onNavigate }) {
 			{/* --- 3. PROGRESS SECTION --- */}
 			<Typography
 				variant="h6"
-				sx={{ mb: 2, fontWeight: 700, color: "#2E7D32", pl: 0.5 }}
+				sx={{ mb: 0.5, fontWeight: 700, color: "#2E7D32", pl: 0.5 }}
 			>
 				Fremgang per fylke
 			</Typography>
+			<Typography variant="body2" sx={{ mb: 2.5, pl: 0.5, color: "#888" }}>
+				{completed.length} av {completed.length + inProgress.length} fylker
+				fullført
+			</Typography>
 
-			<Box>
-				{sortedRegions.map(([region, stats]) => {
-					const progress = (stats.playedCount / stats.totalCount) * 100;
-					return (
-						<Accordion
-							key={region}
-							disableGutters
-							elevation={0}
-							sx={{
-								mb: 1.5,
-								borderRadius: "12px !important",
-								border: "1px solid #f0f0f0",
-								"&:before": { display: "none" },
-							}}
-						>
-							<AccordionSummary
-								expandIcon={<ExpandMoreIcon />}
-								sx={{ borderRadius: 3, px: 2 }}
-							>
-								<Box sx={{ width: "100%" }}>
-									<Box
-										sx={{
-											display: "flex",
-											justifyContent: "space-between",
-											mb: 0.5,
-										}}
-									>
-										<Typography variant="subtitle2" fontWeight={600}>
-											{region}
-										</Typography>
-										<Typography variant="caption" sx={{ color: "#666" }}>
-											{stats.playedCount} / {stats.totalCount}
-										</Typography>
-									</Box>
-									<LinearProgress
-										variant="determinate"
-										value={progress}
-										sx={{
-											height: 6,
-											borderRadius: 3,
-											bgcolor: "#e0e0e0",
-											"& .MuiLinearProgress-bar": {
-												bgcolor: progress === 100 ? "#FFD700" : "#2E7D32",
-											},
-										}}
-									/>
-								</Box>
-							</AccordionSummary>
-							<AccordionDetails sx={{ pt: 0, px: 2, pb: 2 }}>
-								<List dense>
-									{stats.courses.map((course) => (
-										<ListItem
-											key={course.id}
-											sx={{
-												pl: 0,
-												borderBottom: "1px dashed #eee",
-												cursor: "pointer",
-												"&:hover": { bgcolor: "#f9f9f9" },
-											}}
-											onClick={() =>
-												onNavigate(course.latitude, course.longitude)
-											}
-										>
-											<Box
-												sx={{ mr: 1.5, display: "flex", alignItems: "center" }}
-											>
-												{course.played ? (
-													<CheckCircleIcon fontSize="small" color="success" />
-												) : (
-													<RadioButtonUncheckedIcon
-														fontSize="small"
-														color="disabled"
-													/>
-												)}
-											</Box>
-											<ListItemText
-												primary={
-													<Typography variant="body2">{course.name}</Typography>
-												}
-											/>
-											{course.played && (
-												<Chip
-													label="Spilt"
-													size="small"
-													color="success"
-													variant="outlined"
-													sx={{ height: 20, fontSize: "0.65rem" }}
-												/>
-											)}
-										</ListItem>
-									))}
-								</List>
-							</AccordionDetails>
-						</Accordion>
-					);
-				})}
-			</Box>
+			{inProgress.length > 0 && (
+				<Box sx={{ mb: 3 }}>
+					<Typography variant="overline" sx={sectionLabelSx}>
+						Nærmest mål
+					</Typography>
+					{inProgress.map(renderRegion)}
+				</Box>
+			)}
+
+			{completed.length > 0 && (
+				<Box>
+					<Typography variant="overline" sx={sectionLabelSx}>
+						Fullført ({completed.length})
+					</Typography>
+					{completed.map(renderRegion)}
+				</Box>
+			)}
 
 			{/* --- 4. RECENT ACTIVITY (Logged in only) --- */}
 			{user ? (
