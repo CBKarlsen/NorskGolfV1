@@ -33,6 +33,15 @@ The spec says a friend's completed-fylke count needs "one native query per user"
 
 Result: no new SQL to get wrong, the active-count bug is fixed by construction with the same rule `GolfService` uses, and the leaderboard goes from 2N queries to 2N + 1 instead of 3N. Task 3 implements this; the spec has been updated to match.
 
+## Corrections found during implementation
+
+The code blocks below in Tasks 2–4 are **not** safe to re-transcribe verbatim without these corrections — each was caught while implementing the plan, and the shipped code differs from what is written below.
+
+- **Task 2, Step 1**: the test `"marks the rarest badges with their tier caption"` uses `expect(screen.getByText("LEGENDARISK")).toBeInTheDocument();`. Its own fixture earns both legendary badges (`100 klubber` rarity 10 and `Hele Norge` rarity 11), so two captions render and `getByText` throws on multiple matches. Shipped code uses `expect(screen.getAllByText("LEGENDARISK")).toHaveLength(2);`.
+- **Task 3, Step 1**: `when(roundRepository.countByUserId(...)).thenReturn(7L)` (and `3L`, `1L`). `RoundRepository.countByUserId` returns primitive `int`, so the `L` suffixes do not compile. Shipped test uses plain `int` literals.
+- **Task 3, Step 1**: `new Friendship()` reaches a `protected` no-arg constructor from a different package. Shipped test uses the public `Friendship(User requester, User receiver)` constructor instead.
+- **Task 4, Step 1**: renders `<SocialView user={...} />` bare. `SocialView` calls `useNavigate()`, so it needs wrapping in `MemoryRouter` from `react-router-dom`, the way `Overview.test.js` does. Shipped test wraps the render in `MemoryRouter`.
+
 ---
 
 ### Task 1: Rarity, tiers, the normalised input, and `badgeTitle`

@@ -194,20 +194,23 @@ class FriendServiceTest {
 
     @Test
     void leaderboardReportsHowManyFylkerEachRowHasFinished() {
-        // Oslo is fully played, Vestfold is not. Two fylker exist in total.
+        // Oslo is fully played, Vestfold is not. Course 5 has a null county, mirroring
+        // GolfService.getDashboardStats: it must bucket under "Unknown" as its own
+        // fylke rather than being dropped or merged into another bucket.
         when(courseRepository.findByActiveTrue()).thenReturn(List.of(
                 course(1L, "Oslo"), course(2L, "Oslo"),
-                course(3L, "Vestfold"), course(4L, "Vestfold")));
+                course(3L, "Vestfold"), course(4L, "Vestfold"),
+                course(5L, null)));
 
         User me = user(1);
         when(friendshipRepository.findAllFriends(1L)).thenReturn(List.of());
-        when(playedCourseRepository.findCourseIdsByUserId(1L)).thenReturn(List.of(1L, 2L, 3L));
+        when(playedCourseRepository.findCourseIdsByUserId(1L)).thenReturn(List.of(1L, 2L, 3L, 5L));
         when(roundRepository.countByUserId(1L)).thenReturn(3);
 
         FriendDto meRow = friendService.getLeaderboard(me).get(0);
 
-        assertEquals(1, meRow.getFylkerComplete());
-        assertEquals(2, meRow.getFylkerTotal());
+        assertEquals(2, meRow.getFylkerComplete());
+        assertEquals(3, meRow.getFylkerTotal());
     }
 
     @Test
