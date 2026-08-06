@@ -2,9 +2,10 @@
 // response, recomputed on every open. See
 // docs/superpowers/specs/2026-08-06-badges-design.md for why there is no table.
 
-// "Fullført" has to mean exactly what splitRegions in Overview.js means by it.
-// GolfService counts against active courses only, so a deactivated club cannot
-// hold a fylke back.
+// Counts fylker where playedCount === totalCount. Matches splitRegions in Overview.js
+// for all fylker the backend produces (GolfService groups by actual courses, so every
+// fylke has at least one). The totalCount > 0 guard rejects the degenerate zero-course
+// case; unreachable now, but a safer invariant than silently counting empty fylker complete.
 const completedFylker = (regionStats) =>
 	Object.values(regionStats ?? {}).filter(
 		(s) => s.totalCount > 0 && s.playedCount === s.totalCount,
