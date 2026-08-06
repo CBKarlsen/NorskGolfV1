@@ -1,0 +1,71 @@
+// Badges are derived, never stored: each one is a threshold over the /api/overview
+// response, recomputed on every open. See
+// docs/superpowers/specs/2026-08-06-badges-design.md for why there is no table.
+
+// "Fullført" has to mean exactly what splitRegions in Overview.js means by it.
+// GolfService counts against active courses only, so a deactivated club cannot
+// hold a fylke back.
+const completedFylker = (regionStats) =>
+	Object.values(regionStats ?? {}).filter(
+		(s) => s.totalCount > 0 && s.playedCount === s.totalCount,
+	).length;
+
+// A tier target is a number, or a function of the stats when the goal moves.
+// ponytail: no per-badge objects — three sources cover all eleven badges.
+const GROUPS = [
+	{
+		name: "Klubber",
+		unit: "klubber",
+		value: (s) => s.totalPlayed ?? 0,
+		tiers: [
+			[1, "Første klubb"],
+			[10, "Ti klubber"],
+			[25, "25 klubber"],
+			[50, "50 klubber"],
+			[100, "100 klubber"],
+		],
+	},
+	{
+		name: "Fylker",
+		unit: "fylker",
+		value: (s) => completedFylker(s.regionStats),
+		tiers: [
+			[1, "Første fylke"],
+			[5, "Fem fylker"],
+			// golf_clubs.json is hand-edited: 15 fylker today, not necessarily
+			// tomorrow. Read the goal out of the data instead of hardcoding it.
+			[(s) => Object.keys(s.regionStats ?? {}).length, "Hele Norge"],
+		],
+	},
+	{
+		name: "Runder",
+		unit: "runder",
+		value: (s) => s.roundCount ?? 0,
+		tiers: [
+			[10, "Ti runder"],
+			[50, "Femti runder"],
+			[100, "Hundre runder"],
+		],
+	},
+];
+
+export function computeBadges(stats) {
+	return GROUPS.flatMap((group) => {
+		const current = group.value(stats);
+
+		return group.tiers.map(([tier, label]) => {
+			const target = typeof tier === "function" ? tier(stats) : tier;
+
+			return {
+				group: group.name,
+				label,
+				hint: `${Math.min(current, target)} / ${target} ${group.unit}`,
+				current,
+				target,
+				// target === 0 means the goal does not exist yet (no fylker loaded).
+				// Without this guard 0 >= 0 would award "Hele Norge" to everyone.
+				earned: target > 0 && current >= target,
+			};
+		});
+	});
+}
