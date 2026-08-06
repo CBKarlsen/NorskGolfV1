@@ -33,3 +33,29 @@ test("does not fetch until it is opened", () => {
 
 	expect(global.fetch).not.toHaveBeenCalled();
 });
+
+test("shows the error copy when the fetch fails, instead of hanging on the spinner", async () => {
+	global.fetch = jest.fn(() => Promise.reject(new Error("network down")));
+
+	render(<BadgesDialog open onClose={() => {}} />);
+
+	expect(
+		await screen.findByText("Kunne ikke hente merkene dine."),
+	).toBeInTheDocument();
+});
+
+test("reopening after a failed fetch shows the spinner again, not the stale error", async () => {
+	global.fetch = jest.fn(() => Promise.reject(new Error("network down")));
+	const { rerender } = render(<BadgesDialog open onClose={() => {}} />);
+	await screen.findByText("Kunne ikke hente merkene dine.");
+
+	// Close, then reopen with a retry that hasn't resolved yet.
+	global.fetch = jest.fn(() => new Promise(() => {}));
+	rerender(<BadgesDialog open={false} onClose={() => {}} />);
+	rerender(<BadgesDialog open onClose={() => {}} />);
+
+	expect(screen.getByRole("progressbar")).toBeInTheDocument();
+	expect(
+		screen.queryByText("Kunne ikke hente merkene dine."),
+	).not.toBeInTheDocument();
+});

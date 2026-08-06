@@ -16,6 +16,7 @@ function BadgesDialog({ open, onClose }) {
 	useEffect(() => {
 		if (!open) return;
 
+		setBadges(null);
 		let cancelled = false;
 		fetch("/api/overview")
 			.then((res) => (res.ok ? res.json() : Promise.reject()))
@@ -45,7 +46,11 @@ function BadgesDialog({ open, onClose }) {
 			<DialogTitle sx={{ fontWeight: 700, color: "#2E7D32", pb: 0.5 }}>
 				Merker
 				{badges && (
-					<Typography variant="body2" sx={{ color: "#888", fontWeight: 400 }}>
+					<Typography
+						component="div"
+						variant="body2"
+						sx={{ color: "#888", fontWeight: 400 }}
+					>
 						{earned} av {badges.length} låst opp
 					</Typography>
 				)}
