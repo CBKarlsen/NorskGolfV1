@@ -2,6 +2,7 @@ package fritids.norskgolf.service;
 
 import fritids.norskgolf.dto.DashboardStats;
 import fritids.norskgolf.entities.Course;
+import fritids.norskgolf.entities.Round;
 import fritids.norskgolf.entities.User;
 import fritids.norskgolf.repository.CourseRepository;
 import fritids.norskgolf.repository.PlayedCourseRepository;
@@ -12,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -57,6 +59,35 @@ class GolfServiceActiveCoursesTest {
         assertEquals(1, stats.getTotalPlayed());
         assertEquals(1, stats.getTotalCourses());
         assertEquals(100.0, stats.getPercentageComplete(), 0.001);
+    }
+
+    @Test
+    void countsEveryRoundEvenThoughOnlyFiveAreListed() {
+        // recentRounds is capped at 5 for display, so the frontend cannot derive a
+        // lifetime total from it. roundCount carries the real number.
+        Course active = course(1L, "Miklagard Golfklubb", "Akershus");
+        when(courseRepository.findByActiveTrue()).thenReturn(List.of(active));
+
+        User user = new User();
+        user.setId(1L);
+        when(playedCourseRepository.findCourseIdsByUserId(1L)).thenReturn(List.of(1L));
+        when(roundRepository.findByUserIdOrderByDateDescIdDesc(1L)).thenReturn(List.of(
+                round(active), round(active), round(active), round(active),
+                round(active), round(active), round(active)));
+
+        DashboardStats stats = golfService.getDashboardStats(user);
+
+        assertEquals(7, stats.getRoundCount());
+        assertEquals(5, stats.getRecentRounds().size());
+    }
+
+    private static Round round(Course course) {
+        Round r = new Round();
+        r.setId(1L);
+        r.setCourse(course);
+        r.setDate(LocalDate.of(2026, 6, 1));
+        r.setScore(84);
+        return r;
     }
 
     private static Course course(Long id, String name, String county) {

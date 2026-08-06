@@ -142,8 +142,10 @@ public class GolfService {
             regionalData.put(entry.getKey(), new DashboardStats.RegionStat(playedCount, entry.getValue().size(), regionDtos));
         }
 
-        // B. Recent Rounds
-        List<DashboardStats.RoundSummary> recentRounds = roundRepository.findByUserIdOrderByDateDescIdDesc(user.getId()).stream()
+        // B. Recent Rounds — the query already returns every round, so the lifetime
+        // count is free here. Do not add a second count query for it.
+        List<Round> allRounds = roundRepository.findByUserIdOrderByDateDescIdDesc(user.getId());
+        List<DashboardStats.RoundSummary> recentRounds = allRounds.stream()
                 .limit(5)
                 .map(r -> new DashboardStats.RoundSummary(r.getId(), r.getCourse().getName(), r.getDate().toString(), r.getScore()))
                 .collect(Collectors.toList());
@@ -162,6 +164,7 @@ public class GolfService {
         stats.setPercentageComplete(allCourses.isEmpty() ? 0 : (double) totalPlayed / allCourses.size() * 100);
         stats.setRegionStats(regionalData);
         stats.setRecentRounds(recentRounds);
+        stats.setRoundCount(allRounds.size());
 
         return stats;
     }
