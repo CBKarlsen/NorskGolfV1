@@ -60,3 +60,48 @@ test("reopening after a failed fetch shows the spinner again, not the stale erro
 		screen.queryByText("Kunne ikke hente merkene dine."),
 	).not.toBeInTheDocument();
 });
+
+test("marks the rarest badges with their tier caption", async () => {
+	// Everything earned: Hele Norge is legendarisk and says so.
+	global.fetch = jest.fn(() =>
+		Promise.resolve({
+			ok: true,
+			json: () =>
+				Promise.resolve({
+					totalPlayed: 182,
+					roundCount: 300,
+					regionStats: {
+						Oslo: { playedCount: 3, totalCount: 3, courses: [] },
+					},
+				}),
+		}),
+	);
+
+	render(<BadgesDialog open onClose={() => {}} />);
+
+	expect(await screen.findByText("Hele Norge")).toBeInTheDocument();
+	// 182 clubs and every fylke earns both legendaries — 100 klubber (rarity 10)
+	// and Hele Norge (rarity 11) — and each labels its own tier.
+	expect(screen.getAllByText("LEGENDARISK")).toHaveLength(2);
+});
+
+test("locked badges show no tier caption", async () => {
+	global.fetch = jest.fn(() =>
+		Promise.resolve({
+			ok: true,
+			json: () =>
+				Promise.resolve({
+					totalPlayed: 1,
+					roundCount: 0,
+					regionStats: {
+						Oslo: { playedCount: 0, totalCount: 3, courses: [] },
+					},
+				}),
+		}),
+	);
+
+	render(<BadgesDialog open onClose={() => {}} />);
+
+	expect(await screen.findByText("Første klubb")).toBeInTheDocument();
+	expect(screen.queryByText("LEGENDARISK")).not.toBeInTheDocument();
+});

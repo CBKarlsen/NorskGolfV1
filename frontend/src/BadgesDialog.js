@@ -1,4 +1,3 @@
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -8,7 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import { computeBadges } from "./badges";
+import { computeBadges, fromDashboard } from "./badges";
 
 // ponytail: fetches its own stats instead of lifting Overview's state into App.
 // One extra request, only when the dialog is actually opened.
@@ -23,7 +22,7 @@ function BadgesDialog({ open, onClose }) {
 		fetch("/api/overview")
 			.then((res) => (res.ok ? res.json() : Promise.reject()))
 			.then((stats) => {
-				if (!cancelled) setBadges(computeBadges(stats));
+				if (!cancelled) setBadges(computeBadges(fromDashboard(stats)));
 			})
 			.catch(() => {
 				if (!cancelled) setBadges([]);
@@ -78,39 +77,72 @@ function BadgesDialog({ open, onClose }) {
 							</Typography>
 							{badges
 								.filter((b) => b.group === group)
-								.map((badge) => (
-									<Box
-										key={badge.label}
-										sx={{
-											display: "flex",
-											alignItems: "center",
-											gap: 1.5,
-											py: 0.75,
-										}}
-									>
-										<EmojiEventsIcon
-											sx={{ color: badge.earned ? "#FFD700" : "#dcdcdc" }}
-										/>
-										<Box>
-											<Typography
-												variant="body2"
-												sx={{
-													fontWeight: badge.earned ? 700 : 400,
-													color: badge.earned ? "#333" : "#999",
-												}}
-											>
-												{badge.label}
-											</Typography>
-											{/* Seeing what is next is the point, so locked badges
-											    keep their progress instead of being hidden. */}
-											{!badge.earned && (
-												<Typography variant="caption" sx={{ color: "#aaa" }}>
-													{badge.hint}
+								.map((badge) => {
+									const { Icon, color, gradient, tint, ring } = badge.tier;
+
+									return (
+										<Box
+											key={badge.label}
+											sx={{
+												display: "flex",
+												alignItems: "center",
+												gap: 1.5,
+												py: 0.75,
+												px: badge.earned && tint ? 1 : 0,
+												borderRadius: 2,
+												background: badge.earned ? tint : undefined,
+												boxShadow: badge.earned ? ring : undefined,
+											}}
+										>
+											<Icon sx={{ color: badge.earned ? color : "#dcdcdc" }} />
+											<Box>
+												<Typography
+													variant="body2"
+													sx={{
+														fontWeight: badge.earned ? 700 : 400,
+														color: badge.earned ? "#333" : "#999",
+														// Gradient text needs the colour transparent, so it
+														// has to win over the line above it.
+														...(badge.earned && gradient
+															? {
+																	fontWeight: 800,
+																	background: gradient,
+																	backgroundClip: "text",
+																	WebkitBackgroundClip: "text",
+																	color: "transparent",
+																}
+															: {}),
+													}}
+												>
+													{badge.label}
 												</Typography>
-											)}
+												{/* Only the top tier names itself — captioning all four
+												    would turn the list into a legend. */}
+												{badge.earned && gradient && (
+													<Typography
+														variant="caption"
+														sx={{
+															display: "block",
+															fontWeight: 700,
+															letterSpacing: "0.08em",
+															fontSize: "0.62rem",
+															color,
+														}}
+													>
+														{badge.tier.name.toUpperCase()}
+													</Typography>
+												)}
+												{/* Seeing what is next is the point, so locked badges
+												    keep their progress instead of being hidden. */}
+												{!badge.earned && (
+													<Typography variant="caption" sx={{ color: "#aaa" }}>
+														{badge.hint}
+													</Typography>
+												)}
+											</Box>
 										</Box>
-									</Box>
-								))}
+									);
+								})}
 						</Box>
 					))
 				)}

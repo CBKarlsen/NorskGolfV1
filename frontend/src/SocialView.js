@@ -30,6 +30,7 @@ import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom"; // 1. IMPORT THIS
 import { csrfHeaders } from "./api";
+import { badgeTitle, computeBadges } from "./badges";
 
 function SocialView({ user }) {
 	// 2. INITIALIZE HOOK
@@ -414,6 +415,15 @@ function SocialView({ user }) {
 								<List sx={{ width: "100%", padding: 0 }}>
 									{friends.map((friend, index) => {
 										const isMe = friend.status === "ME";
+										const title = badgeTitle(
+											computeBadges({
+												clubs: friend.totalCourses,
+												rounds: friend.totalRounds,
+												fylkerComplete: friend.fylkerComplete,
+												fylkerTotal: friend.fylkerTotal,
+											}),
+										);
+										const TierIcon = title?.tier.Icon;
 										return (
 											<Paper
 												key={friend.id}
@@ -445,16 +455,55 @@ function SocialView({ user }) {
 														{getRankDisplay(index)}
 													</Box>
 													<ListItemAvatar>
-														<Avatar
-															src={
-																friend.avatar ||
-																`https://ui-avatars.com/api/?name=${friend.displayName}`
-															}
+														<Box
 															sx={{
-																border: "2px solid white",
-																boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+																position: "relative",
+																width: 40,
+																height: 40,
 															}}
-														/>
+														>
+															<Avatar
+																src={
+																	friend.avatar ||
+																	`https://ui-avatars.com/api/?name=${friend.displayName}`
+																}
+																sx={{
+																	width: 40,
+																	height: 40,
+																	// The green "this is you" marker is the row's
+																	// Paper border, not this one, so a tier ring
+																	// here collides with nothing.
+																	border: title
+																		? `2px solid ${title.tier.color}`
+																		: "2px solid white",
+																	boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+																}}
+															/>
+															{title && (
+																<Box
+																	sx={{
+																		position: "absolute",
+																		bottom: -3,
+																		right: -4,
+																		width: 19,
+																		height: 19,
+																		borderRadius: "50%",
+																		bgcolor: "#fff",
+																		display: "flex",
+																		alignItems: "center",
+																		justifyContent: "center",
+																		boxShadow: "0 1px 3px rgba(0,0,0,0.25)",
+																	}}
+																>
+																	<TierIcon
+																		sx={{
+																			fontSize: 13,
+																			color: title.tier.color,
+																		}}
+																	/>
+																</Box>
+															)}
+														</Box>
 													</ListItemAvatar>
 													<Box sx={{ flex: 1 }}>
 														<Typography
@@ -464,6 +513,26 @@ function SocialView({ user }) {
 														>
 															{friend.displayName}
 														</Typography>
+														{title && (
+															<Typography
+																variant="caption"
+																sx={{
+																	display: "block",
+																	fontWeight: 700,
+																	lineHeight: 1.3,
+																	...(title.tier.gradient
+																		? {
+																				background: title.tier.gradient,
+																				backgroundClip: "text",
+																				WebkitBackgroundClip: "text",
+																				color: "transparent",
+																			}
+																		: { color: title.tier.color }),
+																}}
+															>
+																{title.label}
+															</Typography>
+														)}
 														{isMe && (
 															<Chip
 																label="Deg"

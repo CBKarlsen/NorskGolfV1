@@ -1,9 +1,11 @@
 package fritids.norskgolf.service;
 
 import fritids.norskgolf.dto.FriendDto;
+import fritids.norskgolf.entities.Course;
 import fritids.norskgolf.entities.Friendship;
 import fritids.norskgolf.entities.FriendshipStatus;
 import fritids.norskgolf.entities.User;
+import fritids.norskgolf.repository.CourseRepository;
 import fritids.norskgolf.repository.FriendshipRepository;
 import fritids.norskgolf.repository.PlayedCourseRepository;
 import fritids.norskgolf.repository.RoundRepository;
@@ -15,8 +17,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +31,7 @@ public class FriendService {
     @Autowired private FriendshipRepository friendshipRepository;
     @Autowired private PlayedCourseRepository playedCourseRepository;
     @Autowired private RoundRepository roundRepository;
+    @Autowired private CourseRepository courseRepository;
 
     private static final int MIN_QUERY_LENGTH = 3;
     private static final int MAX_SEARCH_RESULTS = 20;
@@ -60,7 +66,8 @@ public class FriendService {
                             // The client needs this to cancel a request it sent (DELETE /api/friends/{id}).
                             relationship.map(Friendship::getId).orElse(null),
                             0, 0,
-                            isFriend ? u.getAvatar() : null
+                            isFriend ? u.getAvatar() : null,
+                            0, 0
                     );
                 })
                 .collect(Collectors.toList());
@@ -132,15 +139,29 @@ public class FriendService {
 
     // --- 6. LEADERBOARD ---
     public List<FriendDto> getLeaderboard(User me) {
+        // Load the active-course picture ONCE for the whole leaderboard, then reuse it for
+        // every row. Doing it per row would be a query per friend for data identical on
+        // each one.
+        List<Course> activeCourses = courseRepository.findByActiveTrue();
+        Set<Long> activeIds = activeCourses.stream()
+                .map(Course::getId)
+                .collect(Collectors.toSet());
+        // Null counties bucket under "Unknown", exactly as GolfService.getDashboardStats
+        // does, so a fylke count means the same thing on both screens.
+        Map<String, Set<Long>> coursesByCounty = activeCourses.stream()
+                .collect(Collectors.groupingBy(
+                        c -> c.getCounty() != null ? c.getCounty() : "Unknown",
+                        Collectors.mapping(Course::getId, Collectors.toSet())));
+
         List<FriendDto> leaderboard = friendshipRepository.findAllFriends(me.getId()).stream()
                 .map(f -> {
                     User friend = f.getRequester().getId().equals(me.getId()) ? f.getReceiver() : f.getRequester();
-                    return mapToDto(friend, "ACCEPTED", f.getId());
+                    return mapToDto(friend, "ACCEPTED", f.getId(), activeIds, coursesByCounty);
                 })
                 .collect(Collectors.toList());
 
         // Add Me
-        leaderboard.add(mapToDto(me, "ME", null));
+        leaderboard.add(mapToDto(me, "ME", null, activeIds, coursesByCounty));
 
         // Sort
         leaderboard.sort(Comparator.comparingInt(FriendDto::getTotalCourses).reversed());
@@ -149,16 +170,32 @@ public class FriendService {
 
     // --- HELPERS ---
 
-    private FriendDto mapToDto(User user, String status, Long friendshipId) {
+    private FriendDto mapToDto(User user, String status, Long friendshipId,
+                               Set<Long> activeIds, Map<String, Set<Long>> coursesByCounty) {
+        // One played-ids query per row, and it answers both questions below. Counting
+        // played courses with countByUserId instead would include courses the club
+        // reconciler has since deactivated, inflating this row above what the same user
+        // sees on /oversikt — GolfService counts active only.
+        // ponytail: still a query per row. If a friend list ever gets long, fetch every
+        // row's played ids in one "where user_id in (...)" query instead.
+        Set<Long> played = new HashSet<>(playedCourseRepository.findCourseIdsByUserId(user.getId()));
+
+        int activePlayed = (int) activeIds.stream().filter(played::contains).count();
+        int fylkerComplete = (int) coursesByCounty.values().stream()
+                .filter(played::containsAll)
+                .count();
+
         return new FriendDto(
                 user.getPublicId(),
                 resolveDisplayName(user),
                 user.getEmail(),
                 status,
                 friendshipId,
-                (int) playedCourseRepository.countByUserId(user.getId()),
+                activePlayed,
                 (int) roundRepository.countByUserId(user.getId()),
-                user.getAvatar()
+                user.getAvatar(),
+                fylkerComplete,
+                coursesByCounty.size()
         );
     }
 
