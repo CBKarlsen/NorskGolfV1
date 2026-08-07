@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 // We don't import Login here anymore as a blocking component
+import BadgesDialog from "./BadgesDialog";
 import Login from "./Login";
 import MapView from "./MapView";
 import Overview from "./Overview";
@@ -7,6 +8,7 @@ import SocialView from "./SocialView";
 import "./App.css";
 
 import BarChartIcon from "@mui/icons-material/BarChart";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import GroupIcon from "@mui/icons-material/Group";
 import LoginIcon from "@mui/icons-material/Login"; // New icon
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -48,6 +50,7 @@ function App() {
 	// Menu State
 	const [anchorEl, setAnchorEl] = useState(null);
 	const openMenu = Boolean(anchorEl);
+	const [badgesOpen, setBadgesOpen] = useState(false);
 
 	useEffect(() => {
 		// Try to fetch user, but don't block app if it fails (401)
@@ -141,10 +144,22 @@ function App() {
 									onClose={handleMenuClose}
 									slotProps={{ paper: { sx: { mt: 1.5 } } }}
 								>
+									<MenuItem
+										onClick={() => {
+											setBadgesOpen(true);
+											handleMenuClose();
+										}}
+									>
+										<EmojiEventsIcon fontSize="small" sx={{ mr: 1 }} /> Merker
+									</MenuItem>
 									<MenuItem onClick={handleLogout} sx={{ color: "#d32f2f" }}>
 										<LogoutIcon fontSize="small" sx={{ mr: 1 }} /> Logg ut
 									</MenuItem>
 								</Menu>
+								<BadgesDialog
+									open={badgesOpen}
+									onClose={() => setBadgesOpen(false)}
+								/>
 							</>
 						) : (
 							// LOGGED OUT VIEW: Show Login Button
