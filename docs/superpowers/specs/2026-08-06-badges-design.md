@@ -56,9 +56,13 @@ computeBadges(stats) -> [{ group, label, hint, current, target, earned }]
 | Fylker  | 1, 5, alle         | count of `regionStats` entries with `playedCount === totalCount` |
 | Runder  | 10, 50, 100        | `stats.roundCount`                         |
 
-Labels: `Første klubb`, `Ti klubber`, `25 klubber`, `50 klubber`,
-`100 klubber`; `Første fylke`, `Fem fylker`, `Hele Norge`; `Ti runder`,
-`Femti runder`, `Hundre runder`. They live in the definition table, so rewording
+Labels: `1 klubb`, `10 klubber`, `25 klubber`, `50 klubber`,
+`100 klubber`; `1 fylke`, `5 fylker`, `Hele Norge`; `10 runder`,
+`50 runder`, `100 runder`. Numeric throughout — the first version spelled the
+small numbers out (`Første klubb`, `Ti runder`) and mixed styles within a group,
+which read as an oversight once labels started surfacing as titles under names on
+the leaderboard. `Hele Norge` stays named because its target is data-driven, so a
+number would be a lie. They live in the definition table, so rewording
 them is a one-line edit.
 
 Two rules the implementation must not get wrong:

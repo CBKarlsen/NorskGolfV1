@@ -18,7 +18,7 @@ test("marks earned badges and shows progress only on the locked ones", async () 
 
 	render(<BadgesDialog open onClose={() => {}} />);
 
-	expect(await screen.findByText("Ti klubber")).toBeInTheDocument();
+	expect(await screen.findByText("10 klubber")).toBeInTheDocument();
 	// Locked: 12 of 25 clubs.
 	expect(screen.getByText("12 / 25 klubber")).toBeInTheDocument();
 	// Earned badges show no progress caption.
@@ -102,6 +102,6 @@ test("locked badges show no tier caption", async () => {
 
 	render(<BadgesDialog open onClose={() => {}} />);
 
-	expect(await screen.findByText("Første klubb")).toBeInTheDocument();
+	expect(await screen.findByText("1 klubb")).toBeInTheDocument();
 	expect(screen.queryByText("LEGENDARISK")).not.toBeInTheDocument();
 });

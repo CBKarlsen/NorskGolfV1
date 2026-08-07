@@ -37,6 +37,8 @@ Result: no new SQL to get wrong, the active-count bug is fixed by construction w
 
 The code blocks below in Tasks 2–4 are **not** safe to re-transcribe verbatim without these corrections — each was caught while implementing the plan, and the shipped code differs from what is written below.
 
+- **Every badge label below is stale.** After the plan ran, the labels were renamed to be numeric throughout: `Første klubb` → `1 klubb`, `Ti klubber` → `10 klubber`, `Første fylke` → `1 fylke`, `Fem fylker` → `5 fylker`, `Ti runder` → `10 runder`, `Femti runder` → `50 runder`, `Hundre runder` → `100 runder`. `Hele Norge` and the already-numeric labels are unchanged. `frontend/src/badges.js` is the source of truth.
+
 - **Task 2, Step 1**: the test `"marks the rarest badges with their tier caption"` uses `expect(screen.getByText("LEGENDARISK")).toBeInTheDocument();`. Its own fixture earns both legendary badges (`100 klubber` rarity 10 and `Hele Norge` rarity 11), so two captions render and `getByText` throws on multiple matches. Shipped code uses `expect(screen.getAllByText("LEGENDARISK")).toHaveLength(2);`.
 - **Task 3, Step 1**: `when(roundRepository.countByUserId(...)).thenReturn(7L)` (and `3L`, `1L`). `RoundRepository.countByUserId` returns primitive `int`, so the `L` suffixes do not compile. Shipped test uses plain `int` literals.
 - **Task 3, Step 1**: `new Friendship()` reaches a `protected` no-arg constructor from a different package. Shipped test uses the public `Friendship(User requester, User receiver)` constructor instead.

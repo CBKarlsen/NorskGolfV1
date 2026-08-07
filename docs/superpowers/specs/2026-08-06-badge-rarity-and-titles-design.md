@@ -8,7 +8,7 @@ and live on exactly one screen.
 
 Two things are missing, and they are the same thing.
 
-**Nothing distinguishes a hard badge from an easy one.** `Første klubb` and
+**Nothing distinguishes a hard badge from an easy one.** `1 klubb` and
 `Hele Norge` render with the same icon in the same gold. The collection game's
 whole premise is that some things are hard to collect; the reward screen says
 otherwise.
@@ -35,9 +35,9 @@ downstream needs tiebreak logic.
 
 | Tier | Rarity | Badges |
 | --- | --- | --- |
-| Bronse | 1–3 | Første klubb · Ti runder · Første fylke |
-| Sølv | 4–6 | Ti klubber · Femti runder · 25 klubber |
-| Gull | 7–9 | Fem fylker · Hundre runder · 50 klubber |
+| Bronse | 1–3 | 1 klubb · 10 runder · 1 fylke |
+| Sølv | 4–6 | 10 klubber · 50 runder · 25 klubber |
+| Gull | 7–9 | 5 fylker · 100 runder · 50 klubber |
 | Legendarisk | 10–11 | 100 klubber · Hele Norge |
 
 **`Hele Norge` takes rarity 11, above `100 klubber`, and that is forced rather

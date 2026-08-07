@@ -42,8 +42,11 @@ const GROUPS = [
 		unitSingular: "klubb",
 		value: (c) => c.clubs ?? 0,
 		tiers: [
-			{ target: 1, label: "Første klubb", rarity: 1 },
-			{ target: 10, label: "Ti klubber", rarity: 4 },
+			// Labels are numeric throughout, so a title reads consistently next to a
+			// name on the leaderboard. "Hele Norge" is the one exception: its target
+			// is data-driven, so a number would be a lie.
+			{ target: 1, label: "1 klubb", rarity: 1 },
+			{ target: 10, label: "10 klubber", rarity: 4 },
 			{ target: 25, label: "25 klubber", rarity: 6 },
 			{ target: 50, label: "50 klubber", rarity: 9 },
 			{ target: 100, label: "100 klubber", rarity: 10 },
@@ -55,8 +58,8 @@ const GROUPS = [
 		unitSingular: "fylke",
 		value: (c) => c.fylkerComplete ?? 0,
 		tiers: [
-			{ target: 1, label: "Første fylke", rarity: 3 },
-			{ target: 5, label: "Fem fylker", rarity: 7 },
+			{ target: 1, label: "1 fylke", rarity: 3 },
+			{ target: 5, label: "5 fylker", rarity: 7 },
 			// golf_clubs.json is hand-edited: 15 fylker today, not necessarily
 			// tomorrow. Read the goal out of the data instead of hardcoding it.
 			// Rarity 11 puts this above 100 klubber deliberately — finishing every
@@ -71,9 +74,9 @@ const GROUPS = [
 		unitSingular: "runde",
 		value: (c) => c.rounds ?? 0,
 		tiers: [
-			{ target: 10, label: "Ti runder", rarity: 2 },
-			{ target: 50, label: "Femti runder", rarity: 5 },
-			{ target: 100, label: "Hundre runder", rarity: 8 },
+			{ target: 10, label: "10 runder", rarity: 2 },
+			{ target: 50, label: "50 runder", rarity: 5 },
+			{ target: 100, label: "100 runder", rarity: 8 },
 		],
 	},
 ];

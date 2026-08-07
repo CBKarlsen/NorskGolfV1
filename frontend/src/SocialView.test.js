@@ -58,7 +58,7 @@ test("a friend who has earned nothing gets no title", async () => {
 	);
 
 	expect(await screen.findByText("Kari Nordmann")).toBeInTheDocument();
-	expect(screen.queryByText("Første klubb")).not.toBeInTheDocument();
+	expect(screen.queryByText("1 klubb")).not.toBeInTheDocument();
 });
 
 test("a friend with clubs but no finished fylke still gets a title", async () => {
